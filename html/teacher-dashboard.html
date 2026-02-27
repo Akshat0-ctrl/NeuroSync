@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
-    <link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Space+Grotesk%3Awght%40400%3B500%3B700&amp;family=Story+Script%3Awght%40400" onload="this.rel='stylesheet'" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link as="style"
+        href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Space+Grotesk%3Awght%40400%3B500%3B700&amp;family=Story+Script%3Awght%40400"
+        onload="this.rel='stylesheet'" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <title>Teacher Dashboard - NeuroSync</title>
-    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
@@ -53,7 +56,7 @@
             try {
                 const doc = await db.collection('Profiles').doc(user.uid).get();
                 userProfile = doc.exists() ? doc.data() : {};
-                
+
                 // Update navbar name
                 const displayName = userProfile.firstname && userProfile.lastname
                     ? `${userProfile.firstname} ${userProfile.lastname}`
@@ -145,10 +148,10 @@
         function createPendingMaterialCard(materialId, material) {
             const card = document.createElement('div');
             card.className = 'bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6';
-            
+
             const uploadDate = material.uploadDate ? new Date(material.uploadDate.toDate()).toLocaleDateString() : 'Unknown';
             const fileIcon = getFileIcon(material.type);
-            
+
             card.innerHTML = `
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex items-center gap-3">
@@ -183,17 +186,17 @@
                     </button>
                 </div>
             `;
-            
+
             return card;
         }
 
         function createApprovedMaterialCard(materialId, material) {
             const card = document.createElement('div');
             card.className = 'bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-4';
-            
+
             const uploadDate = material.uploadDate ? new Date(material.uploadDate.toDate()).toLocaleDateString() : 'Unknown';
             const fileIcon = getFileIcon(material.type);
-            
+
             card.innerHTML = `
                 <div class="flex items-center gap-3 mb-2">
                     <span class="text-2xl">${fileIcon}</span>
@@ -210,7 +213,7 @@
                     </button>
                 </div>
             `;
-            
+
             return card;
         }
 
@@ -294,11 +297,10 @@
 
         function showNotification(message, type) {
             const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 text-white ${
-                type === 'success' ? 'bg-green-500' :
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 text-white ${type === 'success' ? 'bg-green-500' :
                 type === 'error' ? 'bg-red-500' :
-                type === 'info' ? 'bg-blue-500' : 'bg-gray-500'
-            }`;
+                    type === 'info' ? 'bg-blue-500' : 'bg-gray-500'
+                }`;
             notification.textContent = message;
             document.body.appendChild(notification);
             setTimeout(() => notification.remove(), 3000);
@@ -337,113 +339,132 @@
         .bg-secondary { background-color: #1A1122; }
         .bg-tertiary { background-color: #2A1F36; }
     </style>
-<link rel="stylesheet" href="../css/mobile-optimizations.css"/>
+    <link rel="stylesheet" href="../css/mobile-optimizations.css" />
 </head>
-<body class="bg-primary text-white">
-    <!-- Navigation Header -->
-    <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary px-4 sm:px-6 lg:px-10 py-3 bg-transparent backdrop-blur-sm sticky top-0 z-20">
-        <div class="flex items-center gap-3 text-primary">
-            <svg class="h-7 w-7 accent-primary" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
-            </svg>
-            <h2 class="text-primary text-xl font-bold tracking-tight" style='font-family: "Story Script", sans-serif;'>NeuroSync</h2>
+
+<body class="bg-primary dark">
+    <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden"
+        style='font-family: "Space Grotesk", "Noto Sans", sans-serif;'>
+        <div class="absolute inset-0 -z-10 overflow-hidden">
+            <!-- Particle background -->
+            <div class="particle"
+                style="--x-start: 10vw; --y-start: 20vh; --x-end: 90vw; --y-end: 80vh; width: 2px; height: 2px; animation-delay: 0s;">
+            </div>
+            <div class="particle"
+                style="--x-start: 80vw; --y-start: 10vh; --x-end: 20vw; --y-end: 90vh; width: 1px; height: 1px; animation-delay: -1s;">
+            </div>
+            <!-- ... more particles ... -->
         </div>
-        <nav class="hidden xl:flex items-center gap-2 text-sm text-secondary">
-            <a class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors" href="../index.html">Home</a>
-            <a href="Dashboard.html" class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1">Student Dashboard</a>
-            <a href="teacher-dashboard.html" class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1 bg-accent text-primary">Teacher Dashboard</a>
-            <a href="profile.html" class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors">Profile</a>
-        </nav>
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="text-right">
-                    <div class="text-white text-sm font-medium" id="navbar-name">Teacher</div>
-                    <div class="text-[#ad92c9] text-xs">Teacher</div>
+
+        <header
+            class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary px-4 sm:px-6 lg:px-10 py-3 bg-transparent backdrop-blur-sm sticky top-0 z-20">
+            <div class="flex items-center gap-3 text-primary">
+                <img src="../assets/Navbar_logo copy.png" alt="NeuroSync Logo" class="h-10 w-auto">
+            </div>
+            <nav class="hidden xl:flex items-center gap-2 text-sm text-secondary">
+                <a href="Dashboard.html"
+                    class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1">Student
+                    Dashboard</a>
+                <a href="teacher-dashboard.html"
+                    class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1 bg-accent text-primary">Teacher
+                    Dashboard</a>
+                <a href="profile.html"
+                    class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors">Profile</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <div class="text-white text-sm font-medium" id="navbar-name">Teacher</div>
+                        <div class="text-[#ad92c9] text-xs">Teacher</div>
+                    </div>
+                </div>
+                <button onclick="signOut()"
+                    class="translucent-button flex items-center justify-center rounded-full size-11">
+                    <span class="material-symbols-outlined text-2xl">logout</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="min-h-screen p-8">
+            <div class="max-w-7xl mx-auto">
+                <!-- Welcome Section -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-primary mb-2" id="welcome-message">Welcome, Teacher!</h1>
+                    <p class="text-secondary">Review and approve study materials submitted by students.</p>
+                </div>
+
+                <!-- Stats Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="material-symbols-outlined text-3xl text-accent">pending</span>
+                            <span class="text-2xl font-bold text-accent" id="pending-count">0</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-primary mb-1">Pending Materials</h3>
+                        <p class="text-sm text-secondary">Awaiting review</p>
+                    </div>
+
+                    <div class="bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="material-symbols-outlined text-3xl text-accent">check_circle</span>
+                            <span class="text-2xl font-bold text-accent" id="approved-count">0</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-primary mb-1">Approved Materials</h3>
+                        <p class="text-sm text-secondary">Available to students</p>
+                    </div>
+
+                    <div class="bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="material-symbols-outlined text-3xl text-accent">school</span>
+                            <span class="text-2xl font-bold text-accent" id="total-students">0</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-primary mb-1">Total Students</h3>
+                        <p class="text-sm text-secondary">Registered users</p>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Pending Materials -->
+                    <div class="bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
+                        <h2 class="text-2xl font-bold text-primary mb-6">Pending Review</h2>
+                        <div id="pending-materials" class="space-y-4">
+                            <!-- Pending materials will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Recently Approved -->
+                    <div class="bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
+                        <h2 class="text-2xl font-bold text-primary mb-6">Recently Approved</h2>
+                        <div id="approved-materials" class="space-y-3">
+                            <!-- Approved materials will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="mt-8 bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
+                    <h2 class="text-2xl font-bold text-primary mb-6">Quick Actions</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="loadPendingMaterials()"
+                            class="translucent-button p-4 rounded-lg text-center hover:scale-105 transition-transform">
+                            <span class="material-symbols-outlined text-3xl text-accent mb-2 block">refresh</span>
+                            <span class="font-medium">Refresh Pending</span>
+                        </button>
+                        <button onclick="window.location.href='study-library.html'"
+                            class="translucent-button p-4 rounded-lg text-center hover:scale-105 transition-transform">
+                            <span class="material-symbols-outlined text-3xl text-accent mb-2 block">library_books</span>
+                            <span class="font-medium">View Library</span>
+                        </button>
+                        <button onclick="window.location.href='Dashboard.html'"
+                            class="translucent-button p-4 rounded-lg text-center hover:scale-105 transition-transform">
+                            <span class="material-symbols-outlined text-3xl text-accent mb-2 block">dashboard</span>
+                            <span class="font-medium">Student View</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <button onclick="signOut()" class="translucent-button flex items-center justify-center rounded-full size-11">
-                <span class="material-symbols-outlined text-2xl">logout</span>
-            </button>
         </div>
-    </header>
-
-    <div class="min-h-screen p-8">
-        <div class="max-w-7xl mx-auto">
-            <!-- Welcome Section -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-primary mb-2" id="welcome-message">Welcome, Teacher!</h1>
-                <p class="text-secondary">Review and approve study materials submitted by students.</p>
-            </div>
-
-            <!-- Stats Overview -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="material-symbols-outlined text-3xl text-accent">pending</span>
-                        <span class="text-2xl font-bold text-accent" id="pending-count">0</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-primary mb-1">Pending Materials</h3>
-                    <p class="text-sm text-secondary">Awaiting review</p>
-                </div>
-
-                <div class="bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="material-symbols-outlined text-3xl text-accent">check_circle</span>
-                        <span class="text-2xl font-bold text-accent" id="approved-count">0</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-primary mb-1">Approved Materials</h3>
-                    <p class="text-sm text-secondary">Available to students</p>
-                </div>
-
-                <div class="bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="material-symbols-outlined text-3xl text-accent">school</span>
-                        <span class="text-2xl font-bold text-accent" id="total-students">0</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-primary mb-1">Total Students</h3>
-                    <p class="text-sm text-secondary">Registered users</p>
-                </div>
-            </div>
-
-            <!-- Main Content -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Pending Materials -->
-                <div class="bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
-                    <h2 class="text-2xl font-bold text-primary mb-6">Pending Review</h2>
-                    <div id="pending-materials" class="space-y-4">
-                        <!-- Pending materials will be loaded here -->
-                    </div>
-                </div>
-
-                <!-- Recently Approved -->
-                <div class="bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
-                    <h2 class="text-2xl font-bold text-primary mb-6">Recently Approved</h2>
-                    <div id="approved-materials" class="space-y-3">
-                        <!-- Approved materials will be loaded here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="mt-8 bg-secondary/50 backdrop-blur-sm border border-primary rounded-xl p-6">
-                <h2 class="text-2xl font-bold text-primary mb-6">Quick Actions</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <button onclick="loadPendingMaterials()" class="translucent-button p-4 rounded-lg text-center hover:scale-105 transition-transform">
-                        <span class="material-symbols-outlined text-3xl text-accent mb-2 block">refresh</span>
-                        <span class="font-medium">Refresh Pending</span>
-                    </button>
-                    <button onclick="window.location.href='study-library.html'" class="translucent-button p-4 rounded-lg text-center hover:scale-105 transition-transform">
-                        <span class="material-symbols-outlined text-3xl text-accent mb-2 block">library_books</span>
-                        <span class="font-medium">View Library</span>
-                    </button>
-                    <button onclick="window.location.href='Dashboard.html'" class="translucent-button p-4 rounded-lg text-center hover:scale-105 transition-transform">
-                        <span class="material-symbols-outlined text-3xl text-accent mb-2 block">dashboard</span>
-                        <span class="font-medium">Student View</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
-</html>
 
+</html>

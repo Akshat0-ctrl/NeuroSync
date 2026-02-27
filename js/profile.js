@@ -5,8 +5,10 @@
 
 // Assume Firebase is initialized with your config elsewhere on the page
 
-const cloudName = 'dwlxccz91'; // Updated with user's Cloudinary cloud name
-const uploadPreset = 'upload_preset'; // Updated with user's Cloudinary upload preset
+const cloudName = 'YOUR_CLOUDINARY_CLOUD_NAME'; // TODO: Replace with your actual Cloudinary cloud name
+const uploadPreset = 'YOUR_UPLOAD_PRESET'; // TODO: Replace with your actual Cloudinary upload preset
+
+// The above are example placeholder values; ensure these are correct for your Cloudinary account
 
 function loadProfile() {
   const user = firebase.auth().currentUser;
