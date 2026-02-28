@@ -2,76 +2,133 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeuroSync Authentication</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>NeuroSync - Authentication</title>
+  
+  <!-- Favicon -->
   <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    <div
-    class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-40 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-  <div class="py-1">
-    <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-      href="Dashboard.html">Dashboard</a>
-    <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-      href="rewards.html">Rewards</a>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700&family=Story+Script:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/mobile-optimizations.css">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+
+<body class="bg-primary dark">
+  <!-- Background Effects -->
+  <div class="fixed inset-0 -z-10 overflow-hidden">
+    <div class="particle" style="--x-start: 10vw; --y-start: 20vh; --x-end: 90vw; --y-end: 80vh; width: 2px; height: 2px; animation-delay: 0s;"></div>
+    <div class="particle" style="--x-start: 80vw; --y-start: 10vh; --x-end: 20vw; --y-end: 90vh; width: 1px; height: 1px; animation-delay: -1s;"></div>
+    <div class="particle" style="--x-start: 5vw; --y-start: 90vh; --x-end: 95vw; --y-end: 5vh; width: 3px; height: 3px; animation-delay: -2s;"></div>
+    <div class="particle" style="--x-start: 95vw; --y-start: 85vh; --x-end: 5vw; --y-end: 15vh; width: 2px; height: 2px; animation-delay: -3s;"></div>
+    <div class="particle" style="--x-start: 50vw; --y-start: 5vh; --x-end: 50vw; --y-end: 95vh; width: 1px; height: 1px; animation-delay: -4s;"></div>
   </div>
-  </div>
-  </div>
-  <div class="relative group" onmouseleave="closeDropdown(this)" onmouseenter="openDropdown(this)">
-    <button
-      class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1"
-      onmouseenter="openDropdown(this.parentElement)">
-      <span>Resources</span>
-      <span class="material-symbols-outlined text-base">expand_more</span>
-    </button>
-    <div
-      class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-      <div class="py-1">
-        <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-          href="mood-selection.html">Mood Tracker</a>
-        <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-          href="study-library.html">Study Library</a>
-        <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-          href="study-library.html">Upload Material</a>
+
+  <!-- Navigation -->
+  <header class="sticky top-0 z-20 backdrop-blur-sm border-b border-primary bg-primary/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-3 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="../index.html" class="flex items-center gap-3">
+        <img src="../assets/Navbar_logo copy.png" alt="NeuroSync Logo" class="h-10 w-auto">
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden xl:flex items-center gap-4">
+        <a href="dashboard.html" id="dashboard-nav-link" class="translucent-button rounded-full px-4 py-2 text-sm text-secondary hover:text-primary transition-colors" style="display: none;">
+          Dashboard
+        </a>
+        
+        <!-- Resources Dropdown -->
+        <div class="relative group">
+          <button class="translucent-button rounded-full px-4 py-2 text-sm text-secondary hover:text-primary transition-colors flex items-center gap-1">
+            Resources
+            <span class="material-symbols-outlined text-base">expand_more</span>
+          </button>
+          <div class="dropdown-menu absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary hidden">
+            <div class="py-1">
+              <a href="mood-selection.html" class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors">Mood Tracker</a>
+              <a href="study-library.html" class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors">Study Library</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Company Dropdown -->
+        <div class="relative group">
+          <button class="translucent-button rounded-full px-4 py-2 text-sm text-secondary hover:text-primary transition-colors flex items-center gap-1">
+            Company
+            <span class="material-symbols-outlined text-base">expand_more</span>
+          </button>
+          <div class="dropdown-menu absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary hidden">
+            <div class="py-1">
+              <a href="feedback.html" class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors">Feedback</a>
+              <a href="about.html" class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors">About Us</a>
+            </div>
+          </div>
+        </div>
+
+        <a href="rewards.html" id="rewards-nav-link" class="translucent-button rounded-full px-4 py-2 text-sm text-secondary hover:text-primary transition-colors" style="display: none;">Rewards</a>
+        <a href="profile.html" id="profile-nav-link" class="translucent-button rounded-full px-4 py-2 text-sm text-secondary hover:text-primary transition-colors" style="display: none;">Profile</a>
+      </nav>
+
+      <!-- Right Side -->
+      <div class="flex items-center gap-4">
+        <!-- User Profile -->
+        <div id="navbar-profile" class="hidden sm:flex items-center gap-3 cursor-pointer relative">
+          <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 shadow-[0_0_15px_rgba(128,19,236,0.5)]" id="navbar-profile-photo">
+            <span class="material-symbols-outlined text-xl text-purple-400 flex items-center justify-center w-full h-full">person</span>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-white text-sm font-medium" id="navbar-name">User</div>
+            <div class="text-purple-300 text-xs" id="navbar-class-role">Student</div>
+          </div>
+          <!-- Dropdown -->
+          <div id="navbar-dropdown" class="absolute top-full right-0 mt-2 w-48 rounded-md shadow-lg bg-[#1A1122] backdrop-blur-sm border border-[#2A1F36] hidden z-50">
+            <div class="py-1">
+              <a href="profile.html" class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors">
+                <span class="material-symbols-outlined text-base">person</span> See Profile
+              </a>
+              <button id="navbar-sign-out-btn" class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors w-full text-left">
+                <span class="material-symbols-outlined text-base">logout</span> Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="translucent-button flex items-center justify-center rounded-full size-11 hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-2xl">dark_mode</span>
+        </button>
+
+        <!-- Get Started -->
+        <button id="get-started-btn" class="hidden sm:flex translucent-button px-6 h-11 text-base font-bold rounded-full">
+          Get Started
+        </button>
+
+        <!-- Mobile Menu -->
+        <button class="xl:hidden translucent-button flex items-center justify-center rounded-full size-11">
+          <span class="material-symbols-outlined text-2xl">menu</span>
+        </button>
       </div>
     </div>
-  </div>
-  <div class="relative group" onmouseleave="closeDropdown(this)" onmouseenter="openDropdown(this)">
-    <button
-      class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1"
-      onmouseenter="openDropdown(this.parentElement)">
-      <span>Company</span>
-      <span class="material-symbols-outlined text-base">expand_more</span>
-    </button>
-    <div
-      class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-      <div class="py-1">
-        <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-          href="feedback.html">Feedback Us</a>
-        <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-          href="#about">About Us</a>
-        <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-          href="#support">Support</a>
-      </div>
-    </div>
-  </div>
-  <a href="rewards.html"
-    class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors">Rewards</a>
-  <a href="profile.html"
-    class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors">Profile</a>
-  </nav>
-  <div class="flex items-center gap-4">
-    <button
-      class="hidden sm:flex translucent-button min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-11 px-6 text-base font-bold transition-transform">
-      <span class="truncate">Get Started</span>
-    </button>
-    <button class="xl:hidden translucent-button flex items-center justify-center rounded-full size-11">
-      <span class="material-symbols-outlined text-2xl">menu</span>
-    </button>
-  </div>
   </header>
+
   <script type="module" src="../js/navbar.js"></script>
+
   <main class="flex flex-1 items-center justify-center py-12 md:py-0">
     <div class="mx-auto w-full max-w-md rounded-2xl bg-[#1a1122] p-8 shadow-2xl shadow-black/40">
       <div class="mb-2 text-center">
@@ -170,10 +227,8 @@
       </p>
     </div>
   </main>
-  </div>
-  <script type="module" src="../js/auth.js"></script>
-  </div>
 
-  </body>
+  <script type="module" src="../js/auth.js"></script>
+</body>
 
 </html>

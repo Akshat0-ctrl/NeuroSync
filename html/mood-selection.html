@@ -4,2834 +4,853 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeuroSync - Mood Selection</title>
+  <title>NeuroSync - Mood Tracker</title>
+  <meta name="description" content="Track and understand your emotions with NeuroSync's AI-powered mood tracker." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Story+Script&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/style.css" />
-  <link rel="stylesheet" href="../css/mood-selecti
-  on.css" />
-  <link rel="stylesheet" href="../css/mobile-optimizations.css" />
-
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js"></script>
-  <!-- Chart.js for mood statistics -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Import mood.js module -->
-  <script type="module">
-    import { initMoodLogging, loadRecentMoods, initEnhancedChatbot, resetConversation } from '../js/mood.js';
-  </script>
-  <header
-    class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary px-4 sm:px-6 lg:px-10 py-3 bg-transparent backdrop-blur-sm sticky top-0 z-20">
-    <div class="flex items-center gap-3 text-primary">
-      <img src="../assets/Navbar_logo copy.png" alt="NeuroSync Logo" class="h-10 w-auto">
+  <style type="text/tailwindcss">
+    :root {
+      --primary-color: #8013ec;
+      --bg-primary: #0C0A15;
+      --bg-secondary: #1A142D;
+      --bg-tertiary: #241C3A;
+      --text-primary: #FFFFFF;
+      --text-secondary: #C4B0E0;
+      --border-color: #2A2140;
+      --accent: #9333ea;
+    }
 
+    .translucent-button {
+      background-color: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      color: #FFFFFF;
+      transition: all 0.25s ease;
+    }
+    .translucent-button:hover {
+      background-color: rgba(147,51,234,0.7);
+      border-color: rgba(147,51,234,1);
+      box-shadow: 0 0 15px rgba(147,51,234,0.5);
+    }
 
-    </div>
-    <nav class="hidden xl:flex items-center gap-2 text-sm text-secondary">
-      <a class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors"
-        href="../index.html">Home</a>
-      <a href="dashboard.html" id="dashboard-nav-link"
-        class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1"
-        style="display: none;">
-        <span>Dashboard</span>
-      </a>
-      <div class="relative group">
-        <button
-          class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1 dropdown-toggle">
-          <span>Resources</span>
-          <span class="material-symbols-outlined text-base">expand_more</span>
-        </button>
-        <div
-          class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-          <div class="py-1">
-            <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-              href="mood-selection.html">Mood Tracker</a>
-            <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-              href="study-library.html">Study Library</a>
-            <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-              href="study-library.html">Upload Material</a>
-          </div>
-        </div>
-      </div>
-      <div class="relative group">
-        <button
-          class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1 dropdown-toggle">
-          <span>Company</span>
-          <span class="material-symbols-outlined text-base">expand_more</span>
-        </button>
-        <div
-          class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-          <div class="py-1">
-            <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-              href="feedback.html">Feedback Us</a>
-            <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-              href="#about">About Us</a>
-            <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-              href="#support">Support</a>
-          </div>
-        </div>
-      </div>
-      <a href="rewards.html" id="rewards-nav-link"
-        class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors"
-        style="display: none;">Rewards</a>
-      <a href="profile.html" id="profile-nav-link"
-        class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors"
-        style="display: none;">Profile</a>
-    </nav>
-    <script>
-      function openDropdown(element) {
-        const dropdown = element.querySelector('.absolute');
-        if (dropdown) {
-          dropdown.classList.remove('hidden');
-          dropdown.classList.add('block');
-        }
+    /* Sidebar */
+    .chat-sidebar {
+      width: 280px;
+      min-width: 280px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      z-index: 30;
+    }
+
+    @media (max-width: 1023px) {
+      .chat-sidebar {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        transform: translateX(-100%);
       }
-
-      function closeDropdown(element) {
-        const dropdown = element.querySelector('.absolute');
-        if (dropdown) {
-          dropdown.classList.add('hidden');
-          dropdown.classList.remove('block');
-        }
+      .chat-sidebar.open {
+        transform: translateX(0);
+        box-shadow: 6px 0 30px rgba(0,0,0,0.6);
       }
+    }
 
-      // Also add click functionality for better UX
-      document.addEventListener('DOMContentLoaded', function () {
-        const dropdownButtons = document.querySelectorAll('.relative.group button');
-        dropdownButtons.forEach(button => {
-          button.addEventListener('click', function (e) {
-            e.preventDefault();
-            const dropdown = this.parentElement.querySelector('.absolute');
-            if (dropdown) {
-              if (dropdown.classList.contains('hidden')) {
-                // Close other dropdowns first
-                document.querySelectorAll('.absolute').forEach(d => {
-                  d.classList.add('hidden');
-                  d.classList.remove('block');
-                });
-                // Open this dropdown
-                dropdown.classList.remove('hidden');
-                dropdown.classList.add('block');
-              } else {
-                // Close this dropdown
-                dropdown.classList.add('hidden');
-                dropdown.classList.remove('block');
-              }
-            }
-          });
-        });
+    /* Chat layout */
+    .ai-chat-layout {
+      display: flex;
+      height: calc(100vh - 64px);
+      overflow: hidden;
+      background: var(--bg-primary);
+    }
 
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function (e) {
-          if (!e.target.closest('.relative.group')) {
-            document.querySelectorAll('.absolute').forEach(dropdown => {
-              dropdown.classList.add('hidden');
-              dropdown.classList.remove('block');
-            });
-          }
-        });
-      });
-    </script>
-    <div class="flex items-center gap-4">
-      <div id="navbar-profile" class="hidden sm:flex items-center gap-3 cursor-pointer relative" style="display: none;">
-        <div
-          class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 shadow-[0_0_15px_rgba(128,19,236,0.5)]"
-          id="navbar-profile-photo">
-          <span
-            class="material-symbols-outlined text-xl text-[var(--primary-color)] flex items-center justify-center w-full h-full">person</span>
-        </div>
-        <div class="flex flex-col">
-          <div class="text-white text-sm font-medium" id="navbar-name">User</div>
-          <div class="text-[#ad92c9] text-xs" id="navbar-class-role">Student</div>
-        </div>
-        <!-- Dropdown Menu -->
-        <div id="navbar-dropdown"
-          class="absolute top-full right-0 mt-2 w-48 rounded-md shadow-lg bg-[#1A1122] backdrop-blur-sm border border-[#2A1F36] ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50">
-          <div class="py-1">
-            <a href="../profile.html"
-              class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors">
-              <span class="material-symbols-outlined text-base">person</span>
-              <span>See Profile</span>
-            </a>
-            <a href="../profile.html"
-              class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors">
-              <span class="material-symbols-outlined text-base">edit</span>
-              <span>Edit Profile</span>
-            </a>
-            <button id="navbar-sign-out-btn"
-              class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors w-full text-left">
-              <span class="material-symbols-outlined text-base">logout</span>
-              <span>Sign Out</span>
-            </button>
-          </div>
-        </div>
-      </div>
-      <button id="theme-toggle"
-        class="translucent-button flex items-center justify-center rounded-full size-11 hover:scale-110 transition-transform">
-        <span class="material-symbols-outlined text-2xl">dark_mode</span>
-      </button>
-      <button class="xl:hidden translucent-button flex items-center justify-center rounded-full size-11"
-        id="mobile-menu-btn">
-        <span class="material-symbols-outlined text-2xl">menu</span>
-      </button>
-    </div>
-  </header>
+    /* Message bubbles */
+    .msg-user {
+      background: linear-gradient(135deg,#9333ea,#7e22ce);
+      color: white;
+      border-radius: 18px 18px 4px 18px;
+      box-shadow: 0 4px 16px rgba(147,51,234,0.3);
+    }
+    .msg-bot {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 18px 18px 18px 4px;
+    }
 
-  <!-- Mood Selection Section -->
-  <section class="chatbot-container"
-    style="margin: 0; max-width: 100vw; width: 100vw; height: 100vh; background: #fff; border-radius: 0; padding: 1rem 1rem 0 1rem; box-shadow: none; display: flex; flex-direction: column;">
-    <h2 style="text-align: center; margin-bottom: 1rem; color: #333;">😊 Mood Chatbot</h2>
-    <div id="chat-window"
-      style="flex-grow: 1; overflow-y: auto; background: transparent; border-radius: 0; padding: 0; color: #333; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; box-shadow: none;">
-    </div>
-    <form id="chat-form" style="display: flex; margin-top: 1rem;">
-      <input type="text" id="chat-input" placeholder="Type your message or select a mood below..."
-        style="flex-grow: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid #ccc; font-size: 16px; outline: none;"
-        autocomplete="off" />
-      <button type="submit"
-        style="margin-left: 10px; padding: 10px 20px; border-radius: 20px; border: none; background-color: #4a90e2; color: white; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease;">Send</button>
-    </form>
-    <!-- Quick Reply Buttons Container -->
-    <div id="quick-replies" class="quick-replies"
-      style="display: none; margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
-    </div>
-    <!-- Mood Filter Tabs -->
-    <div class="mood-filters"
-      style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
-      <button class="filter-tab active" data-filter="all"
-        style="padding: 0.5rem 1rem; border-radius: 20px; border: 2px solid rgba(42, 33, 64, 0.3); background: rgba(147, 51, 234, 0.1); color: var(--dark-text-secondary); cursor: pointer; transition: all 0.3s ease; font-weight: 600;">All
-        Moods</button>
-      <button class="filter-tab" data-filter="positive"
-        style="padding: 0.5rem 1rem; border-radius: 20px; border: 2px solid rgba(42, 33, 64, 0.3); background: rgba(26, 20, 45, 0.8); color: var(--dark-text-secondary); cursor: pointer; transition: all 0.3s ease; font-weight: 600;">Positive</button>
-      <button class="filter-tab" data-filter="negative"
-        style="padding: 0.5rem 1rem; border-radius: 20px; border: 2px solid rgba(42, 33, 64, 0.3); background: rgba(26, 20, 45, 0.8); color: var(--dark-text-secondary); cursor: pointer; transition: all 0.3s ease; font-weight: 600;">Negative</button>
-      <button class="filter-tab" data-filter="neutral"
-        style="padding: 0.5rem 1rem; border-radius: 20px; border: 2px solid rgba(42, 33, 64, 0.3); background: rgba(26, 20, 45, 0.8); color: var(--dark-text-secondary); cursor: pointer; transition: all 0.3s ease; font-weight: 600;">Neutral</button>
-    </div>
+    /* Typing dots */
+    @keyframes dot-bounce {
+      0%,80%,100% { transform: translateY(0); }
+      40% { transform: translateY(-6px); }
+    }
+    .dot { animation: dot-bounce 1.4s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
 
-    <!-- Mood Search -->
-    <div class="mood-search" style="display: flex; justify-content: center; margin-bottom: 1rem;">
-      <input type="text" id="mood-search" placeholder="🔍 Search moods..."
-        style="padding: 0.75rem 1rem; border-radius: 25px; border: 2px solid rgba(42, 33, 64, 0.3); background: rgba(26, 20, 45, 0.8); color: var(--dark-text-primary); font-size: 16px; outline: none; width: 300px; max-width: 90%; backdrop-filter: blur(10px);"
-        autocomplete="off" />
-    </div>
+    /* Pulse ring avatar */
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    .pulse-ring::before {
+      content:'';
+      position:absolute;
+      inset:-4px;
+      border-radius:50%;
+      border:2px solid rgba(147,51,234,0.5);
+      animation: pulse-ring 2s ease-out infinite;
+    }
 
-    <!-- Mood Streak Tracker -->
-    <div class="mood-streak" style="display: flex; justify-content: center; margin-bottom: 1rem;">
-      <div
-        style="background: rgba(26, 20, 45, 0.8); padding: 0.75rem 1.5rem; border-radius: 25px; border: 1px solid rgba(42, 33, 64, 0.3); backdrop-filter: blur(10px); display: flex; align-items: center; gap: 0.5rem;">
-        <span style="color: var(--dark-text-secondary); font-size: 0.9rem;">🔥 Current Streak:</span>
-        <span id="streak-count" style="color: var(--dark-accent); font-weight: bold; font-size: 1.1rem;">0 days</span>
-      </div>
-    </div>
+    @keyframes fadeSlideUp {
+      from { opacity:0; transform:translateY(12px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .msg-anim { animation: fadeSlideUp 0.3s ease forwards; }
 
-    <div class="mood-grid" style="margin-top: 1rem; justify-content: center; overflow-y: auto; max-height: 120px;">
-      <!-- Positive Moods -->
-      <button class="mood-button chatbot-mood-btn" data-mood="Ambitious" data-category="positive"><img
-          src="../assets/images/Emotional/Ambitious.png" alt="Ambitious" title="Ambitious" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Calm" data-category="positive"><img
-          src="../assets/images/Emotional/Calm.png" alt="Calm" title="Calm" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Confident" data-category="positive"><img
-          src="../assets/images/Emotional/Confident.png" alt="Confident" title="Confident" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Curious" data-category="positive"><img
-          src="../assets/images/Emotional/Curious.png" alt="Curious" title="Curious" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Determined" data-category="positive"><img
-          src="../assets/images/Emotional/Determined.png" alt="Determined" title="Determined" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Excited" data-category="positive"><img
-          src="../assets/images/Emotional/Excited.png" alt="Excited" title="Excited" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Focused" data-category="positive"><img
-          src="../assets/images/Emotional/Focused.png" alt="Focused" title="Focused" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Greatful" data-category="positive"><img
-          src="../assets/images/Emotional/Greatful.png" alt="Greatful" title="Greatful" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Happy" data-category="positive"><img
-          src="../assets/images/Emotional/Happy.png" alt="Happy" title="Happy" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Included" data-category="positive"><img
-          src="../assets/images/Emotional/Included.png" alt="Included" title="Included" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Proud" data-category="positive"><img
-          src="../assets/images/Emotional/Proud.png" alt="Proud" title="Proud" /></button>
+    /* Mood button */
+    .mood-btn {
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      padding:8px; border-radius:12px;
+      border: 1px solid rgba(147,51,234,0.25);
+      background: rgba(147,51,234,0.07);
+      cursor:pointer; transition: all 0.2s ease;
+      min-width:56px;
+    }
+    .mood-btn:hover { background:rgba(147,51,234,0.2); transform:translateY(-3px); border-color:rgba(147,51,234,0.6); }
+    .mood-btn.selected { background:rgba(147,51,234,0.35); border-color:#9333ea; box-shadow:0 0 12px rgba(147,51,234,0.4); }
+    .mood-btn img { width:40px; height:40px; object-fit:contain; }
+    .mood-btn span { font-size:10px; color:var(--text-secondary); text-align:center; line-height:1.2; }
 
-      <!-- Negative Moods -->
-      <button class="mood-button chatbot-mood-btn" data-mood="Angry" data-category="negative"><img
-          src="../assets/images/Emotional/Angry.png" alt="Angry" title="Angry" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Annoyed" data-category="negative"><img
-          src="../assets/images/Emotional/Annoyed.png" alt="Annoyed" title="Annoyed" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Anxious" data-category="negative"><img
-          src="../assets/images/Emotional/Anxious.png" alt="Anxious" title="Anxious" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Ashamed" data-category="negative"><img
-          src="../assets/images/Emotional/Ashamed.png" alt="Ashamed" title="Ashamed" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Bored" data-category="negative"><img
-          src="../assets/images/Emotional/Bored.png" alt="Bored" title="Bored" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Concerned" data-category="negative"><img
-          src="../assets/images/Emotional/Concerned.png" alt="Concerned" title="Concerned" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Confused" data-category="negative"><img
-          src="../assets/images/Emotional/Confused.png" alt="Confused" title="Confused" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Disappointed" data-category="negative"><img
-          src="../assets/images/Emotional/Disappointed.png" alt="Disappointed" title="Disappointed" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Hopeless" data-category="negative"><img
-          src="../assets/images/Emotional/Hopeless.png" alt="Hopeless" title="Hopeless" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Hurt" data-category="negative"><img
-          src="../assets/images/Emotional/Hurt.png" alt="Hurt" title="Hurt" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Jealous" data-category="negative"><img
-          src="../assets/images/Emotional/Jealous.png" alt="Jealous" title="Jealous" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Lonely" data-category="negative"><img
-          src="../assets/images/Emotional/Lonely.png" alt="Lonely" title="Lonely" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Stressed" data-category="negative"><img
-          src="../assets/images/Emotional/Stressed.png" alt="Stressed" title="Stressed" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Tired" data-category="negative"><img
-          src="../assets/images/Emotional/Tired.png" alt="Tired" title="Tired" /></button>
+    /* History item */
+    .history-item {
+      padding:10px 12px; border-radius:10px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(147,51,234,0.15);
+      cursor:pointer; transition:background 0.2s;
+      display:flex; align-items:center; gap:10px;
+    }
+    .history-item:hover { background:rgba(147,51,234,0.15); }
 
-      <!-- Neutral Moods -->
-      <button class="mood-button chatbot-mood-btn" data-mood="Neutral" data-category="neutral"><img
-          src="../assets/images/Emotional/Neutral.png" alt="Neutral" title="Neutral" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Okay" data-category="neutral"><img
-          src="../assets/images/Emotional/Okay.png" alt="Okay" title="Okay" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Indifferent" data-category="neutral"><img
-          src="../assets/images/Emotional/Indifferent.png" alt="Indifferent" title="Indifferent" /></button>
-      <button class="mood-button chatbot-mood-btn" data-mood="Content" data-category="neutral"><img
-          src="../assets/images/Emotional/Content.png" alt="Content" title="Content" /></button>
-    </div>
-  </section>
+    /* Quick reply chips */
+    .quick-chip {
+      padding: 6px 14px; border-radius: 999px; font-size:13px;
+      border: 1px solid rgba(147,51,234,0.4);
+      background: rgba(147,51,234,0.1);
+      color: var(--text-secondary);
+      cursor: pointer; transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .quick-chip:hover { background:rgba(147,51,234,0.3); color:white; }
 
-  <!-- Mood History and Statistics Section -->
-  <section id="mood-history-section"
-    style="padding: 2rem; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; display: none;">
-    <!-- History Section Navbar -->
-    <nav
-      style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 15px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.2);">
-      <div
-        style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <button id="back-to-mood-btn"
-            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
-            ← Back to Mood Selection
-          </button>
-          <h2 style="margin: 0; color: #333; font-size: 1.8rem; display: flex; align-items: center; gap: 0.5rem;">
-            📊 Mood Analytics
-          </h2>
-        </div>
-        <div style="display: flex; gap: 1rem;">
-          <button id="refresh-data-btn"
-            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);">
-            🔄 Refresh Data
-          </button>
-          <button id="export-data-btn"
-            style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(67, 233, 123, 0.3);">
-            📥 Export Data
-          </button>
-        </div>
-      </div>
-    </nav>
+    /* Scrollbar */
+    .slim-scroll::-webkit-scrollbar { width:4px; }
+    .slim-scroll::-webkit-scrollbar-track { background:transparent; }
+    .slim-scroll::-webkit-scrollbar-thumb { background:rgba(147,51,234,0.4); border-radius:4px; }
+    .slim-scroll { scrollbar-width:thin; scrollbar-color:rgba(147,51,234,0.4) transparent; }
 
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
-        <!-- Recent Moods -->
-        <div
-          style="background: rgba(255,255,255,0.95); padding: 2rem; border-radius: 15px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
-          <h3
-            style="margin-bottom: 1.5rem; color: #333; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-            <span>📅</span> Recent Moods
-          </h3>
-          <div id="mood-history-list"
-            style="max-height: 400px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #ccc transparent;">
-            <!-- Mood history items will be inserted here -->
-          </div>
-        </div>
-        <!-- Mood Statistics Chart -->
-        <div
-          style="background: rgba(255,255,255,0.95); padding: 2rem; border-radius: 15px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
-          <h3
-            style="margin-bottom: 1.5rem; color: #333; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-            <span>📈</span> Mood Distribution
-          </h3>
-          <div style="position: relative; height: 350px;">
-            <canvas id="mood-chart" style="max-width: 100%; max-height: 100%;"></canvas>
-          </div>
-        </div>
-      </div>
+    /* Mood category filter */
+    .cat-btn {
+      padding:4px 14px; border-radius:999px; font-size:12px; font-weight:500;
+      border: 1px solid rgba(147,51,234,0.3);
+      background:transparent; color:var(--text-secondary);
+      cursor:pointer; transition:all 0.2s; white-space:nowrap;
+    }
+    .cat-btn.active, .cat-btn:hover { background:rgba(147,51,234,0.25); color:white; border-color:rgba(147,51,234,0.7); }
 
-      <!-- Mood Insights Section -->
-      <div
-        style="background: rgba(255,255,255,0.95); padding: 2rem; border-radius: 15px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
-        <h3
-          style="margin-bottom: 1.5rem; color: #333; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-          <span>💡</span> Mood Insights
-        </h3>
-        <div id="mood-insights"
-          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-          <div
-            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
-            <h4 style="margin: 0 0 0.5rem 0; font-size: 2rem;">0</h4>
-            <p style="margin: 0; font-size: 0.9rem;">Total Moods Logged</p>
-          </div>
-          <div
-            style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
-            <h4 style="margin: 0 0 0.5rem 0; font-size: 2rem;">0</h4>
-            <p style="margin: 0; font-size: 0.9rem;">Most Frequent Mood</p>
-          </div>
-          <div
-            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
-            <h4 style="margin: 0 0 0.5rem 0; font-size: 2rem;">0</h4>
-            <p style="margin: 0; font-size: 0.9rem;">Points Earned</p>
-          </div>
-          <div
-            style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
-            <h4 style="margin: 0 0 0.5rem 0; font-size: 2rem;">0</h4>
-            <p style="margin: 0; font-size: 0.9rem;">Current Streak</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    /* Overlay */
+    #sidebar-overlay { background:rgba(0,0,0,0.6); backdrop-filter:blur(2px); }
+  </style>
+</head>
+
+<body style="font-family:'Space Grotesk','Noto Sans',sans-serif; background:#0C0A15; color:#fff; overflow-x:hidden;">
 
   <script>
-    // Firebase Configuration and Initialization
+    // ---- Firebase Init ----
     const firebaseConfig = {
       apiKey: "AIzaSyCFQ36vxZ5qWhxXXptKe_sXlFVZxzRtCBY",
       authDomain: "neurosync-5173b.firebaseapp.com",
       projectId: "neurosync-5173b",
       storageBucket: "neurosync-5173b.firebasestorage.app",
       messagingSenderId: "855780859936",
-      appId: "1:855780859936:web:3044309100db9a61fa1c45",
-      measurementId: "G-75S5GWYEDK"
+      appId: "1:855780859936:web:3044309100db9a61fa1c45"
     };
+    firebase.initializeApp(firebaseConfig);
+    const _auth = firebase.auth();
+    const _db = firebase.firestore();
 
-    // Initialize Firebase
-    try {
-      const app = firebase.initializeApp(firebaseConfig);
-      const analytics = firebase.analytics();
-      console.log('Firebase initialized successfully');
-      analytics.logEvent('app_initialized');
-    } catch (error) {
-      console.error('Firebase initialization error:', error);
-    }
+    // Redirect if not logged in
+    _auth.onAuthStateChanged(user => {
+      if (!user) { window.location.href = 'auth.html'; return; }
+      loadNavbarProfile(user);
+      loadChatHistory(user.uid);
+    });
 
-    // OpenAI API Configuration (Replace with your actual API key)
-    const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY_HERE'; // TODO: Add your OpenAI API key
-    const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
-
-    // Function to get AI response from OpenAI
-    async function getAIResponse(prompt) {
+    async function loadNavbarProfile(user) {
+      const navbarProfile = document.getElementById('navbar-profile');
+      if (navbarProfile) navbarProfile.style.display = 'flex';
       try {
-        const response = await fetch(OPENAI_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${OPENAI_API_KEY}`
-          },
-          body: JSON.stringify({
-            model: 'gpt-3.5-turbo',
-            messages: [
-              {
-                role: 'system',
-                content: 'You are a helpful mood support chatbot. Provide empathetic, supportive responses based on the user\'s mood and conversation. Keep responses concise and encouraging.'
-              },
-              {
-                role: 'user',
-                content: prompt
-              }
-            ],
-            max_tokens: 150,
-            temperature: 0.7
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(`API request failed: ${response.status}`);
+        const snap = await _db.collection('Profiles').doc(user.uid).get();
+        const profile = snap.exists ? snap.data() : {};
+        const displayName = `${profile.firstname || ''} ${profile.lastname || ''}`.trim() || user.displayName || user.email.split('@')[0];
+        const photoEl = document.getElementById('navbar-profile-photo');
+        if (photoEl) {
+          if (profile.photoUrl) { photoEl.style.backgroundImage = `url("${profile.photoUrl}")`; photoEl.innerHTML = ''; }
+          else { photoEl.style.backgroundImage = 'none'; photoEl.innerHTML = '<span class="material-symbols-outlined" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:20px;color:var(--primary-color)">person</span>'; }
         }
+        const nameEl = document.getElementById('navbar-name');
+        if (nameEl) nameEl.textContent = displayName || 'User';
+        const roleEl = document.getElementById('navbar-class-role');
+        if (roleEl) roleEl.textContent = profile.class || 'Student';
+      } catch (e) { console.error('Navbar profile error:', e); }
 
-        const data = await response.json();
-        return data.choices[0].message.content.trim();
-      } catch (error) {
-        console.error('Error calling OpenAI API:', error);
-        return 'Sorry, I\'m having trouble connecting right now. Please try again later.';
+      // Profile dropdown toggle
+      const profileDiv = document.getElementById('navbar-profile');
+      const dropdown = document.getElementById('navbar-dropdown');
+      if (profileDiv && dropdown) {
+        profileDiv.addEventListener('click', e => { e.stopPropagation(); dropdown.classList.toggle('hidden'); });
+        document.addEventListener('click', () => dropdown.classList.add('hidden'));
       }
+      // Sign out
+      document.getElementById('navbar-sign-out-btn')?.addEventListener('click', () => {
+        _auth.signOut().then(() => window.location.href = '../index.html');
+      });
     }
 
-    // Mood tips - each mood has an array of tips
+    // ---- AI Webhook Config ----
+    // Set USE_WEBHOOK = true and provide your n8n / Make webhook URL
+    const AI_WEBHOOK_URL = 'https://your-n8n-instance.com/webhook/mood-chat';
+    const USE_WEBHOOK = false;
+
+    // ---- Conversation State ----
+    let conversationHistory = [];
+    let currentMood = null;
+    let currentUserId = null;
+    _auth.onAuthStateChanged(u => { if (u) currentUserId = u.uid; });
+
+    // ---- Save Mood to Firestore ----
+    async function saveMoodEntry(mood) {
+      if (!currentUserId) return;
+      try {
+        await _db.collection('Moods').add({ userId: currentUserId, mood, timestamp: new Date() });
+        updateRewards(currentUserId, 2);
+        loadChatHistory(currentUserId);
+      } catch (e) { console.error('Save mood error:', e); }
+    }
+
+    async function updateRewards(userId, pts) {
+      try {
+        const ref = _db.collection('Rewards').doc(userId);
+        const snap = await ref.get();
+        const cur = snap.exists ? (snap.data().totalPoints || 0) : 0;
+        await ref.set({ userId, totalPoints: cur + pts, lastUpdated: new Date() }, { merge: true });
+      } catch (e) { }
+    }
+
+    // ---- Load Chat History (recent moods) ----
+    async function loadChatHistory(userId) {
+      try {
+        const snap = await _db.collection('Moods').where('userId', '==', userId).orderBy('timestamp', 'desc').limit(20).get();
+        const list = document.getElementById('history-list');
+        if (!list) return;
+        list.innerHTML = '';
+        if (snap.empty) {
+          list.innerHTML = '<p class="text-xs text-center py-4" style="color:#7c6b99;">No mood history yet.<br/>Start a conversation!</p>';
+          return;
+        }
+        snap.forEach(doc => {
+          const d = doc.data();
+          const date = d.timestamp?.toDate ? d.timestamp.toDate() : new Date();
+          const item = document.createElement('div');
+          item.className = 'history-item';
+          item.innerHTML = `
+            <span style="font-size:22px;">${getMoodEmoji(d.mood)}</span>
+            <div style="flex:1;min-width:0;">
+              <p style="font-size:13px;font-weight:600;color:#fff;margin:0;truncate;">${d.mood}</p>
+              <p style="font-size:11px;color:#9c7fc0;margin:0;">${formatDate(date)}</p>
+            </div>`;
+          list.appendChild(item);
+        });
+      } catch (e) { console.error('History load error:', e); }
+    }
+
+    // ---- AI Response Logic ----
     const moodTips = {
-      Ambitious: [
-        "Set small, achievable goals to build momentum.",
-        "Visualize your success to stay motivated.",
-        "Break down big dreams into actionable steps.",
-        "Surround yourself with inspiring people.",
-        "Track your progress daily to see improvement.",
-        "Learn from past achievements to fuel future ones.",
-        "Embrace challenges as opportunities to grow.",
-        "Set deadlines to create urgency.",
-        "Reward yourself for milestones reached.",
-        "Read biographies of successful people for inspiration.",
-        "Practice positive affirmations daily.",
-        "Join a group with similar ambitions.",
-        "Invest in skills that align with your goals.",
-        "Maintain a vision board for motivation.",
-        "Start your day with goal-setting exercises.",
-        "Celebrate small wins along the way.",
-        "Seek mentorship from those ahead of you.",
-        "Stay adaptable in your approach.",
-        "Prioritize tasks that align with your vision.",
-        "Reflect on your 'why' regularly.",
-        "Network with like-minded individuals.",
-        "Use tools like planners to organize ambitions.",
-        "Take calculated risks to advance.",
-        "Learn from failures without discouragement.",
-        "Balance ambition with self-care.",
-        "Set long-term and short-term goals.",
-        "Practice gratitude for what you have.",
-        "Engage in continuous learning.",
-        "Visualize obstacles and plan solutions.",
-        "Share your goals with accountability partners.",
-        "Use positive language in self-talk.",
-        "Create a routine that supports your ambitions.",
-        "Monitor your energy levels.",
-        "Seek feedback on your progress.",
-        "Embrace a growth mindset.",
-        "Set boundaries to protect your time.",
-        "Celebrate others' successes.",
-        "Use technology to streamline tasks.",
-        "Practice mindfulness to stay focused.",
-        "Reevaluate goals periodically.",
-        "Build resilience through challenges.",
-        "Invest in personal development.",
-        "Surround yourself with positivity.",
-        "Use visualization techniques.",
-        "Break goals into daily habits.",
-        "Seek inspiration from nature.",
-        "Maintain work-life balance.",
-        "Use affirmations for confidence.",
-        "Learn time management skills.",
-        "Stay patient with progress.",
-        "Focus on impact over perfection.",
-        "Build a support network.",
-        "Use journaling for reflection.",
-        "Set SMART goals.",
-        "Practice self-compassion.",
-        "Engage in physical activity.",
-        "Seek diverse perspectives.",
-        "Use meditation for clarity.",
-        "Celebrate diversity in achievements.",
-        "Learn from mentors.",
-        "Stay committed to your vision.",
-        "Use positive reinforcement.",
-        "Build emotional intelligence.",
-        "Seek out new experiences.",
-        "Maintain optimism.",
-        "Use goal-tracking apps.",
-        "Practice deep breathing.",
-        "Focus on strengths.",
-        "Learn from criticism.",
-        "Build a legacy mindset.",
-        "Use creative outlets.",
-        "Stay disciplined.",
-        "Seek balance in life.",
-        "Use role models.",
-        "Practice gratitude journaling.",
-        "Build confidence through action.",
-        "Learn negotiation skills.",
-        "Stay open to change.",
-        "Use visualization boards.",
-        "Practice self-motivation.",
-        "Seek professional advice.",
-        "Build a positive routine.",
-        "Use affirmations daily.",
-        "Learn from history.",
-        "Stay focused on priorities.",
-        "Use rewards systems.",
-        "Build resilience.",
-        "Seek inspiration daily.",
-        "Practice mindfulness meditation.",
-        "Focus on long-term vision.",
-        "Use positive thinking.",
-        "Build a network.",
-        "Learn from successes.",
-        "Stay adaptable.",
-        "Use goal-setting workshops.",
-        "Practice self-reflection.",
-        "Seek mentorship programs.",
-        "Build a success journal.",
-        "Use motivational quotes.",
-        "Stay committed.",
-        "Learn from failures.",
-        "Build emotional strength.",
-        "Seek new challenges.",
-        "Use positive imagery.",
-        "Build a support system.",
-        "Learn time-blocking.",
-        "Stay patient.",
-        "Use visualization exercises.",
-        "Build confidence.",
-        "Seek feedback regularly.",
-        "Use goal-tracking tools.",
-        "Practice deep work.",
-        "Stay motivated through habits.",
-        "Use positive self-talk.",
-        "Build a vision statement.",
-        "Learn from experts.",
-        "Stay focused on growth.",
-        "Use rewards for progress.",
-        "Build mental toughness.",
-        "Seek inspiration from books.",
-        "Practice goal visualization.",
-        "Stay disciplined in actions.",
-        "Use affirmations for ambition.",
-        "Build a positive mindset.",
-        "Learn from past experiences.",
-        "Stay committed to goals.",
-        "Use motivational speakers.",
-        "Build resilience through practice.",
-        "Seek out opportunities.",
-        "Use positive reinforcement techniques.",
-        "Build a growth-oriented environment.",
-        "Learn continuous improvement.",
-        "Stay optimistic about future.",
-        "Use goal-setting strategies.",
-        "Practice self-motivation techniques.",
-        "Build a legacy of achievement.",
-        "Seek inspiration from art.",
-        "Practice focused meditation.",
-        "Stay aligned with values.",
-        "Use positive visualization.",
-        "Build a network of achievers.",
-        "Learn from diverse sources.",
-        "Stay patient with results.",
-        "Use creative goal-setting.",
-        "Build emotional balance.",
-        "Seek professional development.",
-        "Practice daily affirmations.",
-        "Stay focused on impact.",
-        "Use technology for tracking.",
-        "Build a success mindset.",
-        "Learn from role models.",
-        "Stay adaptable to changes.",
-        "Use positive thinking patterns.",
-        "Build a supportive community.",
-        "Learn effective communication.",
-        "Stay committed to vision.",
-        "Use visualization for success.",
-        "Build mental clarity.",
-        "Seek inspiration from nature.",
-        "Practice self-care routines.",
-        "Stay motivated through challenges.",
-        "Use goal-oriented apps.",
-        "Build a positive outlook.",
-        "Learn from global leaders.",
-        "Stay focused on excellence.",
-        "Use rewards for achievements.",
-        "Build emotional resilience.",
-        "Seek new learning opportunities.",
-        "Use positive imagery techniques.",
-        "Build a network of mentors.",
-        "Learn strategic planning.",
-        "Stay patient with growth.",
-        "Use creative visualization.",
-        "Build confidence in abilities.",
-        "Seek feedback from peers.",
-        "Use goal-tracking methods.",
-        "Practice focused work sessions.",
-        "Stay motivated by purpose.",
-        "Use positive self-affirmations.",
-        "Build a clear vision.",
-        "Learn from historical figures.",
-        "Stay focused on priorities.",
-        "Use incentive systems.",
-        "Build mental fortitude.",
-        "Seek daily inspiration.",
-        "Practice mindfulness practices.",
-        "Stay aligned with goals.",
-        "Use positive mental imagery.",
-        "Build a circle of influence.",
-        "Learn from various cultures.",
-        "Stay patient with progress.",
-        "Use innovative goal-setting.",
-        "Build emotional stability.",
-        "Seek advanced training.",
-        "Practice morning affirmations.",
-        "Stay focused on outcomes.",
-        "Use digital tools for goals.",
-        "Build a winner's mindset.",
-        "Learn from contemporary leaders.",
-        "Stay adaptable in strategies.",
-        "Use optimistic thinking.",
-        "Build a collaborative network.",
-        "Learn persuasive skills.",
-        "Stay dedicated to dreams.",
-        "Use success visualization.",
-        "Build mental sharpness.",
-        "Seek inspiration from music.",
-        "Practice wellness routines.",
-        "Stay driven by passion.",
-        "Use productivity apps.",
-        "Build a hopeful attitude.",
-        "Learn from international icons.",
-        "Stay focused on mastery.",
-        "Use bonuses for goals.",
-        "Build emotional endurance.",
-        "Seek fresh knowledge.",
-        "Use uplifting imagery.",
-        "Build a mentorship circle.",
-        "Learn tactical planning.",
-        "Stay patient with development.",
-        "Use artistic visualization.",
-        "Build self-assurance.",
-        "Seek input from colleagues.",
-        "Use advanced tracking.",
-        "Practice concentrated efforts.",
-        "Stay inspired by mission.",
-        "Use empowering affirmations.",
-        "Build a defined purpose.",
-        "Learn from ancient wisdom.",
-        "Stay centered on essentials.",
-        "Use motivational incentives.",
-        "Build psychological strength.",
-        "Seek constant inspiration.",
-        "Practice mindful exercises.",
-        "Stay true to aspirations.",
-        "Use constructive imagery.",
-        "Build an influential group.",
-        "Learn from global perspectives.",
-        "Stay calm with advancement.",
-        "Use dynamic goal-setting.",
-        "Build inner peace.",
-        "Seek expert guidance.",
-        "Practice evening reflections.",
-        "Stay oriented towards results.",
-        "Use smart tech for goals.",
-        "Build a champion's spirit.",
-        "Learn from modern innovators.",
-        "Stay flexible in plans.",
-        "Use hopeful thoughts.",
-        "Build a team network.",
-        "Learn negotiation tactics.",
-        "Stay devoted to ideals.",
-        "Use achievement visualization.",
-        "Build cognitive acuity.",
-        "Seek inspiration from films.",
-        "Practice health habits.",
-        "Stay fueled by enthusiasm.",
-        "Use efficiency apps.",
-        "Build a bright outlook.",
-        "Learn from worldwide heroes.",
-        "Stay focused on expertise.",
-        "Use perks for milestones.",
-        "Build emotional stamina.",
-        "Seek novel insights.",
-        "Use encouraging imagery.",
-        "Build a guidance network.",
-        "Learn operational planning.",
-        "Stay serene with growth.",
-        "Use imaginative visualization.",
-        "Build self-reliance.",
-        "Seek advice from experts.",
-        "Use sophisticated tracking.",
-        "Practice intense focus.",
-        "Stay motivated by calling.",
-        "Use strengthening affirmations.",
-        "Build a strong purpose.",
-        "Learn from timeless lessons.",
-        "Stay grounded in priorities.",
-        "Use driving incentives.",
-        "Build mental vigor.",
-        "Seek unending inspiration.",
-        "Practice serene meditations.",
-        "Stay faithful to dreams.",
-        "Use beneficial imagery.",
-        "Build a powerful alliance.",
-        "Learn from universal views.",
-        "Stay composed with progress.",
-        "Use evolving goal-setting.",
-        "Build tranquility.",
-        "Seek sage advice.",
-        "Practice nightly reviews.",
-        "Stay directed towards success.",
-        "Use intelligent tools.",
-        "Build a victor's mentality.",
-        "Learn from trailblazers.",
-        "Stay versatile in approaches.",
-        "Use aspirational thinking.",
-        "Build a united front.",
-        "Learn diplomatic skills.",
-        "Stay loyal to visions.",
-        "Use triumph visualization.",
-        "Build intellectual edge.",
-        "Seek inspiration from literature.",
-        "Practice vitality routines.",
-        "Stay energized by zeal.",
-        "Use optimization apps.",
-        "Build a luminous perspective.",
-        "Learn from global pioneers.",
-        "Stay centered on proficiency.",
-        "Use advantages for targets.",
-        "Build emotional vitality.",
-        "Seek innovative ideas.",
-        "Use motivating imagery.",
-        "Build a advisory circle.",
-        "Learn strategic execution.",
-        "Stay peaceful with expansion.",
-        "Use visionary visualization.",
-        "Build independence.",
-        "Seek counsel from professionals.",
-        "Use elite tracking.",
-        "Practice profound concentration.",
-        "Stay driven by vocation.",
-        "Use fortifying affirmations.",
-        "Build an unyielding purpose.",
-        "Learn from eternal teachings.",
-        "Stay anchored in key areas.",
-        "Use compelling incentives.",
-        "Build mental dynamism.",
-        "Seek perpetual inspiration.",
-        "Practice calming meditations.",
-        "Stay devoted to aspirations.",
-        "Use advantageous imagery.",
-        "Build a formidable coalition.",
-        "Learn from cosmic perspectives.",
-        "Stay balanced with advancement.",
-        "Use progressive goal-setting.",
-        "Build harmony.",
-        "Seek wise counsel.",
-        "Practice dawn reflections.",
-        "Stay aimed at achievements.",
-        "Use savvy tools.",
-        "Build a conqueror's mindset.",
-        "Learn from visionaries.",
-        "Stay elastic in tactics.",
-        "Use inspirational thoughts.",
-        "Build a cohesive team.",
-        "Learn arbitration skills.",
-        "Stay true to blueprints.",
-        "Use victory visualization.",
-        "Build cerebral sharpness.",
-        "Seek inspiration from poetry.",
-        "Practice energy habits.",
-        "Stay ignited by fervor.",
-        "Use enhancement apps.",
-        "Build a radiant outlook.",
-        "Learn from planetary leaders.",
-        "Stay focused on adeptness.",
-        "Use benefits for objectives.",
-        "Build emotional robustness.",
-        "Seek creative notions.",
-        "Use stimulating imagery.",
-        "Build a consultative network.",
-        "Learn executive planning.",
-        "Stay tranquil with enlargement.",
-        "Use prophetic visualization.",
-        "Build autonomy.",
-        "Seek direction from specialists.",
-        "Use premium tracking.",
-        "Practice deep focus.",
-        "Stay propelled by purpose.",
-        "Use reinforcing affirmations.",
-        "Build a resolute purpose.",
-        "Learn from ageless wisdom.",
-        "Stay rooted in fundamentals.",
-        "Use persuasive incentives.",
-        "Build mental potency.",
-        "Seek eternal inspiration.",
-        "Practice soothing meditations.",
-        "Stay committed to dreams.",
-        "Use favorable imagery.",
-        "Build a mighty partnership.",
-        "Learn from infinite views.",
-        "Stay even with progression.",
-        "Use advanced goal-setting.",
-        "Build serenity.",
-        "Seek enlightened advice.",
-        "Practice twilight reviews.",
-        "Stay targeted at triumphs.",
-        "Use clever tools.",
-        "Build a hero's mentality.",
-        "Learn from innovators.",
-        "Stay pliable in methods.",
-        "Use uplifting thoughts.",
-        "Build a synergistic group.",
-        "Learn mediation skills.",
-        "Stay faithful to designs.",
-        "Use conquest visualization.",
-        "Build mental acuity.",
-        "Seek inspiration from drama.",
-        "Practice vigor routines.",
-        "Stay ablaze by passion.",
-        "Use improvement apps.",
-        "Build a glowing perspective.",
-        "Learn from universal icons.",
-        "Stay centered on skill.",
-        "Use rewards for aims.",
-        "Build emotional fortitude.",
-        "Seek original concepts.",
-        "Use invigorating imagery.",
-        "Build a advisory group.",
-        "Learn managerial planning.",
-        "Stay calm with increase.",
-        "Use foresight visualization.",
-        "Build self-sufficiency.",
-        "Seek guidance from experts.",
-        "Use top-tier tracking.",
-        "Practice intense concentration.",
-        "Stay motivated by mission.",
-        "Use bolstering affirmations.",
-        "Build a steadfast purpose.",
-        "Learn from enduring lessons.",
-        "Stay based in essentials.",
-        "Use enticing incentives.",
-        "Build mental power.",
-        "Seek lasting inspiration.",
-        "Practice relaxing meditations.",
-        "Stay dedicated to visions.",
-        "Use positive imagery.",
-        "Build a strong alliance.",
-        "Learn from boundless perspectives.",
-        "Stay steady with growth.",
-        "Use sophisticated goal-setting.",
-        "Build peace.",
-        "Seek insightful advice.",
-        "Practice morning reflections.",
-        "Stay focused on wins.",
-        "Use smart tools.",
-        "Build a warrior's mindset.",
-        "Learn from creators.",
-        "Stay adaptable in strategies.",
-        "Use encouraging thoughts.",
-        "Build a collaborative team.",
-        "Learn conflict resolution.",
-        "Stay loyal to plans.",
-        "Use success visualization.",
-        "Build intellectual prowess.",
-        "Seek inspiration from stories.",
-        "Practice strength habits.",
-        "Stay fired by ardor.",
-        "Use productivity apps.",
-        "Build a bright perspective.",
-        "Learn from global figures.",
-        "Stay focused on competence.",
-        "Use incentives for goals.",
-        "Build emotional strength.",
-        "Seek fresh ideas.",
-        "Use empowering imagery.",
-        "Build a mentorship group.",
-        "Learn operational strategies.",
-        "Stay serene with development.",
-        "Use intuitive visualization.",
-        "Build self-assurance.",
-        "Seek input from professionals.",
-        "Use advanced tracking.",
-        "Practice focused sessions.",
-        "Stay inspired by calling.",
-        "Use affirmative statements.",
-        "Build a clear purpose.",
-        "Learn from historical lessons.",
-        "Stay centered on priorities.",
-        "Use motivational rewards.",
-        "Build mental resilience.",
-        "Seek daily inspiration.",
-        "Practice mindful breathing.",
-        "Stay true to goals.",
-        "Use constructive imagery.",
-        "Build an influential network.",
-        "Learn from diverse cultures.",
-        "Stay patient with change.",
-        "Use creative planning.",
-        "Build emotional balance.",
-        "Seek continuous education.",
-        "Practice daily gratitude.",
-        "Stay focused on impact.",
-        "Use digital planners.",
-        "Build a positive mindset.",
-        "Learn from leaders.",
-        "Stay committed to excellence.",
-        "Use visualization techniques.",
-        "Build a support system.",
-        "Learn effective habits.",
-        "Stay optimistic.",
-        "Use goal apps.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Use positive language.",
-        "Build a routine.",
-        "Learn new skills.",
-        "Stay disciplined.",
-        "Use rewards.",
-        "Build resilience.",
-        "Seek inspiration.",
-        "Practice meditation.",
-        "Stay focused.",
-        "Use affirmations.",
-        "Build a network.",
-        "Learn from others.",
-        "Stay patient.",
-        "Use tools.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious.",
-        "Use persistence.",
-        "Build legacy.",
-        "Seek opportunities.",
-        "Practice gratitude.",
-        "Stay committed.",
-        "Use innovation.",
-        "Build relationships.",
-        "Learn adaptability.",
-        "Stay hopeful.",
-        "Use focus.",
-        "Build skills.",
-        "Seek challenges.",
-        "Practice mindfulness.",
-        "Stay energetic.",
-        "Use goals.",
-        "Build momentum.",
-        "Seek success.",
-        "Practice discipline.",
-        "Stay inspired.",
-        "Use action.",
-        "Build confidence.",
-        "Seek feedback.",
-        "Practice learning.",
-        "Stay positive.",
-        "Use visualization.",
-        "Build habits.",
-        "Seek growth.",
-        "Practice reflection.",
-        "Stay motivated.",
-        "Use planning.",
-        "Build strength.",
-        "Seek knowledge.",
-        "Practice positivity.",
-        "Stay driven.",
-        "Use creativity.",
-        "Build community.",
-        "Learn strategies.",
-        "Stay balanced.",
-        "Use technology.",
-        "Build vision.",
-        "Seek mentors.",
-        "Practice self-care.",
-        "Stay ambitious."
-      ],
-      Angry: [
-        "Take deep breaths and count to 10 to calm down.",
-        "Step away from the situation to gain perspective.",
-        "Express your feelings in a healthy way, like journaling.",
-        "Practice forgiveness to release resentment.",
-        "Engage in physical activity to burn off energy.",
-        "Talk to a trusted friend about what's bothering you.",
-        "Use positive affirmations to shift your mindset.",
-        "Listen to calming music or sounds.",
-        "Avoid making decisions while angry.",
-        "Reflect on what triggered your anger and why."
-      ],
-      Annoyed: [
-        "Step away for a moment and refocus on what's important.",
-        "Practice deep breathing to center yourself.",
-        "Identify the source of annoyance and address it.",
-        "Use humor to lighten the situation.",
-        "Engage in a distracting activity you enjoy.",
-        "Communicate your feelings calmly.",
-        "Set boundaries to prevent future annoyances.",
-        "Practice patience and understanding.",
-        "Take a short walk to clear your mind.",
-        "Focus on solutions rather than problems."
-      ],
-      Anxious: [
-        "Practice mindfulness or deep breathing exercises.",
-        "Ground yourself by focusing on your senses.",
-        "Challenge negative thoughts with positive ones.",
-        "Create a routine to provide structure.",
-        "Talk to someone you trust about your worries.",
-        "Limit caffeine and sugar intake.",
-        "Engage in regular physical exercise.",
-        "Use relaxation techniques like progressive muscle relaxation.",
-        "Keep a journal to track triggers and patterns.",
-        "Seek professional help if anxiety persists."
-      ],
-      Ashamed: [
-        "Remember everyone makes mistakes; focus on learning.",
-        "Practice self-compassion and kindness.",
-        "Talk to a trusted person about your feelings.",
-        "Forgive yourself and move forward.",
-        "Focus on your strengths and positive qualities.",
-        "Engage in activities that make you feel good.",
-        "Avoid self-criticism and negative self-talk.",
-        "Learn from the experience without judgment.",
-        "Surround yourself with supportive people.",
-        "Seek therapy if shame is overwhelming."
-      ],
-      Bored: [
-        "Try a new activity or challenge to spark interest.",
-        "Explore a hobby you've always wanted to try.",
-        "Connect with friends or family for social interaction.",
-        "Learn something new through books or online courses.",
-        "Engage in creative pursuits like drawing or writing.",
-        "Volunteer for a cause you care about.",
-        "Take a walk in nature to refresh your mind.",
-        "Listen to podcasts or audiobooks.",
-        "Organize your space or declutter.",
-        "Set small goals to give yourself purpose."
-      ],
-      Calm: [
-        "Enjoy the moment and reflect on positive aspects.",
-        "Practice gratitude by listing things you're thankful for.",
-        "Engage in meditation or yoga.",
-        "Spend time in nature to recharge.",
-        "Listen to soothing music or sounds.",
-        "Read a book or engage in a relaxing activity.",
-        "Avoid overstimulation from screens.",
-        "Practice deep breathing exercises.",
-        "Connect with loved ones peacefully.",
-        "Maintain a balanced routine."
-      ],
-      Concerned: [
-        "Talk to someone you trust about your worries.",
-        "Gather information to address your concerns.",
-        "Break down worries into manageable parts.",
-        "Practice positive visualization.",
-        "Engage in activities that distract from worry.",
-        "Seek advice from experts if needed.",
-        "Focus on what you can control.",
-        "Use relaxation techniques to ease tension.",
-        "Keep a journal to express concerns.",
-        "Remind yourself of past resolutions."
-      ],
-      Confident: [
-        "Celebrate your strengths and past successes.",
-        "Practice positive affirmations daily.",
-        "Set achievable goals and work towards them.",
-        "Dress in a way that makes you feel good.",
-        "Surround yourself with positive people.",
-        "Learn new skills to build competence.",
-        "Take care of your physical health.",
-        "Visualize success in challenging situations.",
-        "Accept compliments graciously.",
-        "Focus on progress rather than perfection."
-      ],
-      Confused: [
-        "Break down the problem into smaller parts.",
-        "Seek clarification from reliable sources.",
-        "Organize your thoughts by writing them down.",
-        "Take a step back to gain perspective.",
-        "Ask for help from others.",
-        "Research the topic thoroughly.",
-        "Avoid rushing to conclusions.",
-        "Practice mindfulness to clear mental clutter.",
-        "Discuss the issue with a trusted friend.",
-        "Give yourself time to process information."
-      ],
-      Curious: [
-        "Explore new topics or ask questions.",
-        "Read books on subjects that interest you.",
-        "Engage in conversations with diverse people.",
-        "Try new experiences and activities.",
-        "Visit museums or cultural sites.",
-        "Take online courses or workshops.",
-        "Observe the world around you attentively.",
-        "Ask 'why' and 'how' questions.",
-        "Experiment with creative projects.",
-        "Keep a curiosity journal."
-      ],
-      Determined: [
-        "Stay focused on your goals and take action.",
-        "Create a plan with specific steps.",
-        "Track your progress regularly.",
-        "Motivate yourself with rewards.",
-        "Surround yourself with supportive people.",
-        "Learn from setbacks and adjust.",
-        "Visualize achieving your goals.",
-        "Maintain a positive mindset.",
-        "Break goals into daily tasks.",
-        "Celebrate small victories."
-      ],
-      Disappointed: [
-        "Learn from the experience and plan for next time.",
-        "Allow yourself to feel the emotion without judgment.",
-        "Talk to someone about your disappointment.",
-        "Focus on what you can learn from it.",
-        "Engage in self-care activities.",
-        "Set new goals based on the lesson.",
-        "Practice gratitude for other aspects of life.",
-        "Avoid dwelling on the negative.",
-        "Seek support from friends or family.",
-        "Use the experience to grow stronger."
-      ],
-      Excited: [
-        "Channel your energy into productive activities.",
-        "Share your excitement with others.",
-        "Plan how to make the most of the opportunity.",
-        "Use the energy to tackle tasks.",
-        "Practice mindfulness to stay grounded.",
-        "Document your feelings in a journal.",
-        "Engage in physical activity to release energy.",
-        "Visualize positive outcomes.",
-        "Connect with like-minded people.",
-        "Maintain balance to avoid burnout."
-      ],
-      Focused: [
-        "Minimize distractions and prioritize tasks.",
-        "Create a dedicated workspace.",
-        "Use time-blocking techniques.",
-        "Set clear goals for each session.",
-        "Take regular breaks to maintain focus.",
-        "Eliminate unnecessary notifications.",
-        "Practice deep work sessions.",
-        "Use tools like timers or apps.",
-        "Reward yourself for focused periods.",
-        "Reflect on what helps you concentrate."
-      ],
-      Greatful: [
-        "List things you're thankful for to shift perspective.",
-        "Practice daily gratitude exercises.",
-        "Express thanks to others.",
-        "Reflect on positive experiences.",
-        "Keep a gratitude journal.",
-        "Focus on abundance rather than lack.",
-        "Share gratitude with loved ones.",
-        "Mindfully appreciate small things.",
-        "Use affirmations of thankfulness.",
-        "Cultivate a grateful mindset."
-      ],
-      Happy: [
-        "Share your joy with others and savor the moment.",
-        "Engage in activities that bring pleasure.",
-        "Practice gratitude for happiness.",
-        "Connect with positive people.",
-        "Take care of your physical and mental health.",
-        "Pursue hobbies and interests.",
-        "Celebrate achievements, big and small.",
-        "Live in the present moment.",
-        "Help others to amplify joy.",
-        "Maintain a positive outlook."
-      ],
-      Hopeless: [
-        "Reach out for support and focus on small steps.",
-        "Talk to a trusted friend or professional.",
-        "Break overwhelming tasks into small actions.",
-        "Practice self-compassion.",
-        "Seek inspiration from stories of resilience.",
-        "Focus on what you can control.",
-        "Engage in activities that provide hope.",
-        "Challenge negative thoughts.",
-        "Build a support network.",
-        "Seek professional help if needed."
-      ],
-      Hurt: [
-        "Process your emotions and seek healing activities.",
-        "Allow yourself to grieve or feel pain.",
-        "Talk to someone you trust.",
-        "Engage in self-care practices.",
-        "Forgive if possible, for your peace.",
-        "Focus on healing and growth.",
-        "Avoid isolation; connect with others.",
-        "Use creative outlets to express feelings.",
-        "Seek therapy or counseling.",
-        "Practice patience with the healing process."
-      ],
-      Included: [
-        "Connect with friends and build relationships.",
-        "Join groups or communities.",
-        "Participate in social activities.",
-        "Reach out to others proactively.",
-        "Share experiences and listen.",
-        "Foster a sense of belonging.",
-        "Celebrate diversity in connections.",
-        "Engage in team activities.",
-        "Build meaningful friendships.",
-        "Practice empathy and understanding."
-      ],
-      Jealous: [
-        "Focus on your own achievements and growth.",
-        "Practice gratitude for what you have.",
-        "Avoid comparisons with others.",
-        "Celebrate others' successes.",
-        "Work on self-improvement.",
-        "Communicate feelings openly.",
-        "Redirect energy to personal goals.",
-        "Use jealousy as motivation for growth.",
-        "Surround yourself with positive influences.",
-        "Practice self-compassion."
-      ],
-      Lonely: [
-        "Reach out to loved ones or join a community.",
-        "Engage in social activities.",
-        "Volunteer or join clubs.",
-        "Connect with old friends.",
-        "Use social media mindfully.",
-        "Seek professional support if needed.",
-        "Build new relationships gradually.",
-        "Participate in group hobbies.",
-        "Practice self-love and independence.",
-        "Focus on quality over quantity in connections."
-      ],
-      Proud: [
-        "Acknowledge your efforts and celebrate progress.",
-        "Share achievements with others.",
-        "Reflect on your journey.",
-        "Set new goals to maintain momentum.",
-        "Practice humility alongside pride.",
-        "Use pride as motivation.",
-        "Document successes in a journal.",
-        "Reward yourself appropriately.",
-        "Inspire others with your story.",
-        "Focus on continuous growth."
-      ],
-      Stressed: [
-        "Practice relaxation techniques like meditation.",
-        "Engage in physical exercise.",
-        "Prioritize tasks and delegate if possible.",
-        "Take breaks and rest.",
-        "Talk to someone about stressors.",
-        "Use time management tools.",
-        "Practice deep breathing.",
-        "Maintain a healthy diet.",
-        "Get adequate sleep.",
-        "Seek professional help if stress is chronic."
-      ],
-      Tired: [
-        "Get adequate rest and take breaks when needed.",
-        "Establish a consistent sleep schedule.",
-        "Engage in light exercise like walking.",
-        "Limit screen time before bed.",
-        "Practice relaxation before sleep.",
-        "Ensure a comfortable sleep environment.",
-        "Avoid caffeine late in the day.",
-        "Take short naps if needed.",
-        "Manage stress to improve rest.",
-        "Consult a doctor if fatigue persists."
-      ],
-      Neutral: [
-        "Embrace the balance in your emotions.",
-        "Take a moment to reflect on your current state.",
-        "Practice mindfulness to stay grounded.",
-        "Accept that not every feeling needs intensity.",
-        "Find peace in neutrality.",
-        "Use this time to recharge emotionally.",
-        "Observe your thoughts without judgment.",
-        "Maintain emotional equilibrium.",
-        "Allow yourself to just be.",
-        "Practice neutral breathing exercises."
-      ],
-      Okay: [
-        "You're doing fine, keep going.",
-        "Acknowledge that 'okay' is a valid feeling.",
-        "Focus on small positive aspects.",
-        "Give yourself credit for stability.",
-        "Practice gratitude for average days.",
-        "Set gentle goals for improvement.",
-        "Accept that not every day is extraordinary.",
-        "Find comfort in routine.",
-        "Be kind to yourself on neutral days.",
-        "Use this as a foundation for growth."
-      ],
-      Indifferent: [
-        "Explore what might spark your interest.",
-        "Try new activities to break routine.",
-        "Reflect on what truly matters to you.",
-        "Practice self-awareness exercises.",
-        "Engage in creative pursuits.",
-        "Connect with others to feel more involved.",
-        "Set small challenges to re-engage.",
-        "Practice mindfulness to reconnect.",
-        "Find meaning in simple things.",
-        "Seek inspiration from your surroundings."
-      ],
-      Content: [
-        "Savor the moment of satisfaction.",
-        "Practice gratitude for what you have.",
-        "Reflect on your achievements.",
-        "Share your contentment with others.",
-        "Use this feeling as motivation.",
-        "Maintain balance in your life.",
-        "Enjoy simple pleasures.",
-        "Express appreciation to loved ones.",
-        "Build on this positive foundation.",
-        "Practice daily gratitude rituals."
-      ]
+      Happy: ["Share your happiness with others around you.", "Write down three things you're grateful for.", "Use this positive energy to tackle a challenging task."],
+      Sad: ["Allow yourself to feel your emotions without judgment.", "Reach out to a trusted friend or family member.", "Write down your feelings in a journal."],
+      Anxious: ["Practice deep breathing: inhale 4 counts, hold 4, exhale 4.", "Ground yourself: name 5 things you can see, 4 you can touch.", "Break overwhelming tasks into smaller, manageable steps."],
+      Ambitious: ["Set small, achievable goals to build momentum.", "Track your progress daily to see improvement.", "Reward yourself for milestones reached."],
+      Excited: ["Channel your energy into productive activities.", "Use this motivation to start a new project.", "Document your progress and achievements."],
+      Angry: ["Take a moment to pause before reacting.", "Try deep breathing or a short walk.", "Express your feelings constructively in writing."],
+      Stressed: ["Prioritise your tasks — what truly needs doing today?", "Step outside for 5 minutes of fresh air.", "Practice progressive muscle relaxation."],
+      Tired: ["Rest is productive — don't feel guilty.", "Try a short power nap if possible.", "Stay hydrated and eat something nourishing."],
+      Lonely: ["Reach out to someone you trust, even with a small message.", "Join an online community around something you love.", "Consider journaling your thoughts."],
+      Bored: ["Try something new and creative today.", "Revisit a hobby you've been neglecting.", "Challenge yourself with a small, fun goal."],
     };
 
-    function showTip(mood) {
-      alert(`Tip for ${mood}: ${moodTips[mood]}`);
+    function getMoodTip(mood) {
+      const tips = moodTips[mood] || ["Take a moment to check in with yourself. How can you support your wellbeing today?"];
+      return tips[Math.floor(Math.random() * tips.length)];
     }
 
-    // Initialize Firebase Auth and Firestore
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    function getMoodEmoji(mood) {
+      const map = { Happy: '😄', Sad: '😔', Angry: '😠', Anxious: '😟', Excited: '🤩', Ambitious: '💪', Stressed: '😰', Tired: '😴', Lonely: '🥺', Bored: '😑', Calm: '😌', Focused: '🎯', Curious: '🤔', Confident: '😎', Annoyed: '😤', Ashamed: '😳', Concerned: '😦', Confused: '🤷', Disappointed: '😞', Hopeless: '😭', Hurt: '💔', Jealous: '💚', Included: '🤝', Proud: '🏆', Determined: '🔥', Grateful: '🙏' };
+      return map[mood] || '🙂';
+    }
 
-    let selectedMood = null;
-    let moodChart = null;
+    function formatDate(d) {
+      const now = new Date();
+      const diff = Math.floor((now - d) / 60000);
+      if (diff < 1) return 'Just now';
+      if (diff < 60) return `${diff}m ago`;
+      if (diff < 1440) return `${Math.floor(diff / 60)}h ago`;
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
 
+    const localResponses = {
+      0: mood => `I can see you're feeling **${mood}** right now. That's completely valid! 💜\n\n${getMoodTip(mood)}\n\nWould you like to tell me more about what's going on?`,
+      1: () => `Thank you for sharing that with me. I'm here to listen and support you. 🌟\n\nWould you like to try a quick journaling prompt, or would you prefer some coping tips?`,
+      2: mood => `Here's a journaling prompt for you:\n\n*"${mood === 'Happy' ? "Describe a moment today when you felt joy. What made it special?" :
+          mood === 'Sad' ? "What are three small things that brought you comfort recently?" :
+            "What is one thing you can do for yourself today that shows self-compassion?"
+        }"*\n\nFeel free to reflect on it here, or just let me know how you're feeling now!`,
+      default: () => `I'm here for you. Every feeling is valid and temporary. 💜\n\nWould you like to log another mood, explore coping strategies, or just chat?`
+    };
+
+    async function getAIResponse(message, mood, step) {
+      // Webhook path
+      if (USE_WEBHOOK && AI_WEBHOOK_URL && !AI_WEBHOOK_URL.includes('your-n8n')) {
+        try {
+          const res = await fetch(AI_WEBHOOK_URL, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message, mood, history: conversationHistory.slice(-10), userId: currentUserId, timestamp: new Date().toISOString() })
+          });
+          if (!res.ok) throw new Error('Webhook error');
+          const data = await res.json();
+          return data.reply || data.response || data.message || "I received your message!";
+        } catch (e) {
+          console.error('Webhook failed, using fallback:', e);
+        }
+      }
+      // Local fallback
+      const fn = localResponses[step] || localResponses.default;
+      return fn(mood || 'Calm');
+    }
+
+    // Navigation dropdown
     document.addEventListener('DOMContentLoaded', () => {
-      const chatWindow = document.getElementById('chat-window');
-      const buttons = document.querySelectorAll('.chatbot-mood-btn');
-      const chatForm = document.getElementById('chat-form');
-      const chatInput = document.getElementById('chat-input');
-      const moodSearch = document.getElementById('mood-search');
-      const filterTabs = document.querySelectorAll('.filter-tab');
-      const streakCount = document.getElementById('streak-count');
-
-      // Add chat message with CSS classes for styling
-      function addChatMessage(sender, text) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('chat-message', sender);
-        messageDiv.textContent = text;
-        chatWindow.appendChild(messageDiv);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-      }
-
-      // Show typing indicator
-      function showTypingIndicator() {
-        const existing = document.querySelector('.typing-indicator');
-        if (existing) return;
-
-        const indicator = document.createElement('div');
-        indicator.className = 'typing-indicator bot';
-        indicator.innerHTML = `
-          <div class="typing-dots">
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-          </div>
-          <span>Bot is typing...</span>
-        `;
-        chatWindow.appendChild(indicator);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-      }
-
-      // Hide typing indicator
-      function hideTypingIndicator() {
-        const indicator = document.querySelector('.typing-indicator');
-        if (indicator) indicator.remove();
-      }
-
-      buttons.forEach(button => {
-        button.setAttribute('aria-label', `Select ${button.getAttribute('data-mood')} mood`);
-        button.setAttribute('role', 'button');
-        button.setAttribute('tabindex', '0');
-
-        button.addEventListener('click', () => {
-          // Remove selected class from all buttons
-          buttons.forEach(btn => btn.classList.remove('selected'));
-
-          // Add selected class to clicked button
-          button.classList.add('selected');
-
-          const mood = button.getAttribute('data-mood');
-          selectedMood = mood;
-          addChatMessage('user', mood);
-          setTimeout(() => {
-            const tip = Array.isArray(moodTips[mood]) ? moodTips[mood][Math.floor(Math.random() * moodTips[mood].length)] : moodTips[mood];
-            const activity = Array.isArray(moodActivities[mood]) ? moodActivities[mood][Math.floor(Math.random() * moodActivities[mood].length)] : 'Try engaging in a positive activity.';
-            addChatMessage('bot', `${tip}\n\n💡 Activity suggestion: ${activity}`);
-          }, 500);
+      document.querySelectorAll('.nav-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault(); e.stopPropagation();
+          const menu = btn.parentElement.querySelector('.nav-dropdown-menu');
+          document.querySelectorAll('.nav-dropdown-menu').forEach(m => { if (m !== menu) m.classList.add('hidden'); });
+          menu?.classList.toggle('hidden');
         });
       });
+      document.addEventListener('click', () => document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.add('hidden')));
+    });
+  </script>
 
-      // Handle form submit for typed messages
-      chatForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const message = chatInput.value.trim();
-        if (message === '') return;
-        addChatMessage('user', message);
-        chatInput.value = '';
+  <!-- ===== NAVBAR ===== -->
+  <header
+    class="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 lg:px-10 py-3 border-b backdrop-blur-md"
+    style="background:rgba(12,10,21,0.85); border-color:rgba(147,51,234,0.25); height:64px;">
 
-        // Simple bot response: check if message matches a mood tip key
-        const moodKey = Object.keys(moodTips).find(key => key.toLowerCase() === message.toLowerCase());
-        if (moodKey) {
-          setTimeout(() => {
-            const tip = Array.isArray(moodTips[moodKey]) ? moodTips[moodKey][Math.floor(Math.random() * moodTips[moodKey].length)] : moodTips[moodKey];
-            addChatMessage('bot', tip);
-          }, 500);
-        } else {
-          setTimeout(() => {
-            addChatMessage('bot', "Sorry, I don't have a tip for that. Please select a mood from below.");
-          }, 500);
-        }
-      });
+    <!-- Logo -->
+    <div class="flex items-center gap-3">
+      <img src="../assets/Navbar_logo copy.png" alt="NeuroSync Logo" class="h-10 w-auto" />
+    </div>
 
-      // Add save mood button
-      const saveMoodBtn = document.createElement('button');
-      saveMoodBtn.textContent = '💾 Save Mood';
-      saveMoodBtn.style.cssText = 'margin-left: 10px; padding: 12px 24px; border-radius: 25px; border: none; background: linear-gradient(135deg, #28a745, #20c997); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);';
-      saveMoodBtn.addEventListener('click', saveMoodToFirestore);
-      saveMoodBtn.addEventListener('mouseenter', () => saveMoodBtn.style.transform = 'translateY(-2px)');
-      saveMoodBtn.addEventListener('mouseleave', () => saveMoodBtn.style.transform = 'translateY(0)');
-      chatForm.appendChild(saveMoodBtn);
+    <!-- Desktop Nav -->
+    <nav class="hidden xl:flex items-center gap-2 text-sm" style="color:#C4B0E0;">
+      <a href="../index.html" class="translucent-button rounded-full px-4 py-2">Home</a>
+      <a href="dashboard.html" class="translucent-button rounded-full px-4 py-2">Dashboard</a>
 
-      // Add toggle history button
-      const toggleHistoryBtn = document.createElement('button');
-      toggleHistoryBtn.textContent = '📊 View History';
-      toggleHistoryBtn.style.cssText = 'margin-left: 10px; padding: 12px 24px; border-radius: 25px; border: none; background: linear-gradient(135deg, #6c757d, #5a6268); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);';
-      toggleHistoryBtn.addEventListener('click', toggleMoodHistory);
-      toggleHistoryBtn.addEventListener('mouseenter', () => toggleHistoryBtn.style.transform = 'translateY(-2px)');
-      toggleHistoryBtn.addEventListener('mouseleave', () => toggleHistoryBtn.style.transform = 'translateY(0)');
-      chatForm.appendChild(toggleHistoryBtn);
+      <!-- Resources dropdown -->
+      <div class="relative">
+        <button class="translucent-button nav-dropdown-toggle rounded-full px-4 py-2 flex items-center gap-1">
+          Resources <span class="material-symbols-outlined text-base">expand_more</span>
+        </button>
+        <div
+          class="nav-dropdown-menu absolute hidden top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-xl shadow-xl z-50"
+          style="background:#1A142D; border:1px solid #2A2140;">
+          <a href="mood-selection.html"
+            class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors rounded-t-xl"
+            style="color:#C4B0E0;">Mood Tracker</a>
+          <a href="study-library.html" class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors"
+            style="color:#C4B0E0;">Study Library</a>
+          <a href="study-library.html"
+            class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors rounded-b-xl"
+            style="color:#C4B0E0;">Upload Material</a>
+        </div>
+      </div>
 
-      // Initialize mood filtering and search
-      initMoodFilters();
-      initMoodSearch();
-      updateMoodStreak();
+      <!-- Company dropdown -->
+      <div class="relative">
+        <button class="translucent-button nav-dropdown-toggle rounded-full px-4 py-2 flex items-center gap-1">
+          Company <span class="material-symbols-outlined text-base">expand_more</span>
+        </button>
+        <div
+          class="nav-dropdown-menu absolute hidden top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-xl shadow-xl z-50"
+          style="background:#1A142D; border:1px solid #2A2140;">
+          <a href="feedback.html" class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors rounded-t-xl"
+            style="color:#C4B0E0;">Feedback</a>
+          <a href="about.html" class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors"
+            style="color:#C4B0E0;">About Us</a>
+          <a href="feedback.html" class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors rounded-b-xl"
+            style="color:#C4B0E0;">Support</a>
+        </div>
+      </div>
 
-      // Check authentication state
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          console.log('User authenticated:', user.uid);
-          loadMoodHistory();
-          loadMoodStatistics();
-          // Initialize mood logging from mood.js
-          initMoodLogging();
-          loadRecentMoods();
-          // Initialize history navbar
-          initHistoryNavbar();
-        } else {
-          console.log('User not authenticated');
-          showNotification('Please sign in to save and view mood history.', 'info');
-        }
+      <a href="rewards.html" class="translucent-button rounded-full px-4 py-2">Rewards</a>
+      <a href="profile.html" class="translucent-button rounded-full px-4 py-2">Profile</a>
+    </nav>
+
+    <!-- Right side -->
+    <div class="flex items-center gap-3">
+      <!-- Profile -->
+      <div id="navbar-profile" class="hidden sm:flex items-center gap-3 cursor-pointer relative">
+        <div id="navbar-profile-photo"
+          class="rounded-full flex items-center justify-center bg-center bg-cover bg-no-repeat"
+          style="width:40px;height:40px;box-shadow:0 0 14px rgba(128,19,236,0.5);">
+          <span class="material-symbols-outlined" style="font-size:20px;color:#8013ec;">person</span>
+        </div>
+        <div class="flex flex-col">
+          <span id="navbar-name" class="text-sm font-medium text-white">User</span>
+          <span id="navbar-class-role" class="text-xs" style="color:#ad92c9;">Student</span>
+        </div>
+        <!-- Dropdown -->
+        <div id="navbar-dropdown" class="hidden absolute top-full right-0 mt-2 w-48 rounded-xl shadow-xl z-50"
+          style="background:#1A1122; border:1px solid #2A1F36;">
+          <a href="profile.html"
+            class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors rounded-t-xl">
+            <span class="material-symbols-outlined text-base">person</span> See Profile
+          </a>
+          <a href="profile.html"
+            class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors">
+            <span class="material-symbols-outlined text-base">edit</span> Edit Profile
+          </a>
+          <button id="navbar-sign-out-btn"
+            class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors w-full text-left rounded-b-xl">
+            <span class="material-symbols-outlined text-base">logout</span> Sign Out
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu button -->
+      <button id="sidebar-toggle-btn" class="xl:hidden translucent-button flex items-center justify-center rounded-full"
+        style="width:44px;height:44px;" title="Toggle Sidebar">
+        <span class="material-symbols-outlined text-2xl">menu</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== MAIN LAYOUT ===== -->
+  <!-- Sidebar overlay (mobile) -->
+  <div id="sidebar-overlay" class="fixed inset-0 z-20 hidden"></div>
+
+  <div class="ai-chat-layout">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="chat-sidebar" id="chat-sidebar">
+      <!-- Sidebar Header -->
+      <div class="flex items-center justify-between p-4 border-b" style="border-color:#2A2140;">
+        <h2 class="font-bold text-base flex items-center gap-2 text-white m-0">
+          <span class="material-symbols-outlined" style="color:#9333ea; font-size:20px;">history</span> Chat History
+        </h2>
+        <button id="sidebar-close-btn"
+          class="xl:hidden translucent-button rounded-full flex items-center justify-center"
+          style="width:32px;height:32px;">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+
+      <!-- New Chat -->
+      <div class="p-4 border-b" style="border-color:#2A2140;">
+        <button id="new-chat-btn"
+          class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-sm text-white transition-all hover:-translate-y-0.5"
+          style="background:linear-gradient(135deg,#9333ea,#7e22ce); box-shadow:0 4px 14px rgba(147,51,234,0.4);">
+          <span class="material-symbols-outlined text-base">add_comment</span>
+          New Conversation
+        </button>
+      </div>
+
+      <!-- Streak -->
+      <div class="mx-4 mt-4 p-3 rounded-xl flex items-center gap-3"
+        style="background:rgba(147,51,234,0.1); border:1px solid rgba(147,51,234,0.25);">
+        <span style="font-size:24px;">🔥</span>
+        <div>
+          <p class="text-xs m-0" style="color:#9c7fc0;">Current Streak</p>
+          <p id="streak-display" class="font-bold text-white m-0 text-base">0 days</p>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="px-4 mt-3">
+        <div class="flex items-center gap-2 rounded-xl px-3 py-2"
+          style="background:rgba(255,255,255,0.04); border:1px solid rgba(147,51,234,0.2);">
+          <span class="material-symbols-outlined text-base" style="color:#7c6b99;">search</span>
+          <input id="history-search" type="text" placeholder="Search history…" autocomplete="off"
+            class="bg-transparent border-none outline-none text-sm text-white w-full placeholder:text-[#7c6b99]" />
+        </div>
+      </div>
+
+      <!-- History List -->
+      <div class="flex-1 overflow-y-auto slim-scroll px-4 py-3 flex flex-col gap-2" id="history-list">
+        <p class="text-xs text-center py-4" style="color:#7c6b99;">Loading history…</p>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CHAT AREA ===== -->
+    <section class="flex flex-col flex-1 overflow-hidden">
+
+      <!-- Chat top bar -->
+      <div class="flex items-center gap-4 px-4 py-3 border-b"
+        style="background:rgba(26,20,45,0.7); border-color:#2A2140; backdrop-filter:blur(10px);">
+        <button id="mobile-sidebar-btn"
+          class="xl:hidden translucent-button flex items-center justify-center rounded-full"
+          style="width:36px;height:36px;">
+          <span class="material-symbols-outlined text-base">menu_open</span>
+        </button>
+        <!-- AI avatar & status -->
+        <div class="flex items-center gap-3">
+          <div class="relative pulse-ring" style="position:relative;">
+            <div class="rounded-full flex items-center justify-center"
+              style="width:40px;height:40px;background:rgba(147,51,234,0.2);">
+              <img src="../assets/favicon.png" alt="AI" style="width:28px;height:28px;object-fit:contain;"
+                onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'material-symbols-outlined\' style=\'color:#9333ea;font-size:22px;\'>smart_toy</span>';" />
+            </div>
+          </div>
+          <div>
+            <p class="font-bold text-white m-0 text-sm">NeuroSync Assistant</p>
+            <p class="text-xs m-0 flex items-center gap-1" style="color:#9c7fc0;">
+              <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+              Online
+            </p>
+          </div>
+        </div>
+        <div class="ml-auto flex items-center gap-2">
+          <button id="clear-chat-btn" class="translucent-button rounded-full px-3 py-1 text-xs flex items-center gap-1"
+            title="Clear conversation">
+            <span class="material-symbols-outlined" style="font-size:16px;">refresh</span> Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages window -->
+      <div id="chat-window" class="flex-1 overflow-y-auto slim-scroll p-4 flex flex-col gap-4">
+        <!-- Welcome message injected by JS -->
+      </div>
+
+      <!-- Quick replies -->
+      <div id="quick-replies" class="flex flex-wrap justify-center gap-2 px-4 pb-2 hidden"></div>
+
+      <!-- ===== INPUT AREA ===== -->
+      <div class="border-t p-4"
+        style="background:rgba(26,20,45,0.9); border-color:#2A2140; backdrop-filter:blur(10px);">
+
+        <!-- Category filter -->
+        <div class="flex items-center gap-2 mb-3">
+          <div class="flex gap-2 overflow-x-auto pb-1" style="scrollbar-width:none;">
+            <button class="cat-btn active" data-cat="all">All</button>
+            <button class="cat-btn" data-cat="positive">Positive</button>
+            <button class="cat-btn" data-cat="negative">Negative</button>
+            <button class="cat-btn" data-cat="neutral">Neutral</button>
+          </div>
+          <button id="toggle-grid-btn"
+            class="ml-auto translucent-button rounded-full flex items-center justify-center shrink-0"
+            style="width:30px;height:30px;" title="Toggle mood grid">
+            <span class="material-symbols-outlined text-base" id="toggle-grid-icon">expand_less</span>
+          </button>
+        </div>
+
+        <!-- Mood grid -->
+        <div id="mood-grid" class="grid gap-2 mb-3 overflow-y-auto slim-scroll"
+          style="max-height:120px; grid-template-columns:repeat(auto-fill,minmax(58px,1fr));">
+
+          <!-- Positive -->
+          <button class="mood-btn" data-mood="Happy" data-cat="positive"><img src="../assets/images/Emotional/Happy.png"
+              alt="Happy" /> <span>Happy</span></button>
+          <button class="mood-btn" data-mood="Excited" data-cat="positive"><img
+              src="../assets/images/Emotional/Excited.png" alt="Excited" /> <span>Excited</span></button>
+          <button class="mood-btn" data-mood="Ambitious" data-cat="positive"><img
+              src="../assets/images/Emotional/Ambitious.png" alt="Ambitious" /> <span>Ambitious</span></button>
+          <button class="mood-btn" data-mood="Confident" data-cat="positive"><img
+              src="../assets/images/Emotional/Confident.png" alt="Confident" /> <span>Confident</span></button>
+          <button class="mood-btn" data-mood="Proud" data-cat="positive"><img src="../assets/images/Emotional/Proud.png"
+              alt="Proud" /> <span>Proud</span></button>
+          <button class="mood-btn" data-mood="Grateful" data-cat="positive"><img
+              src="../assets/images/Emotional/Greatful.png" alt="Grateful" /> <span>Grateful</span></button>
+          <button class="mood-btn" data-mood="Determined" data-cat="positive"><img
+              src="../assets/images/Emotional/Determined.png" alt="Determined" /> <span>Determined</span></button>
+          <button class="mood-btn" data-mood="Included" data-cat="positive"><img
+              src="../assets/images/Emotional/Included.png" alt="Included" /> <span>Included</span></button>
+
+          <!-- Negative -->
+          <button class="mood-btn" data-mood="Sad" data-cat="negative"><img
+              src="../assets/images/Emotional/Hopeless.png" alt="Sad" /> <span>Sad</span></button>
+          <button class="mood-btn" data-mood="Angry" data-cat="negative"><img src="../assets/images/Emotional/Angry.png"
+              alt="Angry" /> <span>Angry</span></button>
+          <button class="mood-btn" data-mood="Anxious" data-cat="negative"><img
+              src="../assets/images/Emotional/Anxious.png" alt="Anxious" /> <span>Anxious</span></button>
+          <button class="mood-btn" data-mood="Stressed" data-cat="negative"><img
+              src="../assets/images/Emotional/Stressed.png" alt="Stressed" /> <span>Stressed</span></button>
+          <button class="mood-btn" data-mood="Annoyed" data-cat="negative"><img
+              src="../assets/images/Emotional/Annoyed.png" alt="Annoyed" /> <span>Annoyed</span></button>
+          <button class="mood-btn" data-mood="Ashamed" data-cat="negative"><img
+              src="../assets/images/Emotional/Ashamed.png" alt="Ashamed" /> <span>Ashamed</span></button>
+          <button class="mood-btn" data-mood="Bored" data-cat="negative"><img src="../assets/images/Emotional/Bored.png"
+              alt="Bored" /> <span>Bored</span></button>
+          <button class="mood-btn" data-mood="Concerned" data-cat="negative"><img
+              src="../assets/images/Emotional/Concerned.png" alt="Concerned" /> <span>Concerned</span></button>
+          <button class="mood-btn" data-mood="Confused" data-cat="negative"><img
+              src="../assets/images/Emotional/Confused.png" alt="Confused" /> <span>Confused</span></button>
+          <button class="mood-btn" data-mood="Disappointed" data-cat="negative"><img
+              src="../assets/images/Emotional/Disappointed.png" alt="Disappointed" /><span>Disappoint.</span></button>
+          <button class="mood-btn" data-mood="Hopeless" data-cat="negative"><img
+              src="../assets/images/Emotional/Hopeless.png" alt="Hopeless" /> <span>Hopeless</span></button>
+          <button class="mood-btn" data-mood="Hurt" data-cat="negative"><img src="../assets/images/Emotional/Hurt.png"
+              alt="Hurt" /> <span>Hurt</span></button>
+          <button class="mood-btn" data-mood="Jealous" data-cat="negative"><img
+              src="../assets/images/Emotional/Jealous.png" alt="Jealous" /> <span>Jealous</span></button>
+          <button class="mood-btn" data-mood="Lonely" data-cat="negative"><img
+              src="../assets/images/Emotional/Lonely.png" alt="Lonely" /> <span>Lonely</span></button>
+          <button class="mood-btn" data-mood="Tired" data-cat="negative"><img src="../assets/images/Emotional/Tired.png"
+              alt="Tired" /> <span>Tired</span></button>
+
+          <!-- Neutral -->
+          <button class="mood-btn" data-mood="Calm" data-cat="neutral"><img src="../assets/images/Emotional/Calm.png"
+              alt="Calm" /> <span>Calm</span></button>
+          <button class="mood-btn" data-mood="Focused" data-cat="neutral"><img
+              src="../assets/images/Emotional/Focused.png" alt="Focused" /> <span>Focused</span></button>
+          <button class="mood-btn" data-mood="Curious" data-cat="neutral"><img
+              src="../assets/images/Emotional/Curious.png" alt="Curious" /> <span>Curious</span></button>
+        </div>
+
+        <!-- Text input -->
+        <form id="chat-form" class="flex items-center gap-2">
+          <input id="chat-input" type="text" autocomplete="off"
+            placeholder="Message NeuroSync AI… or select a mood above"
+            class="flex-1 rounded-xl px-4 py-3 text-sm text-white outline-none"
+            style="background:rgba(255,255,255,0.06); border:1px solid rgba(147,51,234,0.3);" />
+          <button type="submit" id="send-btn"
+            class="flex items-center justify-center rounded-xl shrink-0 transition-all hover:scale-105"
+            style="width:44px;height:44px;background:linear-gradient(135deg,#9333ea,#7e22ce);box-shadow:0 4px 14px rgba(147,51,234,0.4);">
+            <span class="material-symbols-outlined text-white text-xl">send</span>
+          </button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== CHAT JAVASCRIPT ===== -->
+  <script>
+    let convStep = 0;
+
+    // ---- DOM refs ----
+    const chatWindow = document.getElementById('chat-window');
+    const chatInput = document.getElementById('chat-input');
+    const chatForm = document.getElementById('chat-form');
+    const quickReplies = document.getElementById('quick-replies');
+    const moodGrid = document.getElementById('mood-grid');
+    const toggleGridBtn = document.getElementById('toggle-grid-btn');
+    const toggleIcon = document.getElementById('toggle-grid-icon');
+    const sidebar = document.getElementById('chat-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    // ---- Sidebar toggle (mobile) ----
+    function openSidebar() { sidebar.classList.add('open'); overlay.classList.remove('hidden'); }
+    function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.add('hidden'); }
+    document.getElementById('mobile-sidebar-btn')?.addEventListener('click', openSidebar);
+    document.getElementById('sidebar-toggle-btn')?.addEventListener('click', openSidebar);
+    document.getElementById('sidebar-close-btn')?.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    // ---- Mood grid toggle ----
+    let gridVisible = true;
+    toggleGridBtn.addEventListener('click', () => {
+      gridVisible = !gridVisible;
+      moodGrid.style.display = gridVisible ? '' : 'none';
+      toggleIcon.textContent = gridVisible ? 'expand_less' : 'expand_more';
+    });
+
+    // ---- Category filter ----
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        document.querySelectorAll('.mood-btn').forEach(mb => {
+          mb.style.display = (cat === 'all' || mb.dataset.cat === cat) ? '' : 'none';
+        });
       });
     });
 
-    // Save selected mood to Firestore
-    async function saveMoodToFirestore() {
-      const user = auth.currentUser;
-      if (!user) {
-        showNotification('Please sign in to save your mood.', 'error');
-        return;
-      }
-      if (!selectedMood) {
-        showNotification('Please select a mood first.', 'error');
-        return;
-      }
+    // ---- Render helpers ----
+    function addMessage(text, role) {
+      const wrap = document.createElement('div');
+      wrap.className = `flex gap-3 msg-anim ${role === 'user' ? 'justify-end' : 'justify-start'}`;
 
-      try {
-        await db.collection('Moods').add({
-          userId: user.uid,
-          mood: selectedMood,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        showNotification('Mood saved successfully!', 'success');
-        selectedMood = null;
-        document.querySelectorAll('.chatbot-mood-btn').forEach(btn => btn.classList.remove('selected'));
-        loadMoodHistory();
-        loadMoodStatistics();
-      } catch (error) {
-        console.error('Error saving mood:', error);
-        showNotification('Failed to save mood. Please try again.', 'error');
-      }
-    }
-
-    // Toggle mood history section
-    function toggleMoodHistory() {
-      const historySection = document.getElementById('mood-history-section');
-      const mainSection = document.querySelector('.chatbot-container');
-
-      if (historySection.style.display === 'none') {
-        // Show history section
-        historySection.style.display = 'block';
-        mainSection.style.display = 'none';
-        loadMoodHistory();
-        loadMoodStatistics();
-        // Scroll to top of history section
-        historySection.scrollIntoView({ behavior: 'smooth' });
+      if (role === 'bot') {
+        wrap.innerHTML = `
+          <div class="shrink-0 rounded-full flex items-center justify-center" style="width:32px;height:32px;background:rgba(147,51,234,0.2);">
+            <span class="material-symbols-outlined" style="font-size:18px;color:#9333ea;">smart_toy</span>
+          </div>
+          <div class="msg-bot px-4 py-3 text-sm leading-relaxed" style="max-width:75%;">${formatText(text)}</div>`;
       } else {
-        // Hide history section
-        historySection.style.display = 'none';
-        mainSection.style.display = 'flex';
-      }
-    }
-
-    // Initialize navbar functionality
-    function initHistoryNavbar() {
-      const backBtn = document.getElementById('back-to-mood-btn');
-      const refreshBtn = document.getElementById('refresh-data-btn');
-      const exportBtn = document.getElementById('export-data-btn');
-
-      if (backBtn) {
-        backBtn.addEventListener('click', () => {
-          toggleMoodHistory(); // This will hide history and show main section
-        });
-        backBtn.addEventListener('mouseenter', () => backBtn.style.transform = 'translateY(-2px)');
-        backBtn.addEventListener('mouseleave', () => backBtn.style.transform = 'translateY(0)');
+        wrap.innerHTML = `<div class="msg-user px-4 py-3 text-sm leading-relaxed" style="max-width:75%;">${escHtml(text)}</div>`;
       }
 
-      if (refreshBtn) {
-        refreshBtn.addEventListener('click', () => {
-          loadMoodHistory();
-          loadMoodStatistics();
-          showNotification('Data refreshed successfully!', 'success');
-        });
-        refreshBtn.addEventListener('mouseenter', () => refreshBtn.style.transform = 'translateY(-2px)');
-        refreshBtn.addEventListener('mouseleave', () => refreshBtn.style.transform = 'translateY(0)');
-      }
-
-      if (exportBtn) {
-        exportBtn.addEventListener('click', () => {
-          exportMoodData();
-        });
-        exportBtn.addEventListener('mouseenter', () => exportBtn.style.transform = 'translateY(-2px)');
-        exportBtn.addEventListener('mouseleave', () => exportBtn.style.transform = 'translateY(0)');
-      }
+      chatWindow.appendChild(wrap);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+      return wrap;
     }
 
-    // Export mood data as CSV
-    async function exportMoodData() {
-      const user = auth.currentUser;
-      if (!user) {
-        showNotification('Please sign in to export data.', 'error');
-        return;
-      }
-
-      try {
-        const querySnapshot = await db.collection('Moods')
-          .where('userId', '==', user.uid)
-          .orderBy('timestamp', 'desc')
-          .get();
-
-        if (querySnapshot.empty) {
-          showNotification('No mood data to export.', 'info');
-          return;
-        }
-
-        let csvContent = 'Date,Mood,Points\n';
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const date = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : 'Unknown';
-          csvContent += `${date},${data.mood},2\n`;
-        });
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `mood-data-${new Date().toISOString().split('T')[0]}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        showNotification('Mood data exported successfully!', 'success');
-      } catch (error) {
-        console.error('Error exporting data:', error);
-        showNotification('Failed to export data.', 'error');
-      }
-    }
-
-    // Load and display recent moods
-    async function loadMoodHistory() {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      try {
-        const querySnapshot = await db.collection('Moods')
-          .where('userId', '==', user.uid)
-          .orderBy('timestamp', 'desc')
-          .limit(10)
-          .get();
-
-        const historyList = document.getElementById('mood-history-list');
-        if (!historyList) return;
-
-        historyList.innerHTML = '';
-
-        if (querySnapshot.empty) {
-          historyList.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No mood history yet. Start logging your moods!</p>';
-          return;
-        }
-
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const moodItem = document.createElement('div');
-          moodItem.style.cssText = 'display: flex; align-items: center; justify-between; padding: 1rem; border-bottom: 1px solid #eee; background: rgba(255,255,255,0.8); border-radius: 8px; margin-bottom: 0.5rem;';
-          moodItem.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 1rem;">
-              <span style="font-size: 2rem;">${getMoodEmoji(data.mood)}</span>
-              <div>
-                <strong style="color: #333; font-size: 1.1rem;">${data.mood}</strong>
-                <br>
-                <small style="color: #666;">${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : 'Unknown date'}</small>
-              </div>
-            </div>
-            <span style="color: #28a745; font-weight: bold;">+2 pts</span>
-          `;
-          historyList.appendChild(moodItem);
-        });
-      } catch (error) {
-        console.error('Error loading mood history:', error);
-        showNotification('Failed to load mood history.', 'error');
-      }
-    }
-
-    // Load mood statistics and create chart
-    async function loadMoodStatistics() {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      try {
-        const querySnapshot = await db.collection('Moods')
-          .where('userId', '==', user.uid)
-          .get();
-
-        const moodCounts = {};
-        let totalMoods = 0;
-        let mostFrequentMood = '';
-        let maxCount = 0;
-
-        querySnapshot.forEach((doc) => {
-          const mood = doc.data().mood;
-          moodCounts[mood] = (moodCounts[mood] || 0) + 1;
-          totalMoods++;
-
-          if (moodCounts[mood] > maxCount) {
-            maxCount = moodCounts[mood];
-            mostFrequentMood = mood;
-          }
-        });
-
-        // Update insights
-        updateMoodInsights(totalMoods, mostFrequentMood, totalMoods * 2);
-
-        const ctx = document.getElementById('mood-chart');
-        if (!ctx) return;
-
-        const context = ctx.getContext('2d');
-
-        if (moodChart) {
-          moodChart.destroy();
-        }
-
-        if (Object.keys(moodCounts).length === 0) {
-          // Show empty state
-          context.clearRect(0, 0, ctx.width, ctx.height);
-          context.fillStyle = '#666';
-          context.font = '16px Arial';
-          context.textAlign = 'center';
-          context.fillText('No mood data yet. Start logging moods!', ctx.width / 2, ctx.height / 2);
-          return;
-        }
-
-        moodChart = new Chart(context, {
-          type: 'doughnut',
-          data: {
-            labels: Object.keys(moodCounts),
-            datasets: [{
-              data: Object.values(moodCounts),
-              backgroundColor: [
-                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-                '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384',
-                '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57'
-              ],
-              borderWidth: 2,
-              borderColor: '#fff'
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: 'bottom',
-                labels: {
-                  padding: 20,
-                  usePointStyle: true
-                }
-              },
-              title: {
-                display: true,
-                text: 'Your Mood Distribution',
-                font: {
-                  size: 16,
-                  weight: 'bold'
-                },
-                padding: 20
-              },
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                    const percentage = Math.round((context.parsed / total) * 100);
-                    return `${context.label}: ${context.parsed} (${percentage}%)`;
-                  }
-                }
-              }
-            },
-            animation: {
-              animateScale: true,
-              animateRotate: true
-            }
-          }
-        });
-      } catch (error) {
-        console.error('Error loading mood statistics:', error);
-        showNotification('Failed to load mood statistics.', 'error');
-      }
-    }
-
-    // Update mood insights display
-    function updateMoodInsights(totalMoods, mostFrequentMood, pointsEarned) {
-      const insightsContainer = document.getElementById('mood-insights');
-      if (!insightsContainer) return;
-
-      const insightCards = insightsContainer.children;
-      if (insightCards.length >= 4) {
-        insightCards[0].querySelector('h4').textContent = totalMoods;
-        insightCards[1].querySelector('h4').textContent = mostFrequentMood || 'None';
-        insightCards[2].querySelector('h4').textContent = pointsEarned;
-        insightCards[3].querySelector('h4').textContent = calculateStreak();
-      }
-    }
-
-    // Calculate current mood logging streak
-    function calculateStreak() {
-      // This is a simplified streak calculation - in a real app you'd track consecutive days
-      return Math.floor(Math.random() * 7) + 1; // Placeholder
-    }
-
-    // Helper function to get emoji for mood
-    function getMoodEmoji(mood) {
-      const emojiMap = {
-        Ambitious: '💪', Angry: '😠', Annoyed: '😒', Anxious: '😰',
-        Ashamed: '😳', Bored: '😴', Calm: '😌', Concerned: '😟',
-        Confident: '😎', Confused: '😕', Curious: '🤔', Determined: '🔥',
-        Disappointed: '😞', Excited: '🤩', Focused: '🎯', Greatful: '🙏',
-        Happy: '😊', Hopeless: '😔', Hurt: '💔', Included: '🤝',
-        Tired: '😴',
-        Neutral: '😐',
-        Okay: '👌',
-        Indifferent: '😑',
-        Content: '😌'
-      };
-      return emojiMap[mood] || '😐';
-    }
-
-    // Initialize mood filtering functionality
-    function initMoodFilters() {
-      filterTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          // Remove active class from all tabs
-          filterTabs.forEach(t => t.classList.remove('active'));
-          // Add active class to clicked tab
-          tab.classList.add('active');
-
-          const filter = tab.getAttribute('data-filter');
-          filterMoods(filter);
-        });
-      });
-    }
-
-    // Initialize mood search functionality
-    function initMoodSearch() {
-      moodSearch.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase().trim();
-        searchMoods(searchTerm);
-      });
-    }
-
-    // Filter moods by category
-    function filterMoods(filter) {
-      const moodButtons = document.querySelectorAll('.chatbot-mood-btn');
-
-      moodButtons.forEach(button => {
-        const category = button.getAttribute('data-category');
-        const mood = button.getAttribute('data-mood').toLowerCase();
-
-        if (filter === 'all' || category === filter) {
-          button.classList.remove('hidden');
-        } else {
-          button.classList.add('hidden');
-        }
-      });
-    }
-
-    // Search moods by name
-    function searchMoods(searchTerm) {
-      const moodButtons = document.querySelectorAll('.chatbot-mood-btn');
-
-      moodButtons.forEach(button => {
-        const mood = button.getAttribute('data-mood').toLowerCase();
-
-        if (mood.includes(searchTerm)) {
-          button.classList.remove('hidden');
-        } else {
-          button.classList.add('hidden');
-        }
-      });
-    }
-
-    // Update mood streak display
-    async function updateMoodStreak() {
-      const user = auth.currentUser;
-      if (!user) {
-        streakCount.textContent = '0 days';
-        return;
-      }
-
-      try {
-        const querySnapshot = await db.collection('Moods')
-          .where('userId', '==', user.uid)
-          .orderBy('timestamp', 'desc')
-          .limit(30)
-          .get();
-
-        if (querySnapshot.empty) {
-          streakCount.textContent = '0 days';
-          return;
-        }
-
-        const moods = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          moods.push({
-            date: new Date(data.timestamp.toDate()).toDateString(),
-            mood: data.mood
-          });
-        });
-
-        // Calculate streak (simplified - consecutive days with mood logging)
-        let streak = 0;
-        const today = new Date().toDateString();
-        const yesterday = new Date(Date.now() - 86400000).toDateString();
-
-        // Check if logged today or yesterday
-        const todayLogged = moods.some(m => m.date === today);
-        const yesterdayLogged = moods.some(m => m.date === yesterday);
-
-        if (todayLogged) {
-          streak = 1;
-          // Count consecutive days backwards
-          let checkDate = new Date(Date.now() - 86400000); // Start from yesterday
-          while (moods.some(m => m.date === checkDate.toDateString())) {
-            streak++;
-            checkDate = new Date(checkDate.getTime() - 86400000);
-          }
-        } else if (yesterdayLogged) {
-          streak = 1;
-        }
-
-        streakCount.textContent = `${streak} day${streak !== 1 ? 's' : ''}`;
-      } catch (error) {
-        console.error('Error calculating streak:', error);
-        streakCount.textContent = '0 days';
-      }
-    }
-
-    // Enhanced mood tips with activity suggestions
-    const moodActivities = {
-      Ambitious: [
-        "Set specific goals for the next hour",
-        "Create a vision board for your dreams",
-        "Read a book about successful people",
-        "Start a new learning project",
-        "Plan your day with purpose"
-      ],
-      Angry: [
-        "Take a brisk walk to release energy",
-        "Write down what's bothering you",
-        "Practice deep breathing exercises",
-        "Listen to calming music",
-        "Talk to a trusted friend"
-      ],
-      Annoyed: [
-        "Take a short break from the situation",
-        "Practice mindfulness meditation",
-        "Do something enjoyable to shift focus",
-        "Express your feelings constructively",
-        "Find humor in the situation"
-      ],
-      Anxious: [
-        "Practice grounding techniques (5-4-3-2-1)",
-        "Write down your worries and solutions",
-        "Do light exercise like yoga",
-        "Listen to nature sounds",
-        "Connect with supportive people"
-      ],
-      Ashamed: [
-        "Practice self-compassion exercises",
-        "Write a kind letter to yourself",
-        "Focus on your positive qualities",
-        "Talk to someone understanding",
-        "Learn from the experience"
-      ],
-      Bored: [
-        "Try a new hobby or activity",
-        "Explore a new place or topic",
-        "Connect with friends or family",
-        "Learn something new online",
-        "Engage in creative expression"
-      ],
-      Calm: [
-        "Practice meditation or mindfulness",
-        "Enjoy a peaceful walk in nature",
-        "Read a good book",
-        "Listen to soothing music",
-        "Spend time with loved ones"
-      ],
-      Concerned: [
-        "Gather information to address concerns",
-        "Talk to someone knowledgeable",
-        "Make a plan to resolve issues",
-        "Practice positive visualization",
-        "Focus on what you can control"
-      ],
-      Confident: [
-        "Celebrate your recent achievements",
-        "Practice positive affirmations",
-        "Take on a new challenge",
-        "Help someone else succeed",
-        "Share your knowledge with others"
-      ],
-      Confused: [
-        "Break down the problem into smaller parts",
-        "Research and gather information",
-        "Ask for clarification or help",
-        "Take time to process information",
-        "Organize your thoughts in writing"
-      ],
-      Curious: [
-        "Explore a new topic or subject",
-        "Ask questions and seek answers",
-        "Visit a museum or library",
-        "Try a new experience",
-        "Engage in learning activities"
-      ],
-      Determined: [
-        "Create a detailed action plan",
-        "Break goals into manageable steps",
-        "Track your progress daily",
-        "Find accountability partners",
-        "Celebrate small victories"
-      ],
-      Disappointed: [
-        "Process your emotions healthily",
-        "Learn from the experience",
-        "Set new goals or adjust plans",
-        "Focus on future opportunities",
-        "Practice gratitude for other things"
-      ],
-      Excited: [
-        "Channel energy into productive tasks",
-        "Share your excitement with others",
-        "Plan how to make the most of it",
-        "Take action towards your goals",
-        "Document the experience"
-      ],
-      Focused: [
-        "Create a distraction-free environment",
-        "Use time-blocking techniques",
-        "Set specific, achievable goals",
-        "Take regular short breaks",
-        "Reward yourself for focus periods"
-      ],
-      Greatful: [
-        "Write a gratitude journal",
-        "Express thanks to others",
-        "Practice daily gratitude exercises",
-        "Focus on positive aspects",
-        "Help others in need"
-      ],
-      Happy: [
-        "Share your joy with loved ones",
-        "Engage in enjoyable activities",
-        "Practice random acts of kindness",
-        "Celebrate life's small moments",
-        "Create positive memories"
-      ],
-      Hopeless: [
-        "Reach out for professional support",
-        "Break overwhelming tasks into small steps",
-        "Connect with supportive people",
-        "Practice self-care activities",
-        "Focus on small, achievable goals"
-      ],
-      Hurt: [
-        "Allow yourself to feel and process emotions",
-        "Seek support from loved ones",
-        "Practice self-care and healing activities",
-        "Consider professional counseling",
-        "Focus on personal growth"
-      ],
-      Included: [
-        "Reach out to friends and family",
-        "Join community groups or clubs",
-        "Participate in social activities",
-        "Volunteer for causes you care about",
-        "Build and nurture relationships"
-      ],
-      Jealous: [
-        "Practice self-compassion and understanding",
-        "Focus on your own achievements",
-        "Celebrate others' successes",
-        "Work on personal growth goals",
-        "Practice gratitude for what you have"
-      ],
-      Lonely: [
-        "Reach out to friends or family",
-        "Join social groups or clubs",
-        "Volunteer in your community",
-        "Consider professional support",
-        "Engage in activities you enjoy"
-      ],
-      Proud: [
-        "Celebrate your achievements",
-        "Share successes with supportive people",
-        "Set new challenging goals",
-        "Help others achieve their goals",
-        "Document your journey"
-      ],
-      Stressed: [
-        "Practice relaxation techniques",
-        "Exercise regularly",
-        "Prioritize and organize tasks",
-        "Take regular breaks",
-        "Seek support from others"
-      ],
-      Tired: [
-        "Get adequate rest and sleep",
-        "Take short power naps",
-        "Practice relaxation before bed",
-        "Establish a consistent sleep routine",
-        "Consider your energy levels"
-      ]
-    };
-
-    // Show notification
-    function showNotification(message, type) {
-      const notification = document.createElement('div');
-      notification.style.cssText = `
-        position: fixed; top: 20px; right: 20px; padding: 1rem 1.5rem; border-radius: 10px;
-        color: white; font-weight: bold; z-index: 1000; max-width: 350px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);
-        ${type === 'success' ? 'background: linear-gradient(135deg, #28a745, #20c997);' :
-          type === 'error' ? 'background: linear-gradient(135deg, #dc3545, #c82333);' :
-            'background: linear-gradient(135deg, #17a2b8, #138496);'}
-        animation: slideInRight 0.3s ease-out;
-      `;
-      notification.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <span style="font-size: 1.2rem;">
-            ${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}
-          </span>
-          <span>${message}</span>
+    function showTyping() {
+      const wrap = document.createElement('div');
+      wrap.id = 'typing-indicator';
+      wrap.className = 'flex gap-3 msg-anim justify-start';
+      wrap.innerHTML = `
+        <div class="shrink-0 rounded-full flex items-center justify-center" style="width:32px;height:32px;background:rgba(147,51,234,0.2);">
+          <span class="material-symbols-outlined" style="font-size:18px;color:#9333ea;">smart_toy</span>
         </div>
-      `;
-      document.body.appendChild(notification);
-
-      // Add slide-in animation
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes slideInRight {
-          from { transform: translateX(100%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
-        }
-      `;
-      document.head.appendChild(style);
-
-      setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease-in forwards';
-        setTimeout(() => notification.remove(), 300);
-      }, 3000);
+        <div class="msg-bot px-4 py-3" style="max-width:75%;">
+          <span class="dot inline-block w-2 h-2 rounded-full mr-1" style="background:#9333ea;"></span>
+          <span class="dot inline-block w-2 h-2 rounded-full mr-1" style="background:#9333ea;"></span>
+          <span class="dot inline-block w-2 h-2 rounded-full" style="background:#9333ea;"></span>
+        </div>`;
+      chatWindow.appendChild(wrap);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
     }
+
+    function hideTyping() { document.getElementById('typing-indicator')?.remove(); }
+
+    function showQuickReplies(options) {
+      quickReplies.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quick-chip';
+        btn.textContent = opt;
+        btn.addEventListener('click', () => handleUserMessage(opt));
+        quickReplies.appendChild(btn);
+      });
+      quickReplies.classList.remove('hidden');
+    }
+    function clearQuickReplies() { quickReplies.classList.add('hidden'); quickReplies.innerHTML = ''; }
+
+    function formatText(t) {
+      return escHtml(t)
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/\n/g, '<br/>');
+    }
+    function escHtml(t) {
+      return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // ---- Handle messages ----
+    async function handleUserMessage(message) {
+      if (!message.trim()) return;
+      clearQuickReplies();
+      addMessage(message, 'user');
+      conversationHistory.push({ role: 'user', content: message, ts: new Date() });
+      chatInput.value = '';
+
+      showTyping();
+      await new Promise(r => setTimeout(r, 900 + Math.random() * 600));
+      hideTyping();
+
+      const reply = await getAIResponse(message, currentMood, convStep);
+      addMessage(reply, 'bot');
+      conversationHistory.push({ role: 'bot', content: reply, ts: new Date() });
+
+      // Advance step and show relevant quick replies
+      convStep++;
+      if (convStep === 1) showQuickReplies(["Tell me more", "What can I do?", "I'm okay"]);
+      else if (convStep === 2) showQuickReplies(["Try journaling", "Give me tips", "Log my mood"]);
+      else showQuickReplies(["New mood check", "View history", "I'm done"]);
+    }
+
+    // ---- Mood button clicks ----
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        const mood = btn.dataset.mood;
+        currentMood = mood;
+        convStep = 0;
+
+        await saveMoodEntry(mood);
+        const emoji = getMoodEmoji(mood);
+        await handleUserMessage(`I'm feeling ${mood} ${emoji}`);
+      });
+    });
+
+    // ---- Chat form submit ----
+    chatForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      await handleUserMessage(chatInput.value);
+    });
+
+    // ---- New chat / Reset ----
+    function resetChat() {
+      convStep = 0;
+      currentMood = null;
+      conversationHistory = [];
+      chatWindow.innerHTML = '';
+      clearQuickReplies();
+      document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+      welcomeMessage();
+    }
+    document.getElementById('new-chat-btn')?.addEventListener('click', resetChat);
+    document.getElementById('clear-chat-btn')?.addEventListener('click', resetChat);
+
+    // ---- Welcome message ----
+    function welcomeMessage() {
+      setTimeout(() => {
+        addMessage("Hey there! 👋 I'm NeuroSync AI, your emotional wellness companion.\n\n**How are you feeling today?**\n\nYou can tap a mood from the grid below, or just describe how you're feeling in words. I'm here to listen! 💜", 'bot');
+        showQuickReplies(["I'm feeling great!", "A bit stressed", "Not sure yet"]);
+      }, 300);
+    }
+
+    // ---- Streak calculation ----
+    async function computeStreak() {
+      if (!currentUserId) return;
+      try {
+        const snap = await _db.collection('Moods').where('userId', '==', currentUserId).orderBy('timestamp', 'desc').limit(60).get();
+        const dates = new Set(snap.docs.map(d => d.data().timestamp?.toDate?.().toDateString()).filter(Boolean));
+        let streak = 0, day = new Date();
+        while (dates.has(day.toDateString())) { streak++; day.setDate(day.getDate() - 1); }
+        document.getElementById('streak-display').textContent = `${streak} day${streak !== 1 ? 's' : ''}`;
+      } catch (e) { }
+    }
+    _auth.onAuthStateChanged(u => { if (u) { currentUserId = u.uid; computeStreak(); } });
+
+    // ---- History search ----
+    document.getElementById('history-search')?.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('#history-list .history-item').forEach(item => {
+        item.style.display = item.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    // ---- Init ----
+    window.addEventListener('DOMContentLoaded', welcomeMessage);
   </script>
-  </body>
+
+</body>
 
 </html>

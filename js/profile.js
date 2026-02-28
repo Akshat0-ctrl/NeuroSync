@@ -33,11 +33,20 @@ function loadProfile() {
         document.getElementById('photoUrl').value = data.photoUrl || '';
         // Set profile photo preview src
         const photoPreview = document.getElementById('profile-photo-preview');
+        const placeholderText = document.getElementById('photo-placeholder-text');
         if (data.photoUrl) {
           photoPreview.src = data.photoUrl;
+          if (placeholderText) placeholderText.style.display = 'none';
         } else {
           photoPreview.src = ''; // Or default image
+          if (placeholderText) placeholderText.style.display = 'block';
         }
+
+        // Update display text elements
+        const displayName = document.getElementById('display-name');
+        const displayRole = document.getElementById('display-role');
+        if (displayName) displayName.textContent = `${data.firstname || ''} ${data.lastname || ''}`.trim() || 'Welcome!';
+        if (displayRole) displayRole.textContent = data.role || 'Student';
       }
     })
     .catch((error) => {
@@ -80,12 +89,16 @@ function saveProfile() {
     email: email,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   })
-  .then(() => {
-    alert('Profile saved successfully!');
-  })
-  .catch((error) => {
-    alert('Error saving profile: ' + error.message);
-  });
+    .then(() => {
+      // Also update display names visually without reload
+      const displayName = document.getElementById('display-name');
+      const displayRole = document.getElementById('display-role');
+      if (displayName) displayName.textContent = `${firstName} ${lastName}`.trim() || 'Welcome!';
+      if (displayRole) displayRole.textContent = role || 'Student';
+    })
+    .catch((error) => {
+      alert('Error saving profile: ' + error.message);
+    });
 }
 
 function openUploadWidget() {
@@ -130,7 +143,14 @@ function openUploadWidget() {
           const photoUrl = result.info.secure_url;
           document.getElementById('photoUrl').value = photoUrl;
           document.getElementById('profile-photo-preview').src = photoUrl;
-          alert('Photo uploaded successfully. Please save your profile to keep changes.');
+          const placeholderText = document.getElementById('photo-placeholder-text');
+          if (placeholderText) placeholderText.style.display = 'none';
+
+          const messageBox = document.getElementById('message');
+          if (messageBox) {
+            messageBox.textContent = 'Photo uploaded successfully. Please save your profile to keep changes.';
+            messageBox.className = 'mt-6 p-4 rounded-xl text-sm font-medium tracking-wide text-center bg-blue-500/10 border border-blue-500/20 text-blue-400 block';
+          }
         }
       }
     );

@@ -1,4 +1,7 @@
-- [x] Increase navbar logo icon size from h-5 w-5 to h-6 w-6
-- [x] Increase navbar logo text size from text-xl to text-2xl
-- [x] Increase navbar logo icon size in mood-selection.html from h-5 w-5 to h-6 w-6
-- [x] Increase navbar logo text size in mood-selection.html from text-xl to text-2xl
+# TODO - Fix auth.html CSS Loading Issue
+
+## Plan:
+- [x] Fix html/auth.html - Complete rewrite of the <head> section with proper CSS links
+- [x] Test the auth.html page to verify CSS is loading properly
+
+## Status: Completed

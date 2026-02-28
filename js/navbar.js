@@ -1,14 +1,14 @@
 // navbar.js - Navigation dropdown functionality
 
 // Global functions for dropdown menus
-window.openDropdown = function(element) {
+window.openDropdown = function (element) {
   const dropdown = element.querySelector('div.absolute');
   if (dropdown) {
     dropdown.classList.remove('hidden');
   }
 };
 
-window.closeDropdown = function(element) {
+window.closeDropdown = function (element) {
   const dropdown = element.querySelector('div.absolute');
   if (dropdown) {
     dropdown.classList.add('hidden');
@@ -16,7 +16,7 @@ window.closeDropdown = function(element) {
 };
 
 // Initialize dropdown functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Handle dropdown toggle buttons
   const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
 
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Additional: Handle dropdown toggling for buttons inside .relative.group
   const relativeGroupButtons = document.querySelectorAll('.relative.group button');
   relativeGroupButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
+    button.addEventListener('click', function (e) {
       e.preventDefault();
       const dropdown = this.parentElement.querySelector('.absolute');
       if (dropdown) {
@@ -124,4 +124,52 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // ========== DYNAMIC AUTH BUTTON HIDING ==========
+  function hideAuthButtons() {
+    const getStartedBtn = document.getElementById('get-started-btn');
+    if (getStartedBtn) getStartedBtn.style.display = 'none';
+
+    const authLinks = document.querySelectorAll('a[href="html/auth.html"], a[href="../html/auth.html"], a[href="auth.html"]');
+    authLinks.forEach(link => {
+      link.style.display = 'none';
+      link.classList.add('hidden'); // Force Tailwind hidden
+    });
+
+    const allButtons = document.querySelectorAll('button, a, span');
+    allButtons.forEach(btn => {
+      if (btn.children.length === 0 || btn.tagName === 'SPAN') {
+        const text = btn.textContent.trim().toLowerCase();
+        if (text === 'get started' || text === 'create account' || text === 'create free account') {
+          const target = btn.closest('button') || btn.closest('a') || btn;
+          target.style.display = 'none';
+          target.classList.add('hidden'); // Force Tailwind hidden
+        }
+      }
+    });
+  }
+
+  // Use localStorage to hide buttons immediately before Firebase initializes
+  if (localStorage.getItem('neurosync_logged_in') === 'true') {
+    hideAuthButtons();
+  }
+
+  // Hook into Firebase Auth to maintain sync with session
+  if (typeof firebase !== 'undefined' && firebase.auth) {
+    try {
+      // Small timeout to allow Firebase apps to initialize in other scripts
+      setTimeout(() => {
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            localStorage.setItem('neurosync_logged_in', 'true');
+            hideAuthButtons();
+          } else {
+            localStorage.removeItem('neurosync_logged_in');
+          }
+        });
+      }, 500);
+    } catch (e) {
+      console.warn('Firebase auth listener failed in navbar.js', e);
+    }
+  }
 });

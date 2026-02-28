@@ -1,8 +1,5 @@
 // mood.js - Enhanced mood logging, rewards, and interactive chatbot
 
-// Firebase SDK imports
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth-compat.js";
-import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js";
 
 const auth = getAuth();
 const db = getFirestore();
@@ -14,6 +11,14 @@ let conversationState = {
   journalEntry: '',
   conversationHistory: []
 };
+
+// ==========================================
+// AI AUTOMATION CONFIGURATION (n8n, Make, etc)
+// ==========================================
+// Set this to your actual webhook URL to connect to external AI processing
+const AI_WEBHOOK_URL = 'https://your-n8n-instance.com/webhook/mood-chat';
+// Toggle this to toggle external AI vs local fallback Logic
+const USE_WEBHOOK = false; // Set to true to enable webhook
 
 // Mood tips for chatbot responses
 export const moodTips = {
@@ -108,7 +113,7 @@ export function initMoodLogging() {
 
   if (moodButtons.length > 0) {
     moodButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         // Remove selected class from all buttons
         moodButtons.forEach(btn => btn.classList.remove('selected'));
 
@@ -131,7 +136,7 @@ export function initMoodLogging() {
   }
 
   if (logMoodBtn) {
-    logMoodBtn.addEventListener('click', async function() {
+    logMoodBtn.addEventListener('click', async function () {
       const selectedButton = document.querySelector('.mood-button.selected');
       if (!selectedButton) {
         showNotification('Please select a mood first!', 'error');
@@ -232,9 +237,8 @@ function calculateLevel(points) {
 function showNotification(message, type) {
   // Create notification element
   const notification = document.createElement('div');
-  notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
-    type === 'success' ? 'bg-green-500' : 'bg-red-500'
-  } text-white`;
+  notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${type === 'success' ? 'bg-green-500' : 'bg-red-500'
+    } text-white`;
   notification.textContent = message;
 
   document.body.appendChild(notification);
@@ -349,33 +353,45 @@ async function processConversation(message) {
     // Get recent mood history for context
     const recentMoods = await getRecentMoods(user?.uid, 7);
 
-    if (conversationState.conversationStep === 0) {
-      // Initial greeting and mood detection
-      const detectedMood = detectMoodFromMessage(message);
-      if (detectedMood) {
-        conversationState.currentMood = detectedMood;
-        response = await generateMoodResponse(detectedMood, recentMoods);
-        conversationState.conversationStep = 1;
-        // Show quick replies for follow-up
-        showQuickReplies(['Tell me more about it', 'What triggered this?', 'How can I help?']);
-      } else {
-        response = "I'd love to help you explore your feelings. Could you tell me more about what's on your mind? Or you can select a mood from the options above!";
-        showQuickReplies(['I\'m feeling stressed', 'I\'m happy today', 'Something else']);
-      }
-    } else if (conversationState.conversationStep === 1) {
-      // Follow-up questions
-      response = await generateFollowUpResponse(message, conversationState.currentMood, recentMoods);
-      conversationState.conversationStep = 2;
-      showQuickReplies(['Yes, let\'s journal', 'Maybe later', 'Tell me a tip']);
-    } else if (conversationState.conversationStep === 2) {
-      // Journaling prompt
-      response = await generateJournalingPrompt(conversationState.currentMood);
-      conversationState.conversationStep = 3;
-      showQuickReplies(['Save this entry', 'Edit and save', 'Skip for now']);
+    // If Webhook is enabled and URL is configured, use it for everything
+    if (USE_WEBHOOK && AI_WEBHOOK_URL && !AI_WEBHOOK_URL.includes('your-n8n-instance')) {
+      response = await fetchAIWebhook(message, {
+        userId: user ? user.uid : 'anonymous',
+        currentMood: conversationState.currentMood || 'Unknown',
+        recentMoods: recentMoods.map(m => m.mood).join(', '),
+        history: conversationState.conversationHistory.slice(-10)
+      });
+      showQuickReplies(['Tell me more', 'New mood check', 'View history']);
     } else {
-      // General conversation
-      response = await generateGeneralResponse(message, recentMoods);
-      showQuickReplies(['New mood check', 'View history', 'End chat']);
+      // --- LOCAL FALLBACK LOGIC ---
+      if (conversationState.conversationStep === 0) {
+        // Initial greeting and mood detection
+        const detectedMood = detectMoodFromMessage(message);
+        if (detectedMood) {
+          conversationState.currentMood = detectedMood;
+          response = await generateMoodResponse(detectedMood, recentMoods);
+          conversationState.conversationStep = 1;
+          // Show quick replies for follow-up
+          showQuickReplies(['Tell me more about it', 'What triggered this?', 'How can I help?']);
+        } else {
+          response = "I'd love to help you explore your feelings. Could you tell me more about what's on your mind? Or you can select a mood from the options above!";
+          showQuickReplies(['I\'m feeling stressed', 'I\'m happy today', 'Something else']);
+        }
+      } else if (conversationState.conversationStep === 1) {
+        // Follow-up questions
+        response = await generateFollowUpResponse(message, conversationState.currentMood, recentMoods);
+        conversationState.conversationStep = 2;
+        showQuickReplies(['Yes, let\'s journal', 'Maybe later', 'Tell me a tip']);
+      } else if (conversationState.conversationStep === 2) {
+        // Journaling prompt
+        response = await generateJournalingPrompt(conversationState.currentMood);
+        conversationState.conversationStep = 3;
+        showQuickReplies(['Save this entry', 'Edit and save', 'Skip for now']);
+      } else {
+        // General conversation
+        response = await generateGeneralResponse(message, recentMoods);
+        showQuickReplies(['New mood check', 'View history', 'End chat']);
+      }
     }
 
     addBotMessage(response);
@@ -386,6 +402,7 @@ async function processConversation(message) {
       message: response,
       timestamp: new Date()
     });
+
   } catch (error) {
     console.error('Error in processConversation:', error);
     const errorResponse = "I'm sorry, I encountered an error. Let's try again.";
@@ -396,6 +413,38 @@ async function processConversation(message) {
       timestamp: new Date()
     });
     showQuickReplies(['Start over', 'Select mood']);
+  }
+}
+
+// Interacts with external Webhook (like n8n)
+async function fetchAIWebhook(message, context) {
+  try {
+    const payload = {
+      message: message,
+      context: context,
+      timestamp: new Date().toISOString()
+    };
+
+    const response = await fetch(AI_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      console.error('Webhook error:', response.statusText);
+      throw new Error('Webhook error');
+    }
+
+    const data = await response.json();
+    // Fallback checks depending on how n8n maps the JSON response
+    return data.reply || data.response || data.message || "I received your message but no content was returned.";
+
+  } catch (e) {
+    console.error('Failed to fetch from Webhook:', e);
+    return "I'm having trouble connecting to my AI brain at the moment. However, I'm still here to listen!";
   }
 }
 
