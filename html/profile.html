@@ -4,374 +4,195 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeuroSync Profile</title>
-  <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+  <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    rel="stylesheet">
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <title>Profile - NeuroSync</title>
+  <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../css/global.css" />
   <link rel="stylesheet" href="../css/mobile-optimizations.css" />
+  <script src="../js/sidemenu.js"></script>
+  <script src="../js/theme.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-storage-compat.js"></script>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCFQ36vxZ5qWhxXXptKe_sXlFVZxzRtCBY",
+      authDomain: "neurosync-5173b.firebaseapp.com",
+      projectId: "neurosync-5173b",
+      storageBucket: "neurosync-5173b.firebasestorage.app",
+      messagingSenderId: "855780859936",
+      appId: "1:855780859936:web:3044309100db9a61fa1c45",
+      measurementId: "G-75S5GWYEDK"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Check authentication
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = 'auth.html';
+      }
+    });
+  </script>
 </head>
 
-<body class="bg-[#110d19] text-white">
+<body class="bg-primary dark">
+  <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden xl:ml-64"
+    style='font-family: "Space Grotesk", "Noto Sans", sans-serif;'>
 
-  <body class="bg-primary dark">
-    <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden"
-      style='font-family: "Space Grotesk", "Noto Sans", sans-serif;'>
-      <div class="absolute inset-0 -z-10 overflow-hidden">
-        <!-- Particle background -->
-        <div class="particle"
-          style="--x-start: 10vw; --y-start: 20vh; --x-end: 90vw; --y-end: 80vh; width: 2px; height: 2px; animation-delay: 0s;">
-        </div>
-        <div class="particle"
-          style="--x-start: 80vw; --y-start: 10vh; --x-end: 20vw; --y-end: 90vh; width: 1px; height: 1px; animation-delay: -1s;">
-        </div>
-        <!-- ... more particles ... -->
+    <!-- Header -->
+    <header
+      class="flex items-center justify-between border-b border-solid border-white/5 px-6 py-3 bg-transparent backdrop-blur-md sticky top-0 z-20">
+      <div class="flex items-center gap-3">
+        <img src="../assets/Navbar_logo copy.png" alt="Logo" class="h-10 w-auto">
       </div>
+      <div class="flex items-center gap-4">
+        <button id="theme-toggle" class="translucent-button rounded-full size-11 flex items-center justify-center">
+          <span class="material-symbols-outlined">dark_mode</span>
+        </button>
+        <button id="mobile-menu-btn"
+          class="xl:hidden translucent-button rounded-full size-11 flex items-center justify-center">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </header>
 
-      <header
-        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary px-4 sm:px-6 lg:px-10 py-3 bg-transparent backdrop-blur-sm sticky top-0 z-20">
-        <div class="flex items-center gap-3 text-primary">
-          <img src="../assets/Navbar_logo copy.png" alt="NeuroSync Logo" class="h-10 w-auto">
-
-
-        </div>
-        <nav class="hidden xl:flex items-center gap-2 text-sm text-secondary">
-          <a class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors"
-            href="../index.html">Home</a>
-          <div class="relative group" onmouseleave="closeDropdown(this)" onmouseenter="openDropdown(this)">
-            <button
-              class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1"
-              onmouseenter="openDropdown(this.parentElement)">
-              <span>Focus</span>
-              <span class="material-symbols-outlined text-base">expand_more</span>
-            </button>
-            <div
-              class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-40 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-              <div class="py-1">
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="dashboard.html">Dashboard</a>
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="rewards.html">Rewards</a>
-              </div>
-            </div>
-          </div>
-          <div class="relative group" onmouseleave="closeDropdown(this)" onmouseenter="openDropdown(this)">
-            <button
-              class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1"
-              onmouseenter="openDropdown(this.parentElement)">
-              <span>Resources</span>
-              <span class="material-symbols-outlined text-base">expand_more</span>
-            </button>
-            <div
-              class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-              <div class="py-1">
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="mood-selection.html">Mood Tracker</a>
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="study-library.html">Study Library</a>
-              </div>
-            </div>
-          </div>
-          <div class="relative group" onmouseleave="closeDropdown(this)" onmouseenter="openDropdown(this)">
-            <button
-              class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1"
-              onmouseenter="openDropdown(this.parentElement)">
-              <span>Company</span>
-              <span class="material-symbols-outlined text-base">expand_more</span>
-            </button>
-            <div
-              class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-              <div class="py-1">
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="feedback.html">Feedback Us</a>
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="about.html">About Us</a>
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="feedback.html">Support</a>
-              </div>
-            </div>
-          </div>
-          <a href="rewards.html"
-            class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors">Rewards</a>
-        </nav>
-        <div class="flex items-center gap-4">
-          <button class="xl:hidden translucent-button flex items-center justify-center rounded-full size-11">
-            <span class="material-symbols-outlined text-2xl">menu</span>
-          </button>
-        </div>
-      </header>
-      <script type="module" src="../js/navbar.js"></script>
-      <main class="flex flex-1 items-center justify-center py-12 px-4 sm:px-6 lg:px-8 z-10">
+    <!-- Main Content -->
+    <main class="flex-1 p-6 lg:p-10">
+      <div class="max-w-4xl mx-auto">
         <div
-          class="w-full max-w-4xl rounded-3xl bg-[#1a1122]/80 backdrop-blur-xl shadow-2xl shadow-black/50 border border-white/5 overflow-hidden flex flex-col md:flex-row transition-all duration-300 hover:shadow-primary-color/10">
+          class="w-full rounded-3xl bg-[#1a1122]/80 backdrop-blur-xl shadow-2xl border border-white/5 overflow-hidden flex flex-col md:flex-row">
 
-          <!-- Left Column / Top Section: Cover & Identity -->
+          <!-- Profile Photo Section -->
           <div
-            class="relative w-full md:w-2/5 min-h-[300px] md:min-h-full bg-gradient-to-br from-[#2a1b38] to-[#140c1c] flex flex-col items-center justify-center p-8 border-b md:border-b-0 md:border-r border-white/10 group">
-            <!-- Decorative Abstract Background -->
-            <div class="absolute inset-0 overflow-hidden opacity-30 pointer-events-none">
-              <div
-                class="absolute -top-24 -left-24 w-64 h-64 bg-[var(--primary-color)] rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-700">
-              </div>
-              <div
-                class="absolute bottom-0 right-0 w-48 h-48 bg-blue-600 rounded-full blur-3xl opacity-10 group-hover:opacity-30 transition-opacity duration-700">
-              </div>
-            </div>
-
-            <!-- Profile Photo Area -->
-            <div class="relative flex justify-center w-36 h-36 mx-auto mb-6 z-10">
-              <div
-                class="absolute inset-0 rounded-full bg-gradient-to-tr from-[var(--primary-color)] to-blue-500 animate-spin-slow opacity-20 blur-md">
-              </div>
-              <img src="" alt="Profile Photo" id="profile-photo-preview"
-                class="relative rounded-full object-cover w-36 h-36 ring-4 ring-[#1a1122] shadow-xl z-10 transition-transform duration-300 hover:scale-105" />
-              <span
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/50 text-sm font-semibold select-none pointer-events-none z-20"
-                id="photo-placeholder-text">
-                No Photo
-              </span>
-              <!-- Change Photo Button overlaps the image slightly -->
-              <button id="change-photo-button" title="Change Photo"
-                class="absolute bottom-1 right-1 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--primary-color)] text-white shadow-lg shadow-[var(--primary-color)]/30 transition-all hover:bg-[#9933ff] hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)] focus:ring-offset-[#1a1122] overflow-hidden group/btn">
-                <span
-                  class="material-symbols-outlined text-[20px] group-hover/btn:rotate-12 transition-transform">photo_camera</span>
+            class="relative w-full md:w-2/5 bg-gradient-to-br from-[#2a1b38] to-[#140c1c] flex flex-col items-center justify-center p-8 border-b md:border-b-0 md:border-r border-white/10">
+            <div class="relative w-40 h-40 mb-6">
+              <img src="" alt="Profile" id="profile-photo-preview"
+                class="rounded-full object-cover w-full h-full ring-4 ring-accent/20 shadow-2xl" />
+              <span id="photo-placeholder-text"
+                class="absolute inset-0 flex items-center justify-center text-gray-500 text-sm hidden">No Photo</span>
+              <button id="change-photo-button"
+                class="absolute bottom-2 right-2 bg-accent text-white rounded-full p-2 shadow-lg hover:bg-accent-secondary transition-colors">
+                <span class="material-symbols-outlined">photo_camera</span>
               </button>
             </div>
-
-            <div class="text-center z-10">
-              <h2 class="text-3xl font-bold tracking-tight text-white mb-1" id="display-name">Loading...</h2>
-              <p class="text-sm text-[var(--primary-color)] font-medium tracking-wide uppercase" id="display-role">
-                Student</p>
-            </div>
-
-            <div class="mt-auto pt-8 w-full z-10 hidden md:block">
-              <div class="p-4 rounded-xl bg-white/5 border border-white/5">
-                <p class="text-xs text-gray-400 mb-2">Completion Status</p>
-                <div class="w-full bg-black/40 rounded-full h-2 mb-1">
-                  <div class="bg-gradient-to-r from-[var(--primary-color)] to-blue-500 h-2 rounded-full"
-                    style="width: 80%"></div>
-                </div>
-                <p class="text-xs text-right text-[var(--primary-color)] font-semibold">80%</p>
-              </div>
-            </div>
+            <h2 class="text-2xl font-bold text-white mb-1" id="display-name">Loading...</h2>
+            <p class="text-accent text-sm uppercase tracking-widest font-bold" id="display-role">Student</p>
           </div>
 
-          <!-- Right Column / Bottom Section: Details & Form -->
-          <div class="w-full md:w-3/5 p-8 sm:p-10 flex flex-col relative">
-
-            <!-- Header & Actions -->
-            <div class="flex justify-between items-center mb-10 pb-4 border-b border-white/10">
+          <!-- Personal Info Section -->
+          <div class="flex-1 p-8 sm:p-10">
+            <div class="flex justify-between items-center mb-8 pb-4 border-b border-white/10">
               <div>
                 <h3 class="text-xl font-bold text-white">Personal Information</h3>
-                <p class="text-sm text-gray-400 mt-1">Manage your NeuroSync details</p>
               </div>
-
-              <!-- Floating Edit Button in Header -->
-              <button id="edit-button" title="Edit Profile"
-                class="flex items-center gap-2 rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95"
-                type="button">
-                <span class="material-symbols-outlined text-[18px]">edit</span>
-                <span>Edit</span>
-              </button>
-
-              <!-- Save Button replaces Edit when active -->
-              <button id="save-button" title="Save Changes"
-                class="flex items-center gap-2 rounded-full bg-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-600/20 transition-all hover:bg-green-500 hover:shadow-green-500/30 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-[#1a1122] active:scale-95 hidden animate-fade-in"
-                type="button" style="display: none;">
-                <span class="material-symbols-outlined text-[18px]">save</span>
-                <span>Save</span>
-              </button>
+              <div class="flex gap-3">
+                <button id="edit-button"
+                  class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all">
+                  <span class="material-symbols-outlined text-sm">edit</span> Edit
+                </button>
+                <button id="save-button"
+                  class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hidden"
+                  style="display: none;">
+                  <span class="material-symbols-outlined text-sm">save</span> Save
+                </button>
+              </div>
             </div>
 
-            <!-- Form Details -->
-            <form class="flex-1 flex flex-col" id="profile-form">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6 flex-1">
-
-                <!-- First Name -->
-                <div class="space-y-2 group">
-                  <label
-                    class="text-sm font-medium text-gray-400 group-focus-within:text-[var(--primary-color)] transition-colors"
-                    for="firstName">First Name</label>
-                  <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span class="material-symbols-outlined text-gray-500 text-[18px]">person</span>
-                    </div>
-                    <input
-                      class="form-input block w-full rounded-xl border-white/10 bg-black/20 py-3 pl-10 pr-3 text-sm text-white placeholder:text-gray-600 transition-all focus:border-[var(--primary-color)] focus:bg-black/40 focus:ring-1 focus:ring-[var(--primary-color)] disabled:opacity-70 disabled:cursor-not-allowed"
-                      id="firstName" placeholder="First name" type="text" readonly />
-                  </div>
+            <form id="profile-form" class="space-y-6">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">First Name</label>
+                  <input type="text" id="firstName" readonly
+                    class="w-full bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-white focus:border-accent outline-none readonly:cursor-not-allowed">
                 </div>
-
-                <!-- Last Name -->
-                <div class="space-y-2 group">
-                  <label
-                    class="text-sm font-medium text-gray-400 group-focus-within:text-[var(--primary-color)] transition-colors"
-                    for="lastName">Last Name</label>
-                  <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span class="material-symbols-outlined text-gray-500 text-[18px]">badge</span>
-                    </div>
-                    <input
-                      class="form-input block w-full rounded-xl border-white/10 bg-black/20 py-3 pl-10 pr-3 text-sm text-white placeholder:text-gray-600 transition-all focus:border-[var(--primary-color)] focus:bg-black/40 focus:ring-1 focus:ring-[var(--primary-color)] disabled:opacity-70 disabled:cursor-not-allowed"
-                      id="lastName" placeholder="Last name" type="text" readonly />
-                  </div>
+                <div class="space-y-2">
+                  <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Last Name</label>
+                  <input type="text" id="lastName" readonly
+                    class="w-full bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-white focus:border-accent outline-none readonly:cursor-not-allowed">
                 </div>
-
-                <!-- Age -->
-                <div class="space-y-2 group">
-                  <label
-                    class="text-sm font-medium text-gray-400 group-focus-within:text-[var(--primary-color)] transition-colors"
-                    for="age">Age</label>
-                  <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span class="material-symbols-outlined text-gray-500 text-[18px]">cake</span>
-                    </div>
-                    <input
-                      class="form-input block w-full rounded-xl border-white/10 bg-black/20 py-3 pl-10 pr-3 text-sm text-white placeholder:text-gray-600 transition-all focus:border-[var(--primary-color)] focus:bg-black/40 focus:ring-1 focus:ring-[var(--primary-color)] disabled:opacity-70 disabled:cursor-not-allowed"
-                      id="age" placeholder="Age" type="number" readonly />
-                  </div>
+                <div class="space-y-2">
+                  <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Age</label>
+                  <input type="number" id="age" readonly
+                    class="w-full bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-white focus:border-accent outline-none readonly:cursor-not-allowed">
                 </div>
-
-                <!-- Class/Grade -->
-                <div class="space-y-2 group">
-                  <label
-                    class="text-sm font-medium text-gray-400 group-focus-within:text-[var(--primary-color)] transition-colors"
-                    for="classGrade">Class/Grade</label>
-                  <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span class="material-symbols-outlined text-gray-500 text-[18px]">school</span>
-                    </div>
-                    <input
-                      class="form-input block w-full rounded-xl border-white/10 bg-black/20 py-3 pl-10 pr-3 text-sm text-white placeholder:text-gray-600 transition-all focus:border-[var(--primary-color)] focus:bg-black/40 focus:ring-1 focus:ring-[var(--primary-color)] disabled:opacity-70 disabled:cursor-not-allowed"
-                      id="classGrade" placeholder="Class or grade" type="text" readonly />
-                  </div>
+                <div class="space-y-2">
+                  <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Class/Grade</label>
+                  <input type="text" id="classGrade" readonly
+                    class="w-full bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-white focus:border-accent outline-none readonly:cursor-not-allowed">
                 </div>
-
-                <!-- Role -->
-                <div class="space-y-2 group sm:col-span-2">
-                  <label
-                    class="text-sm font-medium text-gray-400 group-focus-within:text-[var(--primary-color)] transition-colors"
-                    for="role">Role Account Type</label>
-                  <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                      <span class="material-symbols-outlined text-gray-500 text-[18px]">manage_accounts</span>
-                    </div>
-                    <select
-                      class="form-input block w-full rounded-xl border-white/10 bg-black/20 py-3 pl-10 pr-10 text-sm text-white appearance-none transition-all focus:border-[var(--primary-color)] focus:bg-black/40 focus:ring-1 focus:ring-[var(--primary-color)] disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
-                      id="role" disabled>
-                      <option value="Student" class="bg-[#1a1122]">Student</option>
-                      <option value="Teacher" class="bg-[#1a1122]">Teacher</option>
-                      <option value="Parent" class="bg-[#1a1122]">Parent</option>
-                    </select>
-                    <!-- Custom Select Arrow -->
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none z-10">
-                      <span class="material-symbols-outlined text-gray-500 text-[20px]">expand_more</span>
-                    </div>
-                  </div>
+                <div class="space-y-2 sm:col-span-2">
+                  <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Role</label>
+                  <select id="role" disabled
+                    class="w-full bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-white focus:border-accent outline-none disabled:cursor-not-allowed">
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Parent">Parent</option>
+                  </select>
                 </div>
-
-                <!-- Hidden Photo URL Input (kept for logic, hidden from UX) -->
                 <input id="photoUrl" type="hidden" />
               </div>
-
-              <!-- Message Display -->
-              <div id="message"
-                class="mt-6 p-4 rounded-xl text-sm font-medium tracking-wide text-center bg-transparent border border-transparent transition-all duration-300 empty:hidden">
-              </div>
-
+              <div id="message" class="hidden p-4 rounded-xl text-center text-sm"></div>
             </form>
           </div>
         </div>
-      </main>
-    </div>
-    <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js"></script>
-    <!-- Firebase Storage -->
-    <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-storage-compat.js"></script>
-    <!-- Cloudinary Widget -->
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
-    <script>
-      // Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyCFQ36vxZ5qWhxXXptKe_sXlFVZxzRtCBY",
-        authDomain: "neurosync-5173b.firebaseapp.com",
-        projectId: "neurosync-5173b",
-        storageBucket: "neurosync-5173b.firebasestorage.app",
-        messagingSenderId: "855780859936",
-        appId: "1:855780859936:web:3044309100db9a61fa1c45",
-        measurementId: "G-75S5GWYEDK"
-      };
+      </div>
+    </main>
+  </div>
 
-      // Initialize Firebase if not already done
-      if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-      }
-    </script>
-    <script src="../js/profile.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const editButton = document.getElementById('edit-button');
-        const saveButton = document.getElementById('save-button');
-        const changePhotoButton = document.getElementById('change-photo-button');
-        const messageBox = document.getElementById('message');
-        const inputs = document.querySelectorAll('#profile-form input, #profile-form select');
+  <!-- UI Logic -->
+  <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+  <script src="../js/profile.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const editBtn = document.getElementById('edit-button');
+      const saveBtn = document.getElementById('save-button');
+      const inputs = document.querySelectorAll('#profile-form input, #profile-form select');
+      const changePhotoBtn = document.getElementById('change-photo-button');
 
-        if (!editButton || !saveButton || !changePhotoButton || !messageBox || inputs.length === 0) {
-          console.error('Required elements not found for profile edit/upload buttons.');
-          return;
-        }
-
-        editButton.addEventListener('click', function () {
-          console.log('Edit button clicked');
-          inputs.forEach(input => {
-            if (input.id !== 'photoUrl') { // don't re-enable the hidden photo url field
-              input.removeAttribute('readonly');
-              input.removeAttribute('disabled');
-              input.classList.remove('opacity-70', 'cursor-not-allowed');
-            }
-          });
-          editButton.style.display = 'none';
-          saveButton.style.display = 'flex';
-
-          messageBox.textContent = 'Editing mode enabled.';
-          messageBox.className = 'mt-6 p-4 rounded-xl text-sm font-medium tracking-wide text-center bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 block animate-fade-in';
-
-          if (inputs.length > 0) {
-            inputs[0].tabIndex = 0;
-            inputs[0].focus();
+      editBtn.addEventListener('click', () => {
+        inputs.forEach(i => {
+          if (i.id !== 'photoUrl') {
+            i.removeAttribute('readonly');
+            i.removeAttribute('disabled');
+            i.classList.add('border-accent/40');
           }
         });
-
-        saveButton.addEventListener('click', function () {
-          saveProfile();
-          inputs.forEach(input => {
-            input.setAttribute('readonly', 'true');
-            input.classList.add('opacity-70', 'cursor-not-allowed');
-            if (input.tagName === 'SELECT') {
-              input.setAttribute('disabled', 'true');
-            }
-          });
-          editButton.style.display = 'flex';
-          saveButton.style.display = 'none';
-
-          messageBox.textContent = 'Profile saved successfully!';
-          messageBox.className = 'mt-6 p-4 rounded-xl text-sm font-medium tracking-wide text-center bg-green-500/10 border border-green-500/20 text-green-400 block animate-fade-in';
-
-          setTimeout(() => {
-            messageBox.className = 'mt-6 p-4 rounded-xl text-sm font-medium tracking-wide text-center bg-transparent border border-transparent transition-all duration-300 hidden';
-          }, 3000);
-        });
-
-        changePhotoButton.addEventListener('click', function () {
-          openUploadWidget();
-        });
+        editBtn.style.display = 'none';
+        saveBtn.style.display = 'flex';
       });
-    </script>
-    </div>
 
-  </body>
+      saveBtn.addEventListener('click', () => {
+        if (typeof saveProfile === 'function') saveProfile();
+        inputs.forEach(i => {
+          i.setAttribute('readonly', true);
+          if (i.tagName === 'SELECT') i.setAttribute('disabled', true);
+          i.classList.remove('border-accent/40');
+        });
+        saveBtn.style.display = 'none';
+        editBtn.style.display = 'flex';
+      });
+
+      changePhotoBtn.addEventListener('click', () => {
+        if (typeof openUploadWidget === 'function') openUploadWidget();
+      });
+    });
+  </script>
+</body>
 
 </html>

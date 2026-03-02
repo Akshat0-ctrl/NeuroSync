@@ -16,6 +16,9 @@
     <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="../css/global.css">
+    <script src="../js/sidemenu.js"></script>
+    <script src="../js/theme.js"></script>
     <script>
         // Firebase Configuration
         const firebaseConfig = {
@@ -92,21 +95,19 @@
             <div class="flex items-center gap-3 text-primary">
                 <img src="../assets/Navbar_logo copy.png" alt="NeuroSync Logo" class="h-10 w-auto">
             </div>
-            <nav class="hidden xl:flex items-center gap-2 text-sm text-secondary">
-                <a href="dashboard.html"
-                    class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1">
-                    <span>Dashboard</span>
-                </a>
-            </nav>
             <div class="flex items-center gap-4">
-                <button onclick="window.location.href='Dashboard.html'"
-                    class="translucent-button flex items-center justify-center rounded-full size-11">
-                    <span class="material-symbols-outlined text-2xl">arrow_back</span>
+                <button id="theme-toggle"
+                    class="translucent-button flex items-center justify-center rounded-full size-11 hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-2xl">dark_mode</span>
+                </button>
+                <button class="xl:hidden translucent-button flex items-center justify-center rounded-full size-11"
+                    id="mobile-menu-btn">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
                 </button>
             </div>
         </header>
 
-        <div class="min-h-screen p-8">
+        <main class="flex-1 p-6 transition-all duration-300 ml-64" id="main-content">
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-8">
                     <h1 class="text-4xl font-bold tracking-tight mb-2">Your Rewards</h1>
@@ -180,7 +181,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+    </div>
 </body>
 
 </html>

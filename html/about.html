@@ -19,6 +19,8 @@
   <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js"></script>
+  <script src="../js/sidemenu.js"></script>
+  <script src="../js/theme.js"></script>
   <style>
     /* Minimal about page specific styles from earlier */
     body {
@@ -127,211 +129,250 @@
         margin-bottom: 1rem;
       }
     }
+
+    /* ===== Light Mode Overrides ===== */
+    body.light {
+      background: linear-gradient(135deg, #FAF8FF 0%, #F0EAFF 40%, #EDE9FE 100%) !important;
+      color: #1E1030;
+    }
+
+    body.light h1,
+    body.light h2 {
+      color: #7C3AED;
+    }
+
+    body.light .member-section {
+      background: rgba(243, 238, 255, 0.85);
+      box-shadow: 0 8px 20px rgba(124, 58, 237, 0.2);
+    }
+
+    body.light .member-section:hover {
+      box-shadow: 0 16px 30px rgba(124, 58, 237, 0.4);
+    }
+
+    body.light .member-info {
+      color: #4B3D6B;
+    }
+
+    body.light .member-info .name {
+      color: #2E1065;
+    }
+
+    body.light .member-info .role {
+      color: #6D28D9;
+    }
+
+    body.light header {
+      background-color: rgba(250, 248, 255, 0.9) !important;
+      border-color: #DDD6FE !important;
+    }
+
+    body.light .translucent-button {
+      background-color: rgba(124, 58, 237, 0.08);
+      border: 1px solid rgba(124, 58, 237, 0.25);
+      color: #1E1030;
+    }
+
+    body.light .translucent-button:hover {
+      background-color: rgba(124, 58, 237, 0.18);
+      border-color: rgba(124, 58, 237, 0.5);
+      box-shadow: 0 0 15px rgba(124, 58, 237, 0.25);
+      color: #1E1030;
+    }
+
+    body.light .absolute.top-full {
+      background-color: rgba(250, 248, 255, 0.97) !important;
+      border-color: #DDD6FE !important;
+      box-shadow: 0 4px 20px rgba(109, 40, 217, 0.15) !important;
+    }
+
+    body.light .absolute.top-full a {
+      color: #1E1030 !important;
+    }
+
+    body.light .absolute.top-full a:hover {
+      background-color: #EDE9FE !important;
+    }
   </style>
 </head>
 
 <body class="bg-primary dark">
-  <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden"
+  <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden ml-64"
     style='font-family: "Space Grotesk", "Noto Sans", sans-serif;'>
     <div class="absolute inset-0 -z-10 overflow-hidden">
-      <!-- Particle background as per index.html can be inserted here if needed -->
-      <header
-        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary px-4 sm:px-6 lg:px-10 py-3 bg-transparent backdrop-blur-sm sticky top-0 z-20">
-        <div class="flex items-center gap-3 text-primary">
-          <img src="../assets/Navbar_logo copy.png" alt="NeuroSync Logo" class="h-10 w-auto">
-
-
-        </div>
-        <nav class="hidden xl:flex items-center gap-2 text-sm text-secondary">
-          <a class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors"
-            href="../index.html">Home</a>
-          <a href="dashboard.html" id="dashboard-nav-link"
-            class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1"
-            style="display: none;">
-            <span>Dashboard</span>
-          </a>
-          <div class="relative group">
-            <button
-              class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1 dropdown-toggle">
-              <span>Resources</span>
-              <span class="material-symbols-outlined text-base">expand_more</span>
-            </button>
-            <div
-              class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-              <div class="py-1">
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="mood-selection.html">Mood Tracker</a>
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="study-library.html">Study Library</a>
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="study-library.html">Upload Material</a>
-              </div>
-            </div>
-          </div>
-          <div class="relative group">
-            <button
-              class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors flex items-center gap-1 dropdown-toggle">
-              <span>Company</span>
-              <span class="material-symbols-outlined text-base">expand_more</span>
-            </button>
-            <div
-              class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg bg-secondary/80 backdrop-blur-sm border border-primary ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-              <div class="py-1">
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="feedback.html">Feedback Us</a>
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="about.html">About Us</a>
-                <a class="block px-4 py-2 text-sm text-secondary hover:bg-primary/50 hover:text-primary transition-colors"
-                  href="feedback.html">Support</a>
-              </div>
-            </div>
-          </div>
-          <a href="rewards.html" id="rewards-nav-link"
-            class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors"
-            style="display: none;">Rewards</a>
-          <a href="profile.html" id="profile-nav-link"
-            class="translucent-button rounded-full px-4 py-2 hover:text-primary transition-colors"
-            style="display: none;">Profile</a>
-        </nav>
-        <script>
-          // Dropdown interaction scripts same as index.html can be inserted here or in external js/navbar.js
-        </script>
-        <div class="flex items-center gap-4">
-          <button id="theme-toggle"
-            class="translucent-button flex items-center justify-center rounded-full size-11 hover:scale-110 transition-transform">
-            <span class="material-symbols-outlined text-2xl">dark_mode</span>
-          </button>
-          <button id="get-started-btn"
-            class="hidden sm:flex translucent-button min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-11 px-6 text-base font-bold transition-transform">
-            <span class="truncate">Get Started</span>
-          </button>
-          <button class="xl:hidden translucent-button flex items-center justify-center rounded-full size-11">
-            <span class="material-symbols-outlined text-2xl">menu</span>
-          </button>
-        </div>
-      </header>
-      <!-- Main content with about container -->
-      <main class="flex-1">
-        <div class="container" role="list" aria-label="NeuroSync team members">
-          <h1
-            class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-6xl font-extrabold drop-shadow-lg"
-            style='font-family: "Story Script", cursive;'>About Us</h1>
-
-          <section class="member-section" role="listitem" aria-label="Akshat Shukla, Team Captain">
-            <div class="member-info">
-              <div class="name flex items-center">
-                <span>Akshat Shukla</span>
-                <a href="https://www.instagram.com/aksh.at68_/" target="_blank" rel="noopener noreferrer"
-                  aria-label="Instagram profile of Akshat Shukla" class="text-pink-500 hover:text-pink-600 ml-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"
-                    aria-hidden="true" focusable="false">
-                    <path
-                      d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zm8.5 1.5c1.45 0 2.625 1.178 2.625 2.625v8.5c0 1.447-1.176 2.625-2.625 2.625h-8.5a2.626 2.626 0 01-2.625-2.625v-8.5c0-1.447 1.177-2.625 2.625-2.625h8.5zM12 7.25a4.75 4.75 0 100 9.5 4.75 4.75 0 000-9.5zm0 1.5a3.25 3.25 0 110 6.5 3.25 3.25 0 010-6.5zm4-1.812a1.062 1.062 0 11-2.125 0 1.062 1.062 0 012.125 0z" />
-                  </svg>
-                </a>
-              </div>
-              <div class="role">Team Captain & AI Backend Developer</div>
-              <p>
-                We all are 15-16 in age.<br />
-                Student of PM Shri Kendriya Vidyalaya OEF Kanpur.<br />
-                A natural leader and innovative thinker, Akshat steers the team with intelligence and versatility.
-                A backend developer and AI enthusiast who brings logic and all-round expertise,
-                Akshat is the pillar who blends technical excellence with clear vision and determination.
-              </p>
-            </div>
-            <div class="photo-container">
-              <img src="../assets/images/Team members/Akshat.png" alt="Photo of Akshat Shukla" loading="lazy" />
-            </div>
-          </section>
-
-          <section class="member-section" role="listitem" aria-label="Anupriya, HTML and CSS Developer">
-            <div class="member-info">
-              <div class="name flex items-center">
-                <span>Anupriya</span>
-                <a href="https://www.instagram.com/anu_priya.2010/" target="_blank" rel="noopener noreferrer"
-                  aria-label="Instagram profile of Anupriya" class="text-pink-500 hover:text-pink-600 ml-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"
-                    aria-hidden="true" focusable="false">
-                    <path
-                      d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zm8.5 1.5c1.45 0 2.625 1.178 2.625 2.625v8.5c0 1.447-1.176 2.625-2.625 2.625h-8.5a2.626 2.626 0 01-2.625-2.625v-8.5c0-1.447 1.177-2.625 2.625-2.625h8.5zM12 7.25a4.75 4.75 0 100 9.5 4.75 4.75 0 000-9.5zm0 1.5a3.25 3.25 0 110 6.5 3.25 3.25 0 010-6.5zm4-1.812a1.062 1.062 0 11-2.125 0 1.062 1.062 0 012.125 0z" />
-                  </svg>
-                </a>
-              </div>
-              <div class="role">HTML & CSS Developer</div>
-              <p>
-                We all are 15-16 in age.<br />
-                Student of PM Shri Kendriya Vidyalaya OEF Kanpur.<br />
-                A sweet and creative mind filled with super ideas, Anupriya brings warmth and meticulous design to the
-                team.
-                She crafts beautiful, responsive interfaces with passion and precision,
-                elevating the user experience through her thoughtful touch and flair for aesthetics.
-              </p>
-            </div>
-            <div class="photo-container">
-              <img src="../assets/images/Team members/Anurpiya.png" alt="Photo of Anupriya" loading="lazy" />
-            </div>
-          </section>
-
-          <section class="member-section" role="listitem"
-            aria-label="Ashriya Mishra, Illustrator & CSS Helper Designer">
-            <div class="member-info">
-              <div class="name flex items-center">
-                <span>Ashriya Mishra</span>
-                <a href="https://www.instagram.com/_aaru.57_/" target="_blank" rel="noopener noreferrer"
-                  aria-label="Instagram profile of Ashriya Mishra" class="text-pink-500 hover:text-pink-600 ml-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"
-                    aria-hidden="true" focusable="false">
-                    <path
-                      d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zm8.5 1.5c1.45 0 2.625 1.178 2.625 2.625v8.5c0 1.447-1.176 2.625-2.625 2.625h-8.5a2.626 2.626 0 01-2.625-2.625v-8.5c0-1.447 1.177-2.625 2.625-2.625h8.5zM12 7.25a4.75 4.75 0 100 9.5 4.75 4.75 0 000-9.5zm0 1.5a3.25 3.25 0 110 6.5 3.25 3.25 0 010-6.5zm4-1.812a1.062 1.062 0 11-2.125 0 1.062 1.062 0 012.125 0z" />
-                  </svg>
-                </a>
-              </div>
-              <div class="role">Illustrator & CSS Helper Designer</div>
-              <p>
-                We all are 15-16 in age.<br />
-                Student of PM Shri Kendriya Vidyalaya OEF Kanpur.<br />
-                Ashriya is a talented illustrator and a keen eye for detail,
-                adept at crafting stunning designs and supporting the team’s front-end styles.
-                Dependable and creative, she adds vibrant life and clarity to every project she touches.
-              </p>
-            </div>
-            <div class="photo-container">
-              <img src="../assets/images/Team members/Ashriya.png" alt="Photo of Ashriya Mishra" loading="lazy" />
-            </div>
-          </section>
-
-          <section class="member-section" role="listitem"
-            aria-label="Ankush Choudhary, Backend Developer & Hardware Expert">
-            <div class="member-info">
-              <div class="name flex items-center">
-                <span>Ankush Choudhary</span>
-                <a href="https://www.instagram.com/_ank.sh__/" target="_blank" rel="noopener noreferrer"
-                  aria-label="Instagram profile of Ankush Choudhary" class="text-pink-500 hover:text-pink-600 ml-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"
-                    aria-hidden="true" focusable="false">
-                    <path
-                      d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zm8.5 1.5c1.45 0 2.625 1.178 2.625 2.625v8.5c0 1.447-1.176 2.625-2.625 2.625h-8.5a2.626 2.626 0 01-2.625-2.625v-8.5c0-1.447 1.177-2.625 2.625-2.625h8.5zM12 7.25a4.75 4.75 0 100 9.5 4.75 4.75 0 000-9.5zm0 1.5a3.25 3.25 0 110 6.5 3.25 3.25 0 010-6.5zm4-1.812a1.062 1.062 0 11-2.125 0 1.062 1.062 0 012.125 0z" />
-                  </svg>
-                </a>
-              </div>
-              <div class="role">Backend Developer & Hardware Expert</div>
-              <p>
-                We all are 15-16 in age.<br />
-                Student of PM Shri Kendriya Vidyalaya OEF Kanpur.<br />
-                A smart and hardworking problem solver, Ankush optimizes complex ideas with technical finesse.
-                His expertise in hardware and backend development underpins the strength and efficiency
-                of our projects, coupled with continual learning and dedication.
-              </p>
-            </div>
-            <div class="photo-container">
-              <img src="../assets/images/Team members/Ankush.png" alt="Photo of Ankush Choudhary" loading="lazy" />
-            </div>
-          </section>
-        </div>
-      </main>
+      <!-- Background elements if any -->
     </div>
+
+    <header
+      class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary px-4 sm:px-6 lg:px-10 py-3 bg-transparent backdrop-blur-sm sticky top-0 z-20">
+      <div class="flex items-center gap-3 text-primary">
+        <img src="../assets/Navbar_logo copy.png" alt="NeuroSync Logo" class="h-10 w-auto">
+      </div>
+      <div class="flex items-center gap-4">
+        <button id="theme-toggle"
+          class="translucent-button flex items-center justify-center rounded-full size-11 hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-2xl">dark_mode</span>
+        </button>
+        <button onclick="window.location.href='dashboard.html'"
+          class="translucent-button flex items-center justify-center rounded-full size-11">
+          <span class="material-symbols-outlined text-2xl">arrow_back</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="container">
+      <section>
+        <h1
+          class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-6xl font-extrabold drop-shadow-lg"
+          style='font-family: "Story Script", cursive;'>About Us</h1>
+        <p style="text-align: center; font-size: 1.2rem; color: #ad92c9;">NeuroSync is dedicated to enhancing students'
+          mental well-being and productivity through AI-driven insights and a supportive community.</p>
+      </section>
+
+      <section class="member-section" role="listitem" aria-label="Akshat Shukla, Team Captain">
+        <div class="member-info">
+          <div class="name flex items-center">
+            <span>Akshat Shukla</span>
+            <a href="https://www.instagram.com/aksh.at68_/" target="_blank" rel="noopener noreferrer"
+              aria-label="Instagram profile of Akshat Shukla" class="text-pink-500 hover:text-pink-600 ml-1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"
+                aria-hidden="true" focusable="false">
+                <path
+                  d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zm8.5 1.5c1.45 0 2.625 1.178 2.625 2.625v8.5c0 1.447-1.176 2.625-2.625 2.625h-8.5a2.626 2.626 0 01-2.625-2.625v-8.5c0-1.447 1.177-2.625 2.625-2.625h8.5zM12 7.25a4.75 4.75 0 100 9.5 4.75 4.75 0 000-9.5zm0 1.5a3.25 3.25 0 110 6.5 3.25 3.25 0 010-6.5zm4-1.812a1.062 1.062 0 11-2.125 0 1.062 1.062 0 012.125 0z" />
+              </svg>
+            </a>
+          </div>
+          <div class="role">Team Captain & AI Backend Developer</div>
+          <p>
+            We all are 15-16 in age.<br />
+            Student of PM Shri Kendriya Vidyalaya OEF Kanpur.<br />
+            A natural leader and innovative thinker, Akshat steers the team with intelligence and versatility.
+            A backend developer and AI enthusiast who brings logic and all-round expertise,
+            Akshat is the pillar who blends technical excellence with clear vision and determination.
+          </p>
+        </div>
+        <div class="photo-container">
+          <img src="../assets/images/Team members/Akshat.png" alt="Photo of Akshat Shukla" loading="lazy" />
+        </div>
+      </section>
+
+      <section class="member-section" role="listitem" aria-label="Anupriya, HTML and CSS Developer">
+        <div class="member-info">
+          <div class="name flex items-center">
+            <span>Anupriya</span>
+            <a href="https://www.instagram.com/anu_priya.2010/" target="_blank" rel="noopener noreferrer"
+              aria-label="Instagram profile of Anupriya" class="text-pink-500 hover:text-pink-600 ml-1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"
+                aria-hidden="true" focusable="false">
+                <path
+                  d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zm8.5 1.5c1.45 0 2.625 1.178 2.625 2.625v8.5c0 1.447-1.176 2.625-2.625 2.625h-8.5a2.626 2.626 0 01-2.625-2.625v-8.5c0-1.447 1.177-2.625 2.625-2.625h8.5zM12 7.25a4.75 4.75 0 100 9.5 4.75 4.75 0 000-9.5zm0 1.5a3.25 3.25 0 110 6.5 3.25 3.25 0 010-6.5zm4-1.812a1.062 1.062 0 11-2.125 0 1.062 1.062 0 012.125 0z" />
+              </svg>
+            </a>
+          </div>
+          <div class="role">HTML & CSS Developer</div>
+          <p>
+            We all are 15-16 in age.<br />
+            Student of PM Shri Kendriya Vidyalaya OEF Kanpur.<br />
+            A sweet and creative mind filled with super ideas, Anupriya brings warmth and meticulous design to the
+            team.
+            She crafts beautiful, responsive interfaces with passion and precision,
+            elevating the user experience through her thoughtful touch and flair for aesthetics.
+          </p>
+        </div>
+        <div class="photo-container">
+          <img src="../assets/images/Team members/Anurpiya.png" alt="Photo of Anupriya" loading="lazy" />
+        </div>
+      </section>
+
+      <section class="member-section" role="listitem" aria-label="Ashriya Mishra, Illustrator & CSS Helper Designer">
+        <div class="member-info">
+          <div class="name flex items-center">
+            <span>Ashriya Mishra</span>
+            <a href="https://www.instagram.com/_aaru.57_/" target="_blank" rel="noopener noreferrer"
+              aria-label="Instagram profile of Ashriya Mishra" class="text-pink-500 hover:text-pink-600 ml-1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"
+                aria-hidden="true" focusable="false">
+                <path
+                  d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zm8.5 1.5c1.45 0 2.625 1.178 2.625 2.625v8.5c0 1.447-1.176 2.625-2.625 2.625h-8.5a2.626 2.626 0 01-2.625-2.625v-8.5c0-1.447 1.177-2.625 2.625-2.625h8.5zM12 7.25a4.75 4.75 0 100 9.5 4.75 4.75 0 000-9.5zm0 1.5a3.25 3.25 0 110 6.5 3.25 3.25 0 010-6.5zm4-1.812a1.062 1.062 0 11-2.125 0 1.062 1.062 0 012.125 0z" />
+              </svg>
+            </a>
+          </div>
+          <div class="role">Illustrator & CSS Helper Designer</div>
+          <p>
+            We all are 15-16 in age.<br />
+            Student of PM Shri Kendriya Vidyalaya OEF Kanpur.<br />
+            Ashriya is a talented illustrator and a keen eye for detail,
+            adept at crafting stunning designs and supporting the team’s front-end styles.
+            Dependable and creative, she adds vibrant life and clarity to every project she touches.
+          </p>
+        </div>
+        <div class="photo-container">
+          <img src="../assets/images/Team members/Ashriya.png" alt="Photo of Ashriya Mishra" loading="lazy" />
+        </div>
+      </section>
+
+      <section class="member-section" role="listitem"
+        aria-label="Ankush Choudhary, Backend Developer & Hardware Expert">
+        <div class="member-info">
+          <div class="name flex items-center">
+            <span>Ankush Choudhary</span>
+            <a href="https://www.instagram.com/_ank.sh__/" target="_blank" rel="noopener noreferrer"
+              aria-label="Instagram profile of Ankush Choudhary" class="text-pink-500 hover:text-pink-600 ml-1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"
+                aria-hidden="true" focusable="false">
+                <path
+                  d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zm8.5 1.5c1.45 0 2.625 1.178 2.625 2.625v8.5c0 1.447-1.176 2.625-2.625 2.625h-8.5a2.626 2.626 0 01-2.625-2.625v-8.5c0-1.447 1.177-2.625 2.625-2.625h8.5zM12 7.25a4.75 4.75 0 100 9.5 4.75 4.75 0 000-9.5zm0 1.5a3.25 3.25 0 110 6.5 3.25 3.25 0 010-6.5zm4-1.812a1.062 1.062 0 11-2.125 0 1.062 1.062 0 012.125 0z" />
+              </svg>
+            </a>
+          </div>
+          <div class="role">Backend Developer & Hardware Expert</div>
+          <p>
+            We all are 15-16 in age.<br />
+            Student of PM Shri Kendriya Vidyalaya OEF Kanpur.<br />
+            A smart and hardworking problem solver, Ankush optimizes complex ideas with technical finesse.
+            His expertise in hardware and backend development underpins the strength and efficiency
+            of our projects, coupled with continual learning and dedication.
+          </p>
+        </div>
+        <div class="photo-container">
+          <img src="../assets/images/Team members/Ankush.png" alt="Photo of Ankush Choudhary" loading="lazy" />
+        </div>
+      </section>
+    </div>
+    </main>
+  </div>
   </div>
   <script src="../js/navbar.js"></script>
+  <script>
+    // Theme toggle for about.html
+    document.addEventListener('DOMContentLoaded', function () {
+      const themeToggle = document.getElementById('theme-toggle');
+      if (!themeToggle) return;
+      const themeIcon = themeToggle.querySelector('span');
+
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          document.body.classList.remove('dark');
+          document.body.classList.add('light');
+          themeIcon.textContent = 'light_mode'; // sun = currently light
+        } else {
+          document.body.classList.remove('light');
+          document.body.classList.add('dark');
+          themeIcon.textContent = 'dark_mode'; // moon = currently dark
+        }
+        localStorage.setItem('theme', theme);
+      }
+
+      // Load saved preference
+      const saved = localStorage.getItem('theme') || 'dark';
+      applyTheme(saved);
+
+      themeToggle.addEventListener('click', function () {
+        const isLight = document.body.classList.contains('light');
+        applyTheme(isLight ? 'dark' : 'light');
+      });
+    });
+  </script>
   <!-- Additional scripts for firebase auth state, profile display, theme toggle can be added here or in navbar.js -->
 </body>
 

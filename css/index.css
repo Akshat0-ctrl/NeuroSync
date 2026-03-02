@@ -9,14 +9,14 @@
   --dark-text-primary: #FFFFFF;
   --dark-text-secondary: #E0D1FF;
   --dark-text-muted: #A492C9;
-  --light-bg: #FFFFFF;
-  --light-bg-secondary: #F0F9FF;
-  --light-accent: #06B6D4;
-  --light-accent-secondary: #0891B2;
-  --light-border: #E0F2FE;
-  --light-text-primary: #0F172A;
-  --light-text-secondary: #334155;
-  --light-text-muted: #64748B;
+  --light-bg: #FAF8FF;
+  --light-bg-secondary: #F3EEFF;
+  --light-accent: #7C3AED;
+  --light-accent-secondary: #6D28D9;
+  --light-border: #DDD6FE;
+  --light-text-primary: #1E1030;
+  --light-text-secondary: #4B3D6B;
+  --light-text-muted: #7C6A9A;
 }
 
 .dark .bg-primary {
@@ -184,9 +184,30 @@
 }
 
 .light {
-  background: linear-gradient(to bottom, #FFFFFF, #F0F9FF);
+  background: linear-gradient(135deg, #FAF8FF 0%, #F0EAFF 40%, #EDE9FE 100%);
+  min-height: 100vh;
 }
 
+/* Light Mode — Translucent Button Fix */
+.light .translucent-button {
+  background-color: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  color: #1E1030;
+}
+
+.light .translucent-button:hover {
+  background-color: rgba(124, 58, 237, 0.18);
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.25);
+  color: #1E1030;
+}
+
+/* Light Mode — Particle Fix */
+.light .particle {
+  background-color: rgba(109, 40, 217, 0.2) !important;
+}
+
+/* Translucent Button — Dark Mode Default */
 .translucent-button {
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);

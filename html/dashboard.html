@@ -17,7 +17,10 @@
     <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-storage-compat.js"></script>
+    <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/mobile-optimizations.css">
+    <script src="../js/sidemenu.js"></script>
+    <script src="../js/theme.js"></script>
     <script>
         // Firebase Configuration
         const firebaseConfig = {
@@ -406,6 +409,7 @@
             --border-primary: #2A1F36;
         }
 
+        /* ===== Dark Mode (default) ===== */
         .translucent-button {
             background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -426,6 +430,61 @@
         .bg-primary { background-color: #120B1A; }
         .bg-secondary { background-color: #1A1122; }
         .bg-tertiary { background-color: #2A1F36; }
+
+        /* ===== Light Mode Overrides ===== */
+        body.light {
+            background: linear-gradient(135deg, #FAF8FF 0%, #F0EAFF 40%, #EDE9FE 100%) !important;
+            min-height: 100vh;
+        }
+        body.light .bg-primary  { background-color: #FAF8FF !important; }
+        body.light .bg-secondary { background-color: #F3EEFF !important; }
+        body.light .bg-tertiary  { background-color: #EDE9FE !important; }
+        body.light .text-primary  { color: #1E1030 !important; }
+        body.light .text-secondary { color: #4B3D6B !important; }
+        body.light .border-primary { border-color: #DDD6FE !important; }
+
+        /* Translucent button in light mode */
+        body.light .translucent-button {
+            background-color: rgba(124, 58, 237, 0.08);
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            color: #1E1030;
+        }
+        body.light .translucent-button:hover {
+            background-color: rgba(124, 58, 237, 0.18);
+            border-color: rgba(124, 58, 237, 0.5);
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.25);
+            color: #1E1030;
+        }
+
+        /* Cards / panels */
+        body.light .bg-secondary\/50 { background-color: rgba(243, 238, 255, 0.8) !important; }
+        body.light .backdrop-blur-sm { backdrop-filter: blur(4px); }
+        body.light header { background-color: rgba(250, 248, 255, 0.9) !important; border-color: #DDD6FE !important; }
+        body.light #side-menu { background-color: rgba(243, 238, 255, 0.97) !important; border-color: #DDD6FE !important; }
+        body.light #navbar-dropdown { background-color: #FAF8FF !important; border-color: #DDD6FE !important; }
+        body.light #navbar-dropdown a, body.light #navbar-dropdown button { color: #1E1030 !important; }
+        body.light #navbar-dropdown a:hover, body.light #navbar-dropdown button:hover { background-color: #EDE9FE !important; }
+        body.light #navbar-name { color: #1E1030 !important; }
+        body.light #navbar-class-role, body.light #side-class-role { color: #4B3D6B !important; }
+        body.light #side-name { color: #1E1030 !important; }
+        body.light #side-menu nav a { color: #4B3D6B !important; }
+        body.light #side-menu nav a:hover { background-color: #EDE9FE !important; color: #1E1030 !important; }
+
+        /* Progress bars, focus timer display */
+        body.light #timer-display { color: #4B3D6B !important; }
+        body.light .text-accent { color: #7C3AED !important; }
+        body.light .bg-accent { background-color: #7C3AED !important; }
+        body.light .shadow-accent\/30 { box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3) !important; }
+        body.light .bg-green-500\/20 { background-color: rgba(16, 185, 129, 0.15) !important; }
+        body.light .bg-yellow-500\/20 { background-color: rgba(245, 158, 11, 0.15) !important; }
+
+        /* Dropdown menus */
+        body.light .absolute.top-full { background-color: rgba(250, 248, 255, 0.95) !important; border-color: #DDD6FE !important; box-shadow: 0 4px 20px rgba(109, 40, 217, 0.15) !important; }
+        body.light .absolute.top-full a { color: #1E1030 !important; }
+        body.light .absolute.top-full a:hover { background-color: #EDE9FE !important; }
+
+        /* Particles */
+        body.light .particle { background-color: rgba(109, 40, 217, 0.2) !important; }
     </style>
 </head>
 
@@ -541,51 +600,9 @@
                             }
                         });
                     });
-
-                    // Close dropdowns when clicking outside
-                    document.addEventListener('click', function (e) {
-                        if (!e.target.closest('.relative.group')) {
-                            document.querySelectorAll('.absolute').forEach(dropdown => {
-                                dropdown.classList.add('hidden');
-                                dropdown.classList.remove('block');
-                            });
-                        }
-                    });
                 });
             </script>
             <div class="flex items-center gap-4">
-                <div id="navbar-profile" class="hidden sm:flex items-center gap-3 cursor-pointer relative">
-                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 shadow-[0_0_15px_rgba(128,19,236,0.5)]"
-                        id="navbar-profile-photo">
-                        <span
-                            class="material-symbols-outlined text-xl text-[var(--primary-color)] flex items-center justify-center w-full h-full">person</span>
-                    </div>
-                    <div class="flex flex-col">
-                        <div class="text-white text-sm font-medium" id="navbar-name">User</div>
-                        <div class="text-[#ad92c9] text-xs" id="navbar-class-role">Student</div>
-                    </div>
-                    <!-- Dropdown Menu -->
-                    <div id="navbar-dropdown"
-                        class="absolute top-full right-0 mt-2 w-48 rounded-md shadow-lg bg-[#1A1122] backdrop-blur-sm border border-[#2A1F36] ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50">
-                        <div class="py-1">
-                            <a href="profile.html"
-                                class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors">
-                                <span class="material-symbols-outlined text-base">person</span>
-                                <span>See Profile</span>
-                            </a>
-                            <a href="profile.html"
-                                class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors">
-                                <span class="material-symbols-outlined text-base">edit</span>
-                                <span>Edit Profile</span>
-                            </a>
-                            <button id="navbar-sign-out-btn"
-                                class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors w-full text-left">
-                                <span class="material-symbols-outlined text-base">logout</span>
-                                <span>Sign Out</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
                 <button id="theme-toggle"
                     class="translucent-button flex items-center justify-center rounded-full size-11 hover:scale-110 transition-transform">
                     <span class="material-symbols-outlined text-2xl">dark_mode</span>
@@ -597,75 +614,11 @@
             </div>
         </header>
 
-        <!-- Side Menu -->
-        <div id="side-menu"
-            class="fixed top-0 left-0 h-full w-64 bg-secondary/95 backdrop-blur-md border-r border-primary z-50">
-            <div class="p-6">
-                <!-- User Profile Box -->
-                <div onclick="window.location.href='profile.html'"
-                    class="flex items-center gap-3 mb-8 p-4 bg-tertiary/50 rounded-lg border border-primary/30 cursor-pointer hover:bg-tertiary/70 transition-colors">
-                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 shadow-[0_0_15px_rgba(128,19,236,0.5)]"
-                        id="side-profile-photo">
-                        <span
-                            class="material-symbols-outlined text-xl text-[var(--primary-color)] flex items-center justify-center w-full h-full">person</span>
-                    </div>
-                    <div class="flex flex-col">
-                        <div class="text-white text-sm font-medium" id="side-name">User</div>
-                        <div class="text-[#ad92c9] text-xs" id="side-class-role">Student</div>
-                    </div>
-                </div>
+        <!-- Side Menu Container (Injected via JS) -->
+        <script src="../js/sidemenu.js"></script>
+        <script src="../js/theme.js"></script>
 
-                <!-- Menu Items -->
-                <nav class="space-y-2">
-                    <a href="rewards.html"
-                        class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-primary/20 hover:text-primary transition-colors rounded-lg">
-                        <span class="material-symbols-outlined text-accent">emoji_events</span>
-                        <span>Rewards</span>
-                    </a>
-                    <a href="profile.html"
-                        class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-primary/20 hover:text-primary transition-colors rounded-lg">
-                        <span class="material-symbols-outlined text-accent">person</span>
-                        <span>Profile</span>
-                    </a>
-                    <a href="study-library.html"
-                        class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-primary/20 hover:text-primary transition-colors rounded-lg">
-                        <span class="material-symbols-outlined text-accent">library_books</span>
-                        <span>Study Library</span>
-                    </a>
-                    <a href="mood-selection.html"
-                        class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-primary/20 hover:text-primary transition-colors rounded-lg">
-                        <span class="material-symbols-outlined text-accent">mood</span>
-                        <span>Mood Tracker</span>
-                    </a>
-                    <a href="study-library.html"
-                        class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-primary/20 hover:text-primary transition-colors rounded-lg">
-                        <span class="material-symbols-outlined text-accent">upload</span>
-                        <span>Upload Study Material</span>
-                    </a>
-                    <a href="feedback.html"
-                        class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-primary/20 hover:text-primary transition-colors rounded-lg">
-                        <span class="material-symbols-outlined text-accent">feedback</span>
-                        <span>Feedback Us</span>
-                    </a>
-                </nav>
-
-                <!-- Sign Out Button -->
-                <div class="absolute bottom-6 left-6 right-6">
-                    <button onclick="signOut()"
-                        class="w-full flex items-center gap-3 px-4 py-3 text-secondary hover:bg-red-500/20 hover:text-red-400 transition-colors rounded-lg">
-                        <span class="material-symbols-outlined text-red-400">logout</span>
-                        <span>Sign Out</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Overlay -->
-        <div id="menu-overlay"
-            class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 invisible transition-opacity duration-300 ease-in-out z-40">
-        </div>
-
-        <div class="min-h-screen p-8 ml-64">
+        <main class="flex-1 p-6 transition-all duration-300 ml-64">
             <div class="max-w-7xl mx-auto">
                 <!-- Welcome Section -->
                 <div class="mb-8">
@@ -870,203 +823,167 @@
                     </div>
                 </div>
             </div>
-        </div>
+    </div>
 
-        <!-- Focus Timer Script -->
-        <script>
-            // Focus Timer Functionality
-            let selectedTime = 25 * 60; // Default 25 minutes in seconds
-            let timeLeft = selectedTime;
-            let isRunning = false;
-            let timerInterval;
-            const timerDisplay = document.getElementById('timer-display');
-            const startBtn = document.getElementById('start-btn');
-            const pauseBtn = document.getElementById('pause-btn');
-            const resetBtn = document.getElementById('reset-btn');
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-            const timeButtons = document.querySelectorAll('#time-15, #time-25, #time-30, #time-45');
+    <!-- Focus Timer Script -->
+    <script>
+        // Focus Timer Functionality
+        let selectedTime = 25 * 60; // Default 25 minutes in seconds
+        let timeLeft = selectedTime;
+        let isRunning = false;
+        let timerInterval;
+        const timerDisplay = document.getElementById('timer-display');
+        const startBtn = document.getElementById('start-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const timeButtons = document.querySelectorAll('#time-15, #time-25, #time-30, #time-45');
 
-            function updateDisplay() {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateProgress() {
+            const totalTime = selectedTime;
+            const elapsed = totalTime - timeLeft;
+            const progress = Math.min((elapsed / totalTime) * 100, 100);
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${Math.round(progress)}%`;
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                startBtn.style.display = 'none';
+                pauseBtn.style.display = 'flex';
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateDisplay();
+                    updateProgress();
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        isRunning = false;
+                        startBtn.style.display = 'flex';
+                        pauseBtn.style.display = 'none';
+                        alert('Session complete! Great job maintaining focus.');
+                    }
+                }, 1000);
             }
+        }
 
-            function updateProgress() {
-                const totalTime = selectedTime;
-                const elapsed = totalTime - timeLeft;
-                const progress = Math.min((elapsed / totalTime) * 100, 100);
-                progressBar.style.width = `${progress}%`;
-                progressText.textContent = `${Math.round(progress)}%`;
-            }
-
-            function startTimer() {
-                if (!isRunning) {
-                    isRunning = true;
-                    startBtn.style.display = 'none';
-                    pauseBtn.style.display = 'flex';
-                    timerInterval = setInterval(() => {
-                        timeLeft--;
-                        updateDisplay();
-                        updateProgress();
-                        if (timeLeft <= 0) {
-                            clearInterval(timerInterval);
-                            isRunning = false;
-                            startBtn.style.display = 'flex';
-                            pauseBtn.style.display = 'none';
-                            alert('Session complete! Great job maintaining focus.');
-                        }
-                    }, 1000);
-                }
-            }
-
-            function pauseTimer() {
-                if (isRunning) {
-                    clearInterval(timerInterval);
-                    isRunning = false;
-                    startBtn.style.display = 'flex';
-                    pauseBtn.style.display = 'none';
-                }
-            }
-
-            function resetTimer() {
+        function pauseTimer() {
+            if (isRunning) {
                 clearInterval(timerInterval);
                 isRunning = false;
-                timeLeft = selectedTime;
-                updateDisplay();
-                updateProgress();
                 startBtn.style.display = 'flex';
                 pauseBtn.style.display = 'none';
             }
+        }
 
-            function selectTime(minutes) {
-                selectedTime = minutes * 60;
-                resetTimer();
-                timeButtons.forEach(btn => {
-                    btn.classList.remove('bg-accent', 'text-primary');
-                });
-                const activeBtn = document.getElementById(`time-${minutes}`);
-                activeBtn.classList.add('bg-accent', 'text-primary');
-            }
-
-            // Event Listeners
-            startBtn.addEventListener('click', startTimer);
-            pauseBtn.addEventListener('click', pauseTimer);
-            resetBtn.addEventListener('click', resetTimer);
-
-            timeButtons.forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const minutes = parseInt(this.id.split('-')[1]);
-                    selectTime(minutes);
-                });
-            });
-
-            // Initial updates
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timeLeft = selectedTime;
             updateDisplay();
             updateProgress();
+            startBtn.style.display = 'flex';
+            pauseBtn.style.display = 'none';
+        }
 
-            // Side Menu functionality
-            document.addEventListener('DOMContentLoaded', function () {
-                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-                const sideMenu = document.getElementById('side-menu');
-                const menuOverlay = document.getElementById('menu-overlay');
-                const themeToggle = document.getElementById('theme-toggle');
-                const themeIcon = themeToggle.querySelector('span');
+        function selectTime(minutes) {
+            selectedTime = minutes * 60;
+            resetTimer();
+            timeButtons.forEach(btn => {
+                btn.classList.remove('bg-accent', 'text-primary');
+            });
+            const activeBtn = document.getElementById(`time-${minutes}`);
+            activeBtn.classList.add('bg-accent', 'text-primary');
+        }
 
-                function toggleMenu() {
-                    const isOpen = !sideMenu.classList.contains('-translate-x-full');
-                    if (isOpen) {
-                        sideMenu.classList.add('-translate-x-full');
-                        menuOverlay.classList.add('opacity-0', 'invisible');
-                    } else {
-                        sideMenu.classList.remove('-translate-x-full');
-                        menuOverlay.classList.remove('opacity-0', 'invisible');
-                    }
-                }
+        // Event Listeners
+        startBtn.addEventListener('click', startTimer);
+        pauseBtn.addEventListener('click', pauseTimer);
+        resetBtn.addEventListener('click', resetTimer);
 
-                mobileMenuBtn.addEventListener('click', toggleMenu);
-                menuOverlay.addEventListener('click', toggleMenu);
+        timeButtons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const minutes = parseInt(this.id.split('-')[1]);
+                selectTime(minutes);
+            });
+        });
 
-                // Close menu on escape key
-                document.addEventListener('keydown', function (e) {
-                    if (e.key === 'Escape' && !sideMenu.classList.contains('-translate-x-full')) {
-                        toggleMenu();
-                    }
-                });
+        // Initial updates
+        updateDisplay();
+        updateProgress();
 
-                // Hide mobile menu button since side menu is now always visible
-                mobileMenuBtn.style.display = 'none';
+        // Side Menu functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sideMenu = document.getElementById('side-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('span');
 
-                // Theme toggle functionality
-                themeToggle.addEventListener('click', function () {
-                    const root = document.documentElement;
-                    const isDark = localStorage.getItem('theme') !== 'light';
-
-                    if (isDark) {
-                        // Switch to light theme
-                        root.style.setProperty('--bg-primary', '#FFFFFF');
-                        root.style.setProperty('--bg-secondary', '#F0F9FF');
-                        root.style.setProperty('--bg-tertiary', '#E0F2FE');
-                        root.style.setProperty('--text-primary', '#0F172A');
-                        root.style.setProperty('--text-secondary', '#334155');
-                        root.style.setProperty('--border-primary', '#E0F2FE');
-                        themeIcon.textContent = 'light_mode';
-                        localStorage.setItem('theme', 'light');
-                    } else {
-                        // Switch to dark theme
-                        root.style.setProperty('--bg-primary', '#120B1A');
-                        root.style.setProperty('--bg-secondary', '#1A1122');
-                        root.style.setProperty('--bg-tertiary', '#2A1F36');
-                        root.style.setProperty('--text-primary', '#FFFFFF');
-                        root.style.setProperty('--text-secondary', '#ad92c9');
-                        root.style.setProperty('--border-primary', '#2A1F36');
-                        themeIcon.textContent = 'dark_mode';
-                        localStorage.setItem('theme', 'dark');
-                    }
-                });
-
-                // Load saved theme
-                const savedTheme = localStorage.getItem('theme');
-                if (savedTheme === 'light') {
-                    document.documentElement.style.setProperty('--bg-primary', '#FFFFFF');
-                    document.documentElement.style.setProperty('--bg-secondary', '#F0F9FF');
-                    document.documentElement.style.setProperty('--bg-tertiary', '#E0F2FE');
-                    document.documentElement.style.setProperty('--text-primary', '#0F172A');
-                    document.documentElement.style.setProperty('--text-secondary', '#334155');
-                    document.documentElement.style.setProperty('--border-primary', '#E0F2FE');
-                    themeIcon.textContent = 'light_mode';
+            function toggleMenu() {
+                const isOpen = !sideMenu.classList.contains('-translate-x-full');
+                if (isOpen) {
+                    sideMenu.classList.add('-translate-x-full');
+                    menuOverlay.classList.add('opacity-0', 'invisible');
                 } else {
-                    document.documentElement.style.setProperty('--bg-primary', '#120B1A');
-                    document.documentElement.style.setProperty('--bg-secondary', '#1A1122');
-                    document.documentElement.style.setProperty('--bg-tertiary', '#2A1F36');
-                    document.documentElement.style.setProperty('--text-primary', '#FFFFFF');
-                    document.documentElement.style.setProperty('--text-secondary', '#ad92c9');
-                    document.documentElement.style.setProperty('--border-primary', '#2A1F36');
-                    themeIcon.textContent = 'dark_mode';
+                    sideMenu.classList.remove('-translate-x-full');
+                    menuOverlay.classList.remove('opacity-0', 'invisible');
                 }
+            }
 
-                // Navbar dropdown functionality
-                const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            mobileMenuBtn.addEventListener('click', toggleMenu);
+            menuOverlay.addEventListener('click', toggleMenu);
 
-                dropdownToggles.forEach(toggle => {
-                    toggle.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        const dropdown = this.nextElementSibling;
-                        // Hide other dropdowns
-                        document.querySelectorAll('.dropdown-toggle + div').forEach(d => {
-                            if (d !== dropdown) d.classList.add('hidden');
-                        });
-                        dropdown.classList.toggle('hidden');
+            // Close menu on escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && !sideMenu.classList.contains('-translate-x-full')) {
+                    toggleMenu();
+                }
+            });
+
+            // Hide mobile menu button since side menu is now always visible
+            if (mobileMenuBtn) mobileMenuBtn.style.display = 'none';
+        });
+    </script>
+
+    <!-- Global Scripts -->
+    <script src="../js/theme.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Navbar dropdown functionality
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    // Get the dropdown content which is the next sibling
+                    const dropdown = this.nextElementSibling;
+                    if (!dropdown) return;
+
+                    // Hide other dropdowns first
+                    document.querySelectorAll('.dropdown-toggle + div').forEach(d => {
+                        if (d !== dropdown) d.classList.add('hidden');
                     });
-                });
 
-                // Close dropdowns when clicking outside
-                document.addEventListener('click', function () {
-                    document.querySelectorAll('.dropdown-toggle + div').forEach(d => d.classList.add('hidden'));
+                    // Toggle this one
+                    dropdown.classList.toggle('hidden');
                 });
             });
-        </script>
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function () {
+                document.querySelectorAll('.dropdown-toggle + div').forEach(d => d.classList.add('hidden'));
+            });
+        });
+    </script>
 </body>
 
 </html>

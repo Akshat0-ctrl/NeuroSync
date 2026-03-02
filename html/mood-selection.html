@@ -16,6 +16,9 @@
     rel="stylesheet" />
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../css/global.css">
+  <script src="../js/sidemenu.js"></script>
+  <script src="../js/theme.js"></script>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth-compat.js"></script>
@@ -324,8 +327,8 @@
       0: mood => `I can see you're feeling **${mood}** right now. That's completely valid! 💜\n\n${getMoodTip(mood)}\n\nWould you like to tell me more about what's going on?`,
       1: () => `Thank you for sharing that with me. I'm here to listen and support you. 🌟\n\nWould you like to try a quick journaling prompt, or would you prefer some coping tips?`,
       2: mood => `Here's a journaling prompt for you:\n\n*"${mood === 'Happy' ? "Describe a moment today when you felt joy. What made it special?" :
-          mood === 'Sad' ? "What are three small things that brought you comfort recently?" :
-            "What is one thing you can do for yourself today that shows self-compassion?"
+        mood === 'Sad' ? "What are three small things that brought you comfort recently?" :
+          "What is one thing you can do for yourself today that shows self-compassion?"
         }"*\n\nFeel free to reflect on it here, or just let me know how you're feeling now!`,
       default: () => `I'm here for you. Every feeling is valid and temporary. 💜\n\nWould you like to log another mood, explore coping strategies, or just chat?`
     };
@@ -364,366 +367,288 @@
     });
   </script>
 
-  <!-- ===== NAVBAR ===== -->
   <header
-    class="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 lg:px-10 py-3 border-b backdrop-blur-md"
-    style="background:rgba(12,10,21,0.85); border-color:rgba(147,51,234,0.25); height:64px;">
-
-    <!-- Logo -->
-    <div class="flex items-center gap-3">
-      <img src="../assets/Navbar_logo copy.png" alt="NeuroSync Logo" class="h-10 w-auto" />
+    class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary px-4 sm:px-6 lg:px-10 py-3 bg-transparent backdrop-blur-sm sticky top-0 z-20">
+    <div class="flex items-center gap-3 text-primary">
+      <img src="../assets/Navbar_logo copy.png" alt="NeuroSync Logo" class="h-10 w-auto">
     </div>
-
-    <!-- Desktop Nav -->
-    <nav class="hidden xl:flex items-center gap-2 text-sm" style="color:#C4B0E0;">
-      <a href="../index.html" class="translucent-button rounded-full px-4 py-2">Home</a>
-      <a href="dashboard.html" class="translucent-button rounded-full px-4 py-2">Dashboard</a>
-
-      <!-- Resources dropdown -->
-      <div class="relative">
-        <button class="translucent-button nav-dropdown-toggle rounded-full px-4 py-2 flex items-center gap-1">
-          Resources <span class="material-symbols-outlined text-base">expand_more</span>
-        </button>
-        <div
-          class="nav-dropdown-menu absolute hidden top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-xl shadow-xl z-50"
-          style="background:#1A142D; border:1px solid #2A2140;">
-          <a href="mood-selection.html"
-            class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors rounded-t-xl"
-            style="color:#C4B0E0;">Mood Tracker</a>
-          <a href="study-library.html" class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors"
-            style="color:#C4B0E0;">Study Library</a>
-          <a href="study-library.html"
-            class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors rounded-b-xl"
-            style="color:#C4B0E0;">Upload Material</a>
-        </div>
-      </div>
-
-      <!-- Company dropdown -->
-      <div class="relative">
-        <button class="translucent-button nav-dropdown-toggle rounded-full px-4 py-2 flex items-center gap-1">
-          Company <span class="material-symbols-outlined text-base">expand_more</span>
-        </button>
-        <div
-          class="nav-dropdown-menu absolute hidden top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-xl shadow-xl z-50"
-          style="background:#1A142D; border:1px solid #2A2140;">
-          <a href="feedback.html" class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors rounded-t-xl"
-            style="color:#C4B0E0;">Feedback</a>
-          <a href="about.html" class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors"
-            style="color:#C4B0E0;">About Us</a>
-          <a href="feedback.html" class="block px-4 py-2 text-sm hover:bg-purple-700/30 transition-colors rounded-b-xl"
-            style="color:#C4B0E0;">Support</a>
-        </div>
-      </div>
-
-      <a href="rewards.html" class="translucent-button rounded-full px-4 py-2">Rewards</a>
-      <a href="profile.html" class="translucent-button rounded-full px-4 py-2">Profile</a>
-    </nav>
-
-    <!-- Right side -->
-    <div class="flex items-center gap-3">
-      <!-- Profile -->
-      <div id="navbar-profile" class="hidden sm:flex items-center gap-3 cursor-pointer relative">
-        <div id="navbar-profile-photo"
-          class="rounded-full flex items-center justify-center bg-center bg-cover bg-no-repeat"
-          style="width:40px;height:40px;box-shadow:0 0 14px rgba(128,19,236,0.5);">
-          <span class="material-symbols-outlined" style="font-size:20px;color:#8013ec;">person</span>
-        </div>
-        <div class="flex flex-col">
-          <span id="navbar-name" class="text-sm font-medium text-white">User</span>
-          <span id="navbar-class-role" class="text-xs" style="color:#ad92c9;">Student</span>
-        </div>
-        <!-- Dropdown -->
-        <div id="navbar-dropdown" class="hidden absolute top-full right-0 mt-2 w-48 rounded-xl shadow-xl z-50"
-          style="background:#1A1122; border:1px solid #2A1F36;">
-          <a href="profile.html"
-            class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors rounded-t-xl">
-            <span class="material-symbols-outlined text-base">person</span> See Profile
-          </a>
-          <a href="profile.html"
-            class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors">
-            <span class="material-symbols-outlined text-base">edit</span> Edit Profile
-          </a>
-          <button id="navbar-sign-out-btn"
-            class="flex items-center gap-3 px-4 py-2 text-sm text-white hover:bg-[#362348] transition-colors w-full text-left rounded-b-xl">
-            <span class="material-symbols-outlined text-base">logout</span> Sign Out
-          </button>
-        </div>
-      </div>
-
-      <!-- Mobile menu button -->
-      <button id="sidebar-toggle-btn" class="xl:hidden translucent-button flex items-center justify-center rounded-full"
-        style="width:44px;height:44px;" title="Toggle Sidebar">
+    <div class="flex items-center gap-4">
+      <button id="theme-toggle"
+        class="translucent-button flex items-center justify-center rounded-full size-11 hover:scale-110 transition-transform">
+        <span class="material-symbols-outlined text-2xl">dark_mode</span>
+      </button>
+      <button class="xl:hidden translucent-button flex items-center justify-center rounded-full size-11"
+        id="mobile-menu-btn">
         <span class="material-symbols-outlined text-2xl">menu</span>
       </button>
     </div>
   </header>
 
-  <!-- ===== MAIN LAYOUT ===== -->
-  <!-- Sidebar overlay (mobile) -->
   <div id="sidebar-overlay" class="fixed inset-0 z-20 hidden"></div>
+  <main class="flex-1 transition-all duration-300 ml-64">
+    <div class="ai-chat-layout h-screen overflow-hidden">
 
-  <div class="ai-chat-layout">
-
-    <!-- ===== SIDEBAR ===== -->
-    <aside class="chat-sidebar" id="chat-sidebar">
-      <!-- Sidebar Header -->
-      <div class="flex items-center justify-between p-4 border-b" style="border-color:#2A2140;">
-        <h2 class="font-bold text-base flex items-center gap-2 text-white m-0">
-          <span class="material-symbols-outlined" style="color:#9333ea; font-size:20px;">history</span> Chat History
-        </h2>
-        <button id="sidebar-close-btn"
-          class="xl:hidden translucent-button rounded-full flex items-center justify-center"
-          style="width:32px;height:32px;">
-          <span class="material-symbols-outlined text-base">close</span>
-        </button>
-      </div>
-
-      <!-- New Chat -->
-      <div class="p-4 border-b" style="border-color:#2A2140;">
-        <button id="new-chat-btn"
-          class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-sm text-white transition-all hover:-translate-y-0.5"
-          style="background:linear-gradient(135deg,#9333ea,#7e22ce); box-shadow:0 4px 14px rgba(147,51,234,0.4);">
-          <span class="material-symbols-outlined text-base">add_comment</span>
-          New Conversation
-        </button>
-      </div>
-
-      <!-- Streak -->
-      <div class="mx-4 mt-4 p-3 rounded-xl flex items-center gap-3"
-        style="background:rgba(147,51,234,0.1); border:1px solid rgba(147,51,234,0.25);">
-        <span style="font-size:24px;">🔥</span>
-        <div>
-          <p class="text-xs m-0" style="color:#9c7fc0;">Current Streak</p>
-          <p id="streak-display" class="font-bold text-white m-0 text-base">0 days</p>
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="chat-sidebar" id="chat-sidebar">
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between p-4 border-b" style="border-color:#2A2140;">
+          <h2 class="font-bold text-base flex items-center gap-2 text-white m-0">
+            <span class="material-symbols-outlined" style="color:#9333ea; font-size:20px;">history</span> Chat History
+          </h2>
+          <button id="sidebar-close-btn"
+            class="xl:hidden translucent-button rounded-full flex items-center justify-center"
+            style="width:32px;height:32px;">
+            <span class="material-symbols-outlined text-base">close</span>
+          </button>
         </div>
-      </div>
 
-      <!-- Search -->
-      <div class="px-4 mt-3">
-        <div class="flex items-center gap-2 rounded-xl px-3 py-2"
-          style="background:rgba(255,255,255,0.04); border:1px solid rgba(147,51,234,0.2);">
-          <span class="material-symbols-outlined text-base" style="color:#7c6b99;">search</span>
-          <input id="history-search" type="text" placeholder="Search history…" autocomplete="off"
-            class="bg-transparent border-none outline-none text-sm text-white w-full placeholder:text-[#7c6b99]" />
+        <!-- New Chat -->
+        <div class="p-4 border-b" style="border-color:#2A2140;">
+          <button id="new-chat-btn"
+            class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-sm text-white transition-all hover:-translate-y-0.5"
+            style="background:linear-gradient(135deg,#9333ea,#7e22ce); box-shadow:0 4px 14px rgba(147,51,234,0.4);">
+            <span class="material-symbols-outlined text-base">add_comment</span>
+            New Conversation
+          </button>
         </div>
-      </div>
 
-      <!-- History List -->
-      <div class="flex-1 overflow-y-auto slim-scroll px-4 py-3 flex flex-col gap-2" id="history-list">
-        <p class="text-xs text-center py-4" style="color:#7c6b99;">Loading history…</p>
-      </div>
-    </aside>
+        <!-- Streak -->
+        <div class="mx-4 mt-4 p-3 rounded-xl flex items-center gap-3"
+          style="background:rgba(147,51,234,0.1); border:1px solid rgba(147,51,234,0.25);">
+          <span style="font-size:24px;">🔥</span>
+          <div>
+            <p class="text-xs m-0" style="color:#9c7fc0;">Current Streak</p>
+            <p id="streak-display" class="font-bold text-white m-0 text-base">0 days</p>
+          </div>
+        </div>
 
-    <!-- ===== MAIN CHAT AREA ===== -->
-    <section class="flex flex-col flex-1 overflow-hidden">
+        <!-- Search -->
+        <div class="px-4 mt-3">
+          <div class="flex items-center gap-2 rounded-xl px-3 py-2"
+            style="background:rgba(255,255,255,0.04); border:1px solid rgba(147,51,234,0.2);">
+            <span class="material-symbols-outlined text-base" style="color:#7c6b99;">search</span>
+            <input id="history-search" type="text" placeholder="Search history…" autocomplete="off"
+              class="bg-transparent border-none outline-none text-sm text-white w-full placeholder:text-[#7c6b99]" />
+          </div>
+        </div>
 
-      <!-- Chat top bar -->
-      <div class="flex items-center gap-4 px-4 py-3 border-b"
-        style="background:rgba(26,20,45,0.7); border-color:#2A2140; backdrop-filter:blur(10px);">
-        <button id="mobile-sidebar-btn"
-          class="xl:hidden translucent-button flex items-center justify-center rounded-full"
-          style="width:36px;height:36px;">
-          <span class="material-symbols-outlined text-base">menu_open</span>
-        </button>
-        <!-- AI avatar & status -->
-        <div class="flex items-center gap-3">
-          <div class="relative pulse-ring" style="position:relative;">
-            <div class="rounded-full flex items-center justify-center"
-              style="width:40px;height:40px;background:rgba(147,51,234,0.2);">
-              <img src="../assets/favicon.png" alt="AI" style="width:28px;height:28px;object-fit:contain;"
-                onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'material-symbols-outlined\' style=\'color:#9333ea;font-size:22px;\'>smart_toy</span>';" />
+        <!-- History List -->
+        <div class="flex-1 overflow-y-auto slim-scroll px-4 py-3 flex flex-col gap-2" id="history-list">
+          <p class="text-xs text-center py-4" style="color:#7c6b99;">Loading history…</p>
+        </div>
+      </aside>
+
+      <!-- ===== MAIN CHAT AREA ===== -->
+      <section class="flex flex-col flex-1 overflow-hidden">
+
+        <!-- Chat top bar -->
+        <div class="flex items-center gap-4 px-4 py-3 border-b"
+          style="background:rgba(26,20,45,0.7); border-color:#2A2140; backdrop-filter:blur(10px);">
+          <button id="mobile-sidebar-btn"
+            class="xl:hidden translucent-button flex items-center justify-center rounded-full"
+            style="width:36px;height:36px;">
+            <span class="material-symbols-outlined text-base">menu_open</span>
+          </button>
+          <!-- AI avatar & status -->
+          <div class="flex items-center gap-3">
+            <div class="relative pulse-ring" style="position:relative;">
+              <div class="rounded-full flex items-center justify-center"
+                style="width:40px;height:40px;background:rgba(147,51,234,0.2);">
+                <img src="../assets/favicon.png" alt="AI" style="width:28px;height:28px;object-fit:contain;"
+                  onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'material-symbols-outlined\' style=\'color:#9333ea;font-size:22px;\'>smart_toy</span>';" />
+              </div>
+            </div>
+            <div>
+              <p class="font-bold text-white m-0 text-sm">NeuroSync Assistant</p>
+              <p class="text-xs m-0 flex items-center gap-1" style="color:#9c7fc0;">
+                <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+                Online
+              </p>
             </div>
           </div>
-          <div>
-            <p class="font-bold text-white m-0 text-sm">NeuroSync Assistant</p>
-            <p class="text-xs m-0 flex items-center gap-1" style="color:#9c7fc0;">
-              <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
-              Online
-            </p>
+          <div class="ml-auto flex items-center gap-2">
+            <button id="clear-chat-btn"
+              class="translucent-button rounded-full px-3 py-1 text-xs flex items-center gap-1"
+              title="Clear conversation">
+              <span class="material-symbols-outlined" style="font-size:16px;">refresh</span> Reset
+            </button>
           </div>
         </div>
-        <div class="ml-auto flex items-center gap-2">
-          <button id="clear-chat-btn" class="translucent-button rounded-full px-3 py-1 text-xs flex items-center gap-1"
-            title="Clear conversation">
-            <span class="material-symbols-outlined" style="font-size:16px;">refresh</span> Reset
-          </button>
+
+        <!-- Messages window -->
+        <div id="chat-window" class="flex-1 overflow-y-auto slim-scroll p-4 flex flex-col gap-4">
+          <!-- Welcome message injected by JS -->
         </div>
-      </div>
 
-      <!-- Messages window -->
-      <div id="chat-window" class="flex-1 overflow-y-auto slim-scroll p-4 flex flex-col gap-4">
-        <!-- Welcome message injected by JS -->
-      </div>
+        <!-- Quick replies -->
+        <div id="quick-replies" class="flex flex-wrap justify-center gap-2 px-4 pb-2 hidden"></div>
 
-      <!-- Quick replies -->
-      <div id="quick-replies" class="flex flex-wrap justify-center gap-2 px-4 pb-2 hidden"></div>
+        <!-- ===== INPUT AREA ===== -->
+        <div class="border-t p-4"
+          style="background:rgba(26,20,45,0.9); border-color:#2A2140; backdrop-filter:blur(10px);">
 
-      <!-- ===== INPUT AREA ===== -->
-      <div class="border-t p-4"
-        style="background:rgba(26,20,45,0.9); border-color:#2A2140; backdrop-filter:blur(10px);">
-
-        <!-- Category filter -->
-        <div class="flex items-center gap-2 mb-3">
-          <div class="flex gap-2 overflow-x-auto pb-1" style="scrollbar-width:none;">
-            <button class="cat-btn active" data-cat="all">All</button>
-            <button class="cat-btn" data-cat="positive">Positive</button>
-            <button class="cat-btn" data-cat="negative">Negative</button>
-            <button class="cat-btn" data-cat="neutral">Neutral</button>
+          <!-- Category filter -->
+          <div class="flex items-center gap-2 mb-3">
+            <div class="flex gap-2 overflow-x-auto pb-1" style="scrollbar-width:none;">
+              <button class="cat-btn active" data-cat="all">All</button>
+              <button class="cat-btn" data-cat="positive">Positive</button>
+              <button class="cat-btn" data-cat="negative">Negative</button>
+              <button class="cat-btn" data-cat="neutral">Neutral</button>
+            </div>
+            <button id="toggle-grid-btn"
+              class="ml-auto translucent-button rounded-full flex items-center justify-center shrink-0"
+              style="width:30px;height:30px;" title="Toggle mood grid">
+              <span class="material-symbols-outlined text-base" id="toggle-grid-icon">expand_less</span>
+            </button>
           </div>
-          <button id="toggle-grid-btn"
-            class="ml-auto translucent-button rounded-full flex items-center justify-center shrink-0"
-            style="width:30px;height:30px;" title="Toggle mood grid">
-            <span class="material-symbols-outlined text-base" id="toggle-grid-icon">expand_less</span>
-          </button>
+
+          <!-- Mood grid -->
+          <div id="mood-grid" class="grid gap-2 mb-3 overflow-y-auto slim-scroll"
+            style="max-height:120px; grid-template-columns:repeat(auto-fill,minmax(58px,1fr));">
+
+            <!-- Positive -->
+            <button class="mood-btn" data-mood="Happy" data-cat="positive"><img
+                src="../assets/images/Emotional/Happy.png" alt="Happy" /> <span>Happy</span></button>
+            <button class="mood-btn" data-mood="Excited" data-cat="positive"><img
+                src="../assets/images/Emotional/Excited.png" alt="Excited" /> <span>Excited</span></button>
+            <button class="mood-btn" data-mood="Ambitious" data-cat="positive"><img
+                src="../assets/images/Emotional/Ambitious.png" alt="Ambitious" /> <span>Ambitious</span></button>
+            <button class="mood-btn" data-mood="Confident" data-cat="positive"><img
+                src="../assets/images/Emotional/Confident.png" alt="Confident" /> <span>Confident</span></button>
+            <button class="mood-btn" data-mood="Proud" data-cat="positive"><img
+                src="../assets/images/Emotional/Proud.png" alt="Proud" /> <span>Proud</span></button>
+            <button class="mood-btn" data-mood="Grateful" data-cat="positive"><img
+                src="../assets/images/Emotional/Greatful.png" alt="Grateful" /> <span>Grateful</span></button>
+            <button class="mood-btn" data-mood="Determined" data-cat="positive"><img
+                src="../assets/images/Emotional/Determined.png" alt="Determined" /> <span>Determined</span></button>
+            <button class="mood-btn" data-mood="Included" data-cat="positive"><img
+                src="../assets/images/Emotional/Included.png" alt="Included" /> <span>Included</span></button>
+
+            <!-- Negative -->
+            <button class="mood-btn" data-mood="Sad" data-cat="negative"><img
+                src="../assets/images/Emotional/Hopeless.png" alt="Sad" /> <span>Sad</span></button>
+            <button class="mood-btn" data-mood="Angry" data-cat="negative"><img
+                src="../assets/images/Emotional/Angry.png" alt="Angry" /> <span>Angry</span></button>
+            <button class="mood-btn" data-mood="Anxious" data-cat="negative"><img
+                src="../assets/images/Emotional/Anxious.png" alt="Anxious" /> <span>Anxious</span></button>
+            <button class="mood-btn" data-mood="Stressed" data-cat="negative"><img
+                src="../assets/images/Emotional/Stressed.png" alt="Stressed" /> <span>Stressed</span></button>
+            <button class="mood-btn" data-mood="Annoyed" data-cat="negative"><img
+                src="../assets/images/Emotional/Annoyed.png" alt="Annoyed" /> <span>Annoyed</span></button>
+            <button class="mood-btn" data-mood="Ashamed" data-cat="negative"><img
+                src="../assets/images/Emotional/Ashamed.png" alt="Ashamed" /> <span>Ashamed</span></button>
+            <button class="mood-btn" data-mood="Bored" data-cat="negative"><img
+                src="../assets/images/Emotional/Bored.png" alt="Bored" /> <span>Bored</span></button>
+            <button class="mood-btn" data-mood="Concerned" data-cat="negative"><img
+                src="../assets/images/Emotional/Concerned.png" alt="Concerned" /> <span>Concerned</span></button>
+            <button class="mood-btn" data-mood="Confused" data-cat="negative"><img
+                src="../assets/images/Emotional/Confused.png" alt="Confused" /> <span>Confused</span></button>
+            <button class="mood-btn" data-mood="Disappointed" data-cat="negative"><img
+                src="../assets/images/Emotional/Disappointed.png" alt="Disappointed" /><span>Disappoint.</span></button>
+            <button class="mood-btn" data-mood="Hopeless" data-cat="negative"><img
+                src="../assets/images/Emotional/Hopeless.png" alt="Hopeless" /> <span>Hopeless</span></button>
+            <button class="mood-btn" data-mood="Hurt" data-cat="negative"><img src="../assets/images/Emotional/Hurt.png"
+                alt="Hurt" /> <span>Hurt</span></button>
+            <button class="mood-btn" data-mood="Jealous" data-cat="negative"><img
+                src="../assets/images/Emotional/Jealous.png" alt="Jealous" /> <span>Jealous</span></button>
+            <button class="mood-btn" data-mood="Lonely" data-cat="negative"><img
+                src="../assets/images/Emotional/Lonely.png" alt="Lonely" /> <span>Lonely</span></button>
+            <button class="mood-btn" data-mood="Tired" data-cat="negative"><img
+                src="../assets/images/Emotional/Tired.png" alt="Tired" /> <span>Tired</span></button>
+
+            <!-- Neutral -->
+            <button class="mood-btn" data-mood="Calm" data-cat="neutral"><img src="../assets/images/Emotional/Calm.png"
+                alt="Calm" /> <span>Calm</span></button>
+            <button class="mood-btn" data-mood="Focused" data-cat="neutral"><img
+                src="../assets/images/Emotional/Focused.png" alt="Focused" /> <span>Focused</span></button>
+            <button class="mood-btn" data-mood="Curious" data-cat="neutral"><img
+                src="../assets/images/Emotional/Curious.png" alt="Curious" /> <span>Curious</span></button>
+          </div>
+
+          <!-- Text input -->
+          <form id="chat-form" class="flex items-center gap-2">
+            <input id="chat-input" type="text" autocomplete="off"
+              placeholder="Message NeuroSync AI… or select a mood above"
+              class="flex-1 rounded-xl px-4 py-3 text-sm text-white outline-none"
+              style="background:rgba(255,255,255,0.06); border:1px solid rgba(147,51,234,0.3);" />
+            <button type="submit" id="send-btn"
+              class="flex items-center justify-center rounded-xl shrink-0 transition-all hover:scale-105"
+              style="width:44px;height:44px;background:linear-gradient(135deg,#9333ea,#7e22ce);box-shadow:0 4px 14px rgba(147,51,234,0.4);">
+              <span class="material-symbols-outlined text-white text-xl">send</span>
+            </button>
+          </form>
         </div>
+      </section>
+    </div>
 
-        <!-- Mood grid -->
-        <div id="mood-grid" class="grid gap-2 mb-3 overflow-y-auto slim-scroll"
-          style="max-height:120px; grid-template-columns:repeat(auto-fill,minmax(58px,1fr));">
+    <!-- ===== CHAT JAVASCRIPT ===== -->
+    <script>
+      let convStep = 0;
 
-          <!-- Positive -->
-          <button class="mood-btn" data-mood="Happy" data-cat="positive"><img src="../assets/images/Emotional/Happy.png"
-              alt="Happy" /> <span>Happy</span></button>
-          <button class="mood-btn" data-mood="Excited" data-cat="positive"><img
-              src="../assets/images/Emotional/Excited.png" alt="Excited" /> <span>Excited</span></button>
-          <button class="mood-btn" data-mood="Ambitious" data-cat="positive"><img
-              src="../assets/images/Emotional/Ambitious.png" alt="Ambitious" /> <span>Ambitious</span></button>
-          <button class="mood-btn" data-mood="Confident" data-cat="positive"><img
-              src="../assets/images/Emotional/Confident.png" alt="Confident" /> <span>Confident</span></button>
-          <button class="mood-btn" data-mood="Proud" data-cat="positive"><img src="../assets/images/Emotional/Proud.png"
-              alt="Proud" /> <span>Proud</span></button>
-          <button class="mood-btn" data-mood="Grateful" data-cat="positive"><img
-              src="../assets/images/Emotional/Greatful.png" alt="Grateful" /> <span>Grateful</span></button>
-          <button class="mood-btn" data-mood="Determined" data-cat="positive"><img
-              src="../assets/images/Emotional/Determined.png" alt="Determined" /> <span>Determined</span></button>
-          <button class="mood-btn" data-mood="Included" data-cat="positive"><img
-              src="../assets/images/Emotional/Included.png" alt="Included" /> <span>Included</span></button>
+      // ---- DOM refs ----
+      const chatWindow = document.getElementById('chat-window');
+      const chatInput = document.getElementById('chat-input');
+      const chatForm = document.getElementById('chat-form');
+      const quickReplies = document.getElementById('quick-replies');
+      const moodGrid = document.getElementById('mood-grid');
+      const toggleGridBtn = document.getElementById('toggle-grid-btn');
+      const toggleIcon = document.getElementById('toggle-grid-icon');
+      const sidebar = document.getElementById('chat-sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
 
-          <!-- Negative -->
-          <button class="mood-btn" data-mood="Sad" data-cat="negative"><img
-              src="../assets/images/Emotional/Hopeless.png" alt="Sad" /> <span>Sad</span></button>
-          <button class="mood-btn" data-mood="Angry" data-cat="negative"><img src="../assets/images/Emotional/Angry.png"
-              alt="Angry" /> <span>Angry</span></button>
-          <button class="mood-btn" data-mood="Anxious" data-cat="negative"><img
-              src="../assets/images/Emotional/Anxious.png" alt="Anxious" /> <span>Anxious</span></button>
-          <button class="mood-btn" data-mood="Stressed" data-cat="negative"><img
-              src="../assets/images/Emotional/Stressed.png" alt="Stressed" /> <span>Stressed</span></button>
-          <button class="mood-btn" data-mood="Annoyed" data-cat="negative"><img
-              src="../assets/images/Emotional/Annoyed.png" alt="Annoyed" /> <span>Annoyed</span></button>
-          <button class="mood-btn" data-mood="Ashamed" data-cat="negative"><img
-              src="../assets/images/Emotional/Ashamed.png" alt="Ashamed" /> <span>Ashamed</span></button>
-          <button class="mood-btn" data-mood="Bored" data-cat="negative"><img src="../assets/images/Emotional/Bored.png"
-              alt="Bored" /> <span>Bored</span></button>
-          <button class="mood-btn" data-mood="Concerned" data-cat="negative"><img
-              src="../assets/images/Emotional/Concerned.png" alt="Concerned" /> <span>Concerned</span></button>
-          <button class="mood-btn" data-mood="Confused" data-cat="negative"><img
-              src="../assets/images/Emotional/Confused.png" alt="Confused" /> <span>Confused</span></button>
-          <button class="mood-btn" data-mood="Disappointed" data-cat="negative"><img
-              src="../assets/images/Emotional/Disappointed.png" alt="Disappointed" /><span>Disappoint.</span></button>
-          <button class="mood-btn" data-mood="Hopeless" data-cat="negative"><img
-              src="../assets/images/Emotional/Hopeless.png" alt="Hopeless" /> <span>Hopeless</span></button>
-          <button class="mood-btn" data-mood="Hurt" data-cat="negative"><img src="../assets/images/Emotional/Hurt.png"
-              alt="Hurt" /> <span>Hurt</span></button>
-          <button class="mood-btn" data-mood="Jealous" data-cat="negative"><img
-              src="../assets/images/Emotional/Jealous.png" alt="Jealous" /> <span>Jealous</span></button>
-          <button class="mood-btn" data-mood="Lonely" data-cat="negative"><img
-              src="../assets/images/Emotional/Lonely.png" alt="Lonely" /> <span>Lonely</span></button>
-          <button class="mood-btn" data-mood="Tired" data-cat="negative"><img src="../assets/images/Emotional/Tired.png"
-              alt="Tired" /> <span>Tired</span></button>
+      // ---- Sidebar toggle (mobile) ----
+      function openSidebar() { sidebar.classList.add('open'); overlay.classList.remove('hidden'); }
+      function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.add('hidden'); }
+      document.getElementById('mobile-sidebar-btn')?.addEventListener('click', openSidebar);
+      document.getElementById('sidebar-toggle-btn')?.addEventListener('click', openSidebar);
+      document.getElementById('sidebar-close-btn')?.addEventListener('click', closeSidebar);
+      overlay.addEventListener('click', closeSidebar);
 
-          <!-- Neutral -->
-          <button class="mood-btn" data-mood="Calm" data-cat="neutral"><img src="../assets/images/Emotional/Calm.png"
-              alt="Calm" /> <span>Calm</span></button>
-          <button class="mood-btn" data-mood="Focused" data-cat="neutral"><img
-              src="../assets/images/Emotional/Focused.png" alt="Focused" /> <span>Focused</span></button>
-          <button class="mood-btn" data-mood="Curious" data-cat="neutral"><img
-              src="../assets/images/Emotional/Curious.png" alt="Curious" /> <span>Curious</span></button>
-        </div>
+      // ---- Mood grid toggle ----
+      let gridVisible = true;
+      toggleGridBtn.addEventListener('click', () => {
+        gridVisible = !gridVisible;
+        moodGrid.style.display = gridVisible ? '' : 'none';
+        toggleIcon.textContent = gridVisible ? 'expand_less' : 'expand_more';
+      });
 
-        <!-- Text input -->
-        <form id="chat-form" class="flex items-center gap-2">
-          <input id="chat-input" type="text" autocomplete="off"
-            placeholder="Message NeuroSync AI… or select a mood above"
-            class="flex-1 rounded-xl px-4 py-3 text-sm text-white outline-none"
-            style="background:rgba(255,255,255,0.06); border:1px solid rgba(147,51,234,0.3);" />
-          <button type="submit" id="send-btn"
-            class="flex items-center justify-center rounded-xl shrink-0 transition-all hover:scale-105"
-            style="width:44px;height:44px;background:linear-gradient(135deg,#9333ea,#7e22ce);box-shadow:0 4px 14px rgba(147,51,234,0.4);">
-            <span class="material-symbols-outlined text-white text-xl">send</span>
-          </button>
-        </form>
-      </div>
-    </section>
-  </div>
-
-  <!-- ===== CHAT JAVASCRIPT ===== -->
-  <script>
-    let convStep = 0;
-
-    // ---- DOM refs ----
-    const chatWindow = document.getElementById('chat-window');
-    const chatInput = document.getElementById('chat-input');
-    const chatForm = document.getElementById('chat-form');
-    const quickReplies = document.getElementById('quick-replies');
-    const moodGrid = document.getElementById('mood-grid');
-    const toggleGridBtn = document.getElementById('toggle-grid-btn');
-    const toggleIcon = document.getElementById('toggle-grid-icon');
-    const sidebar = document.getElementById('chat-sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-
-    // ---- Sidebar toggle (mobile) ----
-    function openSidebar() { sidebar.classList.add('open'); overlay.classList.remove('hidden'); }
-    function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.add('hidden'); }
-    document.getElementById('mobile-sidebar-btn')?.addEventListener('click', openSidebar);
-    document.getElementById('sidebar-toggle-btn')?.addEventListener('click', openSidebar);
-    document.getElementById('sidebar-close-btn')?.addEventListener('click', closeSidebar);
-    overlay.addEventListener('click', closeSidebar);
-
-    // ---- Mood grid toggle ----
-    let gridVisible = true;
-    toggleGridBtn.addEventListener('click', () => {
-      gridVisible = !gridVisible;
-      moodGrid.style.display = gridVisible ? '' : 'none';
-      toggleIcon.textContent = gridVisible ? 'expand_less' : 'expand_more';
-    });
-
-    // ---- Category filter ----
-    document.querySelectorAll('.cat-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const cat = btn.dataset.cat;
-        document.querySelectorAll('.mood-btn').forEach(mb => {
-          mb.style.display = (cat === 'all' || mb.dataset.cat === cat) ? '' : 'none';
+      // ---- Category filter ----
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const cat = btn.dataset.cat;
+          document.querySelectorAll('.mood-btn').forEach(mb => {
+            mb.style.display = (cat === 'all' || mb.dataset.cat === cat) ? '' : 'none';
+          });
         });
       });
-    });
 
-    // ---- Render helpers ----
-    function addMessage(text, role) {
-      const wrap = document.createElement('div');
-      wrap.className = `flex gap-3 msg-anim ${role === 'user' ? 'justify-end' : 'justify-start'}`;
+      // ---- Render helpers ----
+      function addMessage(text, role) {
+        const wrap = document.createElement('div');
+        wrap.className = `flex gap-3 msg-anim ${role === 'user' ? 'justify-end' : 'justify-start'}`;
 
-      if (role === 'bot') {
-        wrap.innerHTML = `
+        if (role === 'bot') {
+          wrap.innerHTML = `
           <div class="shrink-0 rounded-full flex items-center justify-center" style="width:32px;height:32px;background:rgba(147,51,234,0.2);">
             <span class="material-symbols-outlined" style="font-size:18px;color:#9333ea;">smart_toy</span>
           </div>
           <div class="msg-bot px-4 py-3 text-sm leading-relaxed" style="max-width:75%;">${formatText(text)}</div>`;
-      } else {
-        wrap.innerHTML = `<div class="msg-user px-4 py-3 text-sm leading-relaxed" style="max-width:75%;">${escHtml(text)}</div>`;
+        } else {
+          wrap.innerHTML = `<div class="msg-user px-4 py-3 text-sm leading-relaxed" style="max-width:75%;">${escHtml(text)}</div>`;
+        }
+
+        chatWindow.appendChild(wrap);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+        return wrap;
       }
 
-      chatWindow.appendChild(wrap);
-      chatWindow.scrollTop = chatWindow.scrollHeight;
-      return wrap;
-    }
-
-    function showTyping() {
-      const wrap = document.createElement('div');
-      wrap.id = 'typing-indicator';
-      wrap.className = 'flex gap-3 msg-anim justify-start';
-      wrap.innerHTML = `
+      function showTyping() {
+        const wrap = document.createElement('div');
+        wrap.id = 'typing-indicator';
+        wrap.className = 'flex gap-3 msg-anim justify-start';
+        wrap.innerHTML = `
         <div class="shrink-0 rounded-full flex items-center justify-center" style="width:32px;height:32px;background:rgba(147,51,234,0.2);">
           <span class="material-symbols-outlined" style="font-size:18px;color:#9333ea;">smart_toy</span>
         </div>
@@ -732,125 +657,126 @@
           <span class="dot inline-block w-2 h-2 rounded-full mr-1" style="background:#9333ea;"></span>
           <span class="dot inline-block w-2 h-2 rounded-full" style="background:#9333ea;"></span>
         </div>`;
-      chatWindow.appendChild(wrap);
-      chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
+        chatWindow.appendChild(wrap);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
 
-    function hideTyping() { document.getElementById('typing-indicator')?.remove(); }
+      function hideTyping() { document.getElementById('typing-indicator')?.remove(); }
 
-    function showQuickReplies(options) {
-      quickReplies.innerHTML = '';
-      options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'quick-chip';
-        btn.textContent = opt;
-        btn.addEventListener('click', () => handleUserMessage(opt));
-        quickReplies.appendChild(btn);
+      function showQuickReplies(options) {
+        quickReplies.innerHTML = '';
+        options.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'quick-chip';
+          btn.textContent = opt;
+          btn.addEventListener('click', () => handleUserMessage(opt));
+          quickReplies.appendChild(btn);
+        });
+        quickReplies.classList.remove('hidden');
+      }
+      function clearQuickReplies() { quickReplies.classList.add('hidden'); quickReplies.innerHTML = ''; }
+
+      function formatText(t) {
+        return escHtml(t)
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.+?)\*/g, '<em>$1</em>')
+          .replace(/\n/g, '<br/>');
+      }
+      function escHtml(t) {
+        return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      // ---- Handle messages ----
+      async function handleUserMessage(message) {
+        if (!message.trim()) return;
+        clearQuickReplies();
+        addMessage(message, 'user');
+        conversationHistory.push({ role: 'user', content: message, ts: new Date() });
+        chatInput.value = '';
+
+        showTyping();
+        await new Promise(r => setTimeout(r, 900 + Math.random() * 600));
+        hideTyping();
+
+        const reply = await getAIResponse(message, currentMood, convStep);
+        addMessage(reply, 'bot');
+        conversationHistory.push({ role: 'bot', content: reply, ts: new Date() });
+
+        // Advance step and show relevant quick replies
+        convStep++;
+        if (convStep === 1) showQuickReplies(["Tell me more", "What can I do?", "I'm okay"]);
+        else if (convStep === 2) showQuickReplies(["Try journaling", "Give me tips", "Log my mood"]);
+        else showQuickReplies(["New mood check", "View history", "I'm done"]);
+      }
+
+      // ---- Mood button clicks ----
+      document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          const mood = btn.dataset.mood;
+          currentMood = mood;
+          convStep = 0;
+
+          await saveMoodEntry(mood);
+          const emoji = getMoodEmoji(mood);
+          await handleUserMessage(`I'm feeling ${mood} ${emoji}`);
+        });
       });
-      quickReplies.classList.remove('hidden');
-    }
-    function clearQuickReplies() { quickReplies.classList.add('hidden'); quickReplies.innerHTML = ''; }
 
-    function formatText(t) {
-      return escHtml(t)
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.+?)\*/g, '<em>$1</em>')
-        .replace(/\n/g, '<br/>');
-    }
-    function escHtml(t) {
-      return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
+      // ---- Chat form submit ----
+      chatForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        await handleUserMessage(chatInput.value);
+      });
 
-    // ---- Handle messages ----
-    async function handleUserMessage(message) {
-      if (!message.trim()) return;
-      clearQuickReplies();
-      addMessage(message, 'user');
-      conversationHistory.push({ role: 'user', content: message, ts: new Date() });
-      chatInput.value = '';
-
-      showTyping();
-      await new Promise(r => setTimeout(r, 900 + Math.random() * 600));
-      hideTyping();
-
-      const reply = await getAIResponse(message, currentMood, convStep);
-      addMessage(reply, 'bot');
-      conversationHistory.push({ role: 'bot', content: reply, ts: new Date() });
-
-      // Advance step and show relevant quick replies
-      convStep++;
-      if (convStep === 1) showQuickReplies(["Tell me more", "What can I do?", "I'm okay"]);
-      else if (convStep === 2) showQuickReplies(["Try journaling", "Give me tips", "Log my mood"]);
-      else showQuickReplies(["New mood check", "View history", "I'm done"]);
-    }
-
-    // ---- Mood button clicks ----
-    document.querySelectorAll('.mood-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        const mood = btn.dataset.mood;
-        currentMood = mood;
+      // ---- New chat / Reset ----
+      function resetChat() {
         convStep = 0;
+        currentMood = null;
+        conversationHistory = [];
+        chatWindow.innerHTML = '';
+        clearQuickReplies();
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+        welcomeMessage();
+      }
+      document.getElementById('new-chat-btn')?.addEventListener('click', resetChat);
+      document.getElementById('clear-chat-btn')?.addEventListener('click', resetChat);
 
-        await saveMoodEntry(mood);
-        const emoji = getMoodEmoji(mood);
-        await handleUserMessage(`I'm feeling ${mood} ${emoji}`);
+      // ---- Welcome message ----
+      function welcomeMessage() {
+        setTimeout(() => {
+          addMessage("Hey there! 👋 I'm NeuroSync AI, your emotional wellness companion.\n\n**How are you feeling today?**\n\nYou can tap a mood from the grid below, or just describe how you're feeling in words. I'm here to listen! 💜", 'bot');
+          showQuickReplies(["I'm feeling great!", "A bit stressed", "Not sure yet"]);
+        }, 300);
+      }
+
+      // ---- Streak calculation ----
+      async function computeStreak() {
+        if (!currentUserId) return;
+        try {
+          const snap = await _db.collection('Moods').where('userId', '==', currentUserId).orderBy('timestamp', 'desc').limit(60).get();
+          const dates = new Set(snap.docs.map(d => d.data().timestamp?.toDate?.().toDateString()).filter(Boolean));
+          let streak = 0, day = new Date();
+          while (dates.has(day.toDateString())) { streak++; day.setDate(day.getDate() - 1); }
+          document.getElementById('streak-display').textContent = `${streak} day${streak !== 1 ? 's' : ''}`;
+        } catch (e) { }
+      }
+      _auth.onAuthStateChanged(u => { if (u) { currentUserId = u.uid; computeStreak(); } });
+
+      // ---- History search ----
+      document.getElementById('history-search')?.addEventListener('input', e => {
+        const q = e.target.value.toLowerCase();
+        document.querySelectorAll('#history-list .history-item').forEach(item => {
+          item.style.display = item.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
       });
-    });
 
-    // ---- Chat form submit ----
-    chatForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      await handleUserMessage(chatInput.value);
-    });
-
-    // ---- New chat / Reset ----
-    function resetChat() {
-      convStep = 0;
-      currentMood = null;
-      conversationHistory = [];
-      chatWindow.innerHTML = '';
-      clearQuickReplies();
-      document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-      welcomeMessage();
-    }
-    document.getElementById('new-chat-btn')?.addEventListener('click', resetChat);
-    document.getElementById('clear-chat-btn')?.addEventListener('click', resetChat);
-
-    // ---- Welcome message ----
-    function welcomeMessage() {
-      setTimeout(() => {
-        addMessage("Hey there! 👋 I'm NeuroSync AI, your emotional wellness companion.\n\n**How are you feeling today?**\n\nYou can tap a mood from the grid below, or just describe how you're feeling in words. I'm here to listen! 💜", 'bot');
-        showQuickReplies(["I'm feeling great!", "A bit stressed", "Not sure yet"]);
-      }, 300);
-    }
-
-    // ---- Streak calculation ----
-    async function computeStreak() {
-      if (!currentUserId) return;
-      try {
-        const snap = await _db.collection('Moods').where('userId', '==', currentUserId).orderBy('timestamp', 'desc').limit(60).get();
-        const dates = new Set(snap.docs.map(d => d.data().timestamp?.toDate?.().toDateString()).filter(Boolean));
-        let streak = 0, day = new Date();
-        while (dates.has(day.toDateString())) { streak++; day.setDate(day.getDate() - 1); }
-        document.getElementById('streak-display').textContent = `${streak} day${streak !== 1 ? 's' : ''}`;
-      } catch (e) { }
-    }
-    _auth.onAuthStateChanged(u => { if (u) { currentUserId = u.uid; computeStreak(); } });
-
-    // ---- History search ----
-    document.getElementById('history-search')?.addEventListener('input', e => {
-      const q = e.target.value.toLowerCase();
-      document.querySelectorAll('#history-list .history-item').forEach(item => {
-        item.style.display = item.textContent.toLowerCase().includes(q) ? '' : 'none';
-      });
-    });
-
-    // ---- Init ----
-    window.addEventListener('DOMContentLoaded', welcomeMessage);
-  </script>
-
+      // ---- Init ----
+      window.addEventListener('DOMContentLoaded', welcomeMessage);
+    </script>
+    </div>
+  </main>
 </body>
 
 </html>
